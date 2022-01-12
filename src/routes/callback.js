@@ -7,12 +7,15 @@ export async function get(request) {
   const token = await getToken(code)
   const user = await getUser(token)
 
-  request.locals.user = user.login
+  // request.locals.user = user.login
 
   return {
-    status: 302,
+    status: 200,
     headers: {
-      location: '/'
+      'Content-Type': 'application/json'
+    },
+    body: {
+      user
     }
   }
 }
