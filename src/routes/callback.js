@@ -3,7 +3,7 @@ const tokenURL = 'https://github.com/login/oauth/access_token'
 const userURL = 'https://api.github.com/user'
 
 export async function get(request) {
-  const code = request.query.get('code')
+  const code = request.url.searchParams.get('code')
   const token = await getToken(code)
   const user = await getUser(token)
 

@@ -14,11 +14,11 @@
 
 <h1>Welcome {user}</h1>
 {#if user}
-  <a href="/logout">
+  <a rel="external" href="/logout">
     <button>Logout</button>
   </a>
 {:else}
-  <a href="/login">
+  <a rel="external" href="/login">
     <button>Github Login</button>
   </a>
 {/if}
