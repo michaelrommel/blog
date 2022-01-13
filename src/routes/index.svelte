@@ -27,4 +27,11 @@
       </a>
     {/if}
   </div>
+  <div class="flex">
+    <div class="basis-1/4"></div>
+      <div class="basis-1/2">
+        <img src="/static/miro-logo-2020-15.svg" />
+      </div>
+    <div class="basis-1/4"></div>
+  </div>
 </div>
