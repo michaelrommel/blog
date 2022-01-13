@@ -4,6 +4,7 @@ node_modules
 /.svelte-kit
 /.vercel_build_output
 /package
+/tags
 .env
 .env.*
 !.env.example
