@@ -30,7 +30,8 @@
   <div class="flex">
     <div class="basis-1/4"></div>
       <div class="basis-1/2">
-        <img src="/static/miro-logo-2020-15.svg" />
+        <img src="/miro-logo-2020-15.svg" alt="miro logo circle with wings,
+          showing woodworking tools and electronic components" />
       </div>
     <div class="basis-1/4"></div>
   </div>
