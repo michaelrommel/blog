@@ -1,33 +1,33 @@
-import fetch from 'node-fetch'
-const tokenURL = 'https://github.com/login/oauth/access_token'
-const userURL = 'https://api.github.com/user'
+import fetch from 'node-fetch';
+const tokenURL = 'https://github.com/login/oauth/access_token';
+const userURL = 'https://api.github.com/user';
 
-export async function get(request) {
-  const code = request.url.searchParams.get('code')
-  const token = await getToken(code)
-  const user = await getUser(token)
+export async function get (request) {
+  const code = request.url.searchParams.get('code');
+  const token = await getToken(code);
+  const user = await getUser(token);
 
-  request.locals.user = user.login
+  request.locals.user = user.login;
 
   return {
     status: 302,
     headers: {
-      Location: "/"
-    },
-  }
+      Location: '/'
+    }
+  };
 }
 
-function getUser(token) {
+async function getUser (token) {
   return fetch(userURL, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`
     }
-  }).then(reply => reply.json())
+  }).then(reply => reply.json());
 }
 
-function getToken(code) {
+async function getToken (code) {
   return fetch(tokenURL, {
     method: 'POST',
     headers: {
@@ -40,6 +40,5 @@ function getToken(code) {
       code
     })
   }).then(reply => reply.json())
-    .then(reply => reply.access_token)
+    .then(reply => reply.access_token);
 }
-

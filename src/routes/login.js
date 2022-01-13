@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 const target = 'https://github.com/login/oauth/authorize';
 
-export async function get() {
+export async function get () {
   const sessionId = crypto.randomUUID();
 
   return {
@@ -10,6 +10,5 @@ export async function get() {
       location: target +
         `?client_id=${import.meta.env.VITE_CLIENT_ID}&state=${sessionId}`
     }
-  }
+  };
 }
-
