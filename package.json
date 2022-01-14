@@ -9,6 +9,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@poppanator/sveltekit-svg": "^0.2.2",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "autoprefixer": "^10.4.2",

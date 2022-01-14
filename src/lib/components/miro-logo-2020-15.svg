@@ -2,22 +2,21 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="1204"
    height="504"
    viewBox="0 0 1204 504"
    version="1.1"
    id="logo"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
-   sodipodi:docname="miro-logo-2020-15.svg">
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="miro-logo-2020-15.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      id="base"
      pagecolor="#aaaaaa"
@@ -26,8 +25,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.3039563"
-     inkscape:cx="602.0002"
-     inkscape:cy="252"
+     inkscape:cx="528.87288"
+     inkscape:cy="252.17492"
      inkscape:document-units="px"
      inkscape:current-layer="logo"
      showgrid="false"
@@ -38,16 +37,17 @@
      inkscape:window-y="1"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
-     showguides="false" />
+     showguides="false"
+     inkscape:pagecheckerboard="0" />
   <defs
      id="defs1143">
     <linearGradient
        id="stroke"
-       osb:paint="solid">
+       inkscape:swatch="solid">
       <stop
          offset="0"
-         id="strokecolor"
-         class="mystrokecolor"
+         id="logostrokecolor"
+         class="logostrokecolor"
          style="stop-color:#444444;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
@@ -86,7 +86,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
