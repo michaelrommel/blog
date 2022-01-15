@@ -20,10 +20,10 @@
     {
       href: '/consume',
       name: 'Consume'
-    },
-    {
-      href: '/private',
-      name: `${$session.user ? "🔓" : "🔒"} Private`
+      // },
+      // {
+      //   href: '/private',
+      //   name: `${$session.user ? "🔓" : "🔒"}`
     }
   ];
 
@@ -36,14 +36,14 @@
 </script>
 
 <header>
-  <nav class='mx-4'>
+<nav class='mx-2 md:mx-4 lg:mx-8'>
     <div class="w-full flex items-center justify-between">
       <div class='grow py-4 flex items-center justify-start'>
-        <div class='w-1/12'>
+        <div class='w-16'>
           <Logo small class='w-1' />
         </div>
         <div class='text-gruvlfg dark:text-gruvdfg flex items-center'>
-          <div class='ml-10 space-x-8'>
+          <div class='mx-4 md:mx-8 lg:mx-12 space-x-4 md:space-x-8'>
             {#each navigation as link}
               <a href={link.href} class='text-lg font-medium hover:text-gruvlemphblue dark:hover:text-gruvdemphblue'>
                 {link.name}
@@ -52,25 +52,14 @@
           </div>
         </div>
       </div>
-      <div class=''>
+      <div class='w-max'>
         {#if $session.user }
-          <button
-            on:click={handleSignOut}
-            class='inline-block bg-indigo-500 py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75'>
+          <button on:click={handleSignOut} class='inline-block bg-indigo-500 py-2 px-2 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75'>
             Sign out
           </button>
         {:else}
-          <a
-            href='/sign-in'
-            class='inline-block bg-indigo-500 py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75'
-          >
+          <a rel='external' href='/login' class='inline-block bg-indigo-500 py-2 px-2 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75' >
             Sign in
-          </a>
-          <a
-            href='/sign-up'
-            class='inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50'
-          >
-            Sign up
           </a>
         {/if}
       </div>
