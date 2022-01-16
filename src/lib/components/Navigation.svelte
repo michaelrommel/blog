@@ -31,8 +31,6 @@
     await fetch("/api/sign-out");
     window.location = "/sign-in";
   }
-
-  export let user;
 </script>
 
 <header>

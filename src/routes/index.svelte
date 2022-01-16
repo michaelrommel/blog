@@ -1,11 +1,9 @@
 <script>
-  export let user;
+  import '../app.css';
+  import Card from '$lib/components/Card.svelte';
+  
 </script>
 
 <div class="flex justify-center">
-  <div>
-    <h1>
-      Welcome!
-    </h1>
-  </div>
+  <Card />
 </div>
