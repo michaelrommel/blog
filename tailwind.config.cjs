@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   darkMode: 'media',
   content: [
@@ -5,6 +7,10 @@ module.exports = {
     './src/**/*.svelte'
   ],
   theme: {
+    screens: {
+      xs: '375px',
+      ...defaultTheme.screens
+    },
     extend: {
       colors: {
         gruvred: '#cc241d',
