@@ -10,7 +10,7 @@
 
 @layer utilities {
   .logodark .logostrokecolor {
-    stop-color: theme('colors.zinc.300');
+    stop-color: theme('colors.gruvdfg');
     stop-opacity:1;
   }
 

@@ -52,11 +52,11 @@
       </div>
       <div class='w-max'>
         {#if $session.user }
-          <button on:click={handleSignOut} class='inline-block bg-indigo-500 py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75'>
+          <button on:click={handleSignOut} class='inline-block bg-gruvdemphblue dark:bg-gruvlemphblue py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium text-gruvlfg dark:text-gruvdfg hover:bg-opacity-75'>
             Sign out
           </button>
         {:else}
-          <a rel='external' href='/login' class='inline-block bg-indigo-500 py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75' >
+          <a rel='external' href='/login' class='inline-block bg-gruvdemphblue dark:bg-gruvlemphblue py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium text-gruvlfg dark:text-gruvdfg hover:bg-opacity-75' >
             Sign in
           </a>
         {/if}
