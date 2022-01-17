@@ -43,7 +43,7 @@
         <div class='text-gruvlfg dark:text-gruvdfg flex items-center'>
           <div class='mx-4 md:mx-8 lg:mx-12 space-x-2 xs:space-x-4 md:space-x-8'>
             {#each navigation as link}
-              <a href={link.href} class='text-lg font-medium hover:text-gruvlemphblue dark:hover:text-gruvdemphblue'>
+              <a href={link.href} class='text-lg font-bold hover:text-gruvlemphblue dark:hover:text-gruvdemphblue'>
                 {link.name}
               </a>
             {/each}
@@ -52,11 +52,11 @@
       </div>
       <div class='w-max'>
         {#if $session.user }
-          <button on:click={handleSignOut} class='inline-block bg-gruvdemphblue dark:bg-gruvlemphblue py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium text-gruvlfg dark:text-gruvdfg hover:bg-opacity-75'>
+          <button on:click={handleSignOut} class='inline-block bg-gruvlemphblue text-gruvdfg py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium hover:bg-opacity-75'>
             Sign out
           </button>
         {:else}
-          <a rel='external' href='/login' class='inline-block bg-gruvdemphblue dark:bg-gruvlemphblue py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium text-gruvlfg dark:text-gruvdfg hover:bg-opacity-75' >
+          <a rel='external' href='/login' class='inline-block bg-gruvlemphblue text-gruvdfg py-1 xs:py-2 px-2 border border-transparent rounded-md text-base font-medium  hover:bg-opacity-75' >
             Sign in
           </a>
         {/if}

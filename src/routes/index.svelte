@@ -10,7 +10,7 @@
     creationDate: new Date('2022-01-16T23:21:13+01:00'),
     authorName: 'Michael Rommel',
     authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4',
-    tags: ['locked', 'consume', 'music', 'country', 'female', 'songwriter']
+    tags: ['new', 'locked', 'consume', 'music', 'country', 'female', 'songwriter']
   };
 </script>
 
