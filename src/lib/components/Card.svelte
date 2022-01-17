@@ -1,10 +1,27 @@
 <script>
-  import { formatISO } from 'date-fns'
+  import { formatISO, formatRelative } from 'date-fns'
+  import { enGB } from 'date-fns/locale';
+
+  const formatRelativeLocale = {
+    lastWeek: "'last' eeee 'at' HH:mm",
+    yesterday: "'yesterday at' HH:mm",
+    today: "'today at' HH:mm",
+    tomorrow: "'tomorrow at' HH:mm",
+    nextWeek: "eeee 'at' HH:mm",
+    other: 'yyyy-MM-dd HH:mm',
+  }
+
+  const locale = {
+      ...enGB,
+      formatRelative: token => formatRelativeLocale[token],
+  };
+
   export let cardData
-  cardData.displayDate = formatISO(cardData.creationDate, { representation: 'date' });
+  // cardData.displayDate = formatISO(cardData.creationDate, { representation: 'date' });
+  cardData.displayDate = formatRelative(cardData.creationDate, new Date(), { locale });
 </script>
 
-<div class="max-w-sm lg:max-w-xl w-full flex flex-col lg:flex-row">
+<div class="m-1 max-w-sm lg:max-w-xl w-full flex flex-col lg:flex-row">
   <div class="min-h-max lg:h-auto lg:w-64 flex bg-gruvlbg dark:bg-gruvdbg lg:flex-col justify-center border-l border-t border-r lg:border-r-0 border-gruvlfg dark:border-gruvdfg lg:border-b rounded-t lg:rounded-t-none lg:rounded-l">
     <div class="mx-4 h-60 w-60 flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
          style="background-image: url({cardData.thumbnailUrl});" title={cardData.thumbnailTitle}>
