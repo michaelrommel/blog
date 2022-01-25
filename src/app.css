@@ -8,7 +8,7 @@
   }
 }
 
-@layer utilities {
+@layer components {
   .logodark .logostrokecolor {
     stop-color: theme('colors.gruvdfg');
     stop-opacity:1;
@@ -17,5 +17,9 @@
   .logo .logostrokecolor {
     stop-color: theme('colors.gruvlfg');
     stop-opacity:1;
+  }
+
+  .note {
+    @apply bg-gruvdbg0s;
   }
 }

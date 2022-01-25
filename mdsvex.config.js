@@ -14,7 +14,7 @@ import { h } from 'hastscript';
 function myRemarkPlugin () {
   return (tree) => {
     visit(tree, (node) => {
-      console.log(node);
+      // console.log(node);
       if (
         node.type === 'textDirective' ||
         node.type === 'leafDirective' ||

@@ -21,6 +21,7 @@
 </script>
 
 <script>
+  import '../../app.css';
   import PageHead from '$lib/components/PageHead.svelte';
 
   export let post;
@@ -29,3 +30,15 @@
 <PageHead title={post.title} description={post.description} />
 
 <slot />
+
+<style>
+  :global(h1) {
+    color: #ff0000;
+  }
+
+  :global(.comment) {
+    color: #006666;
+    background-color: theme('colors.gruvyellow');
+  }
+
+</style>

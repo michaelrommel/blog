@@ -10,11 +10,8 @@ tags: ["new", "locked", "consume", "code"]
 published: true
 ---
 
-# h1 Heading
+# A red headline
 
-:::note{.wide}
-Extension note
-Another paragraph line
-
-and the last one.
+:::note{.comment}
+I shall have a yellow background.
 :::
