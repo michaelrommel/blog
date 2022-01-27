@@ -41,14 +41,14 @@ New-NetRoute -DestinationPrefix "192.168.10.0/24" -InterfaceAlias "vEthernet (WS
 
 Linux:
 
-``` shell-session
+``` shell
 /sbin/ip addr add 192.168.140.18/30 dev eth0
 ```
 
 After that we can ping the Linux WSL2 IP from Windows (but not vice
 versa!) and see the added routes:
 
-``` shell-session
+```
 Ethernet adapter vEthernet (WSL):
 
    Connection-specific DNS Suffix  . :
@@ -143,7 +143,7 @@ net.ipv4.ip_forward=1
 
 Now the setup of wireguard in `/etc/wireguard`:
 
-``` shell-session
+``` shell
 wslpc# wg genkey | tee priv.key | wg pubkey >pub.key
 
 wslpc# cat wg0.conf
@@ -164,7 +164,7 @@ accordingly.
 
 Now the Interface can be brought up with:
 
-``` shell-session
+``` shell
 wg-quick up wg0
 ```
 
@@ -214,7 +214,7 @@ to be allowed, coming from the `wg0` interface to the devnet servers. Also
 the usual source NATting has to be enabled for the server, which is in
 most cases already configured:
 
-``` iptables
+```
 # destination server annotation
 -A POSTROUTING -p tcp -d 192.168.10.175  -j SNAT --to-source 192.168.10.212
 -A ufw-before-forward -i wg0   -p tcp -d 192.168.10.175 --dport 5000 -j ACCEPT
@@ -223,7 +223,7 @@ most cases already configured:
 Now that the firewall is configured, the wireguard configuration is
 created:
 
-``` shell-session
+``` shell
 erlh1cla# cat wg0.conf
 [Interface]
 Address = 192.168.140.1/24
@@ -241,7 +241,7 @@ We need to ensure non-overlapping networks, for Tobias this would then be:
 
 On this machine the service can be properly enabled via systemd:
 
-``` shell-session
+``` shell
 systemctl enable wg-quick@wg0
 systemctl start wg-quick@wg0
 ```

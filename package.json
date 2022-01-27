@@ -43,6 +43,7 @@
     "remark-gfm": "^3.0.1",
     "remark-github": "^11.2.2",
     "remark-parse": "^10.0.1",
+    "shiki": "^0.10.0",
     "unist-util-visit": "^4.1.0"
   }
 }

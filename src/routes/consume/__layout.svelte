@@ -60,12 +60,12 @@ p {
 .img-right {
   @apply max-w-2xl;
 }
-
+pre[class*="shiki"] > code,
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: VictorMono, Consolas, Monaco, "Andale Mono", monospace;
   font-style: normal;
-  font-size: 18px;
+  font-size: 16px;
   direction: ltr;
   text-align: left;
   white-space: pre;
@@ -157,7 +157,7 @@ pre[class*="language-"] {
   }
 
   .token.punctuation {
-    color: theme('colors.gruvgray');
+    color: theme('colors.gruvdfg3');
   }
 
   .token.interpolation-punctuation {
@@ -171,6 +171,7 @@ pre[class*="language-"] {
     color: theme('colors.gruvdemphyellow');
   }
 
+  .token.class-name,
   .token.boolean,
   .token.entity,
   .token.number,
@@ -178,12 +179,12 @@ pre[class*="language-"] {
     color: theme('colors.gruvdemphpurple');
   }
 
-  .token.property,
   .token.constant,
   .token.variable {
     color: theme('colors.gruvdemphred');
   }
 
+  .token.property,
   .token.regex,
   .token.string,
   .token.char {
