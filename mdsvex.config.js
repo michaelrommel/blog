@@ -8,6 +8,8 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
 
+const directiveNames = ['note', 'comment', 'img', 'div'];
+
 // This plugin is an example to turn `::note` into divs, passing arbitrary
 // attributes.
 /** @type {import('unified').Plugin<[], import('mdast').Root>} */
@@ -20,7 +22,7 @@ function myRemarkPlugin () {
         node.type === 'leafDirective' ||
         node.type === 'containerDirective'
       ) {
-        if (node.name !== 'note') return;
+        if (!directiveNames.includes(node.name)) return;
 
         const data = node.data || (node.data = {});
         const attributes = node.attributes || {};
