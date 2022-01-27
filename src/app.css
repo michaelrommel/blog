@@ -8,7 +8,7 @@
   }
 }
 
-@layer utilities {
+@layer components {
   .logodark .logostrokecolor {
     stop-color: theme('colors.gruvdfg');
     stop-opacity:1;
@@ -19,3 +19,30 @@
     stop-opacity:1;
   }
 }
+
+@font-face {
+  font-family: 'VictorMono';
+  src: url('/VictorMono-Regular.woff2') format('woff2');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'VictorMono';
+  src: url('/VictorMono-Bold.woff2') format('woff2');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'VictorMono';
+  src: url('/VictorMono-Italic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'VictorMono';
+  src: url('/VictorMono-BoldItalic.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
+}
+

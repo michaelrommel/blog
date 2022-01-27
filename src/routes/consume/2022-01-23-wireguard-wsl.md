@@ -12,7 +12,10 @@ published: true
 
 # Setup of Wireguard with WSL2
 
-![DevNet](2022-01-23-wireguard-wsl/infrastructure-devnet.svg "Infrastructure Development Network")
+:::img{.img-right}
+![DevNet](/2022-01-23-wireguard-wsl/infrastructure-devnet.svg "Infrastructure Development Network")
+:::
+
 
 ## WSL2 Setup
 
@@ -27,7 +30,7 @@ WSL network adapter on the Windows side and the Linux side:
 
 Windows (Powershell):
 
-```
+``` powershell
 New-NetIPAddress -InterfaceAlias "vEthernet (WSL)" -IPAddress 192.168.140.17
   -PrefixLength 28
 New-NetRoute -DestinationPrefix "192.168.140.0/24" -InterfaceAlias "vEthernet (WSL)"
@@ -38,7 +41,7 @@ New-NetRoute -DestinationPrefix "192.168.10.0/24" -InterfaceAlias "vEthernet (WS
 
 Linux:
 
-```
+``` shell
 /sbin/ip addr add 192.168.140.18/30 dev eth0
 ```
 
@@ -133,14 +136,14 @@ block). This eases the setup of the routing on the jumphost.
 
 Next we need to enable routing on the WSL2 by editing `/etc/sysctl.conf`:
 
-```
+``` bash
 # Uncomment the next line to enable packet forwarding for IPv4
 net.ipv4.ip_forward=1
 ```
 
 Now the setup of wireguard in `/etc/wireguard`:
 
-```
+``` shell
 wslpc# wg genkey | tee priv.key | wg pubkey >pub.key
 
 wslpc# cat wg0.conf
@@ -161,7 +164,7 @@ accordingly.
 
 Now the Interface can be brought up with:
 
-```
+``` shell
 wg-quick up wg0
 ```
 
@@ -170,7 +173,7 @@ to my startup folder (`WIN+R` then `shell:startup`). I did not check the
 `Run as administrator` advanced option, as it would not come up
 automatically during startup. So the script itself asks for elevation:
 
-```
+``` powershell
 if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]
   ::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
@@ -220,7 +223,7 @@ most cases already configured:
 Now that the firewall is configured, the wireguard configuration is
 created:
 
-```
+``` shell
 erlh1cla# cat wg0.conf
 [Interface]
 Address = 192.168.140.1/24
@@ -238,7 +241,7 @@ We need to ensure non-overlapping networks, for Tobias this would then be:
 
 On this machine the service can be properly enabled via systemd:
 
-```
+``` shell
 systemctl enable wg-quick@wg0
 systemctl start wg-quick@wg0
 ```
@@ -258,12 +261,12 @@ auto ens192
 And in `/etc/network/if-up.d/` a file called `wireguard` needs to be
 created with this content:
 
-```
+``` bash
 #!/bin/bash
 
 if [[ "${IFACE:0:3}" == "ens" ]]; then
   ip route add 192.168.140.16/28 via 192.168.10.212
-  fi
+fi
 ```
 
 and make it executable: `chmod 755 /etc/network/if-up.d/wireguard`.
