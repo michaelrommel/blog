@@ -53,8 +53,8 @@ async function myHighlighter (code, lang) {
   let html = highlighter.codeToHtml(code, { lang });
 
   const htmlEscapes = {
-    '{': '&123;',
-    '}': '&125;',
+    '{': '&#123;',
+    '}': '&#125;',
     '`': '&#96;'
   };
 
