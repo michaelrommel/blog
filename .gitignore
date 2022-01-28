@@ -5,6 +5,7 @@ node_modules
 /.vercel_build_output
 /package
 /tags
+/glyphs*
 .env
 .env.*
 !.env.example

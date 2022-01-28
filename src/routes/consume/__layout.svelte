@@ -60,18 +60,19 @@ p {
 .img-right {
   @apply max-w-2xl;
 }
+
 pre[class*="shiki"] > code,
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: VictorMono, Consolas, Monaco, "Andale Mono", monospace;
   font-style: normal;
-  font-size: 16px;
+  /* font-size: 16px; */
   direction: ltr;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
   word-break: normal;
-  line-height: 1.5;
+  line-height: 1.0;
 
   -moz-tab-size: 2;
   -o-tab-size: 2;
@@ -86,7 +87,7 @@ pre[class*="language-"] {
 
 /* gruvbox light */
 
-/* gruvbox dark */
+/* prismjs gruvbox dark */
 
 @media (prefers-color-scheme: dark) {
   code[class*="language-"],
@@ -204,7 +205,6 @@ pre[class*="language-"] {
   .token.function {
     color: theme('colors.gruvdemphblue');
   }
-
 
   .token.bold {
     font-weight: bold;

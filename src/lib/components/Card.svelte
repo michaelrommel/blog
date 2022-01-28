@@ -1,6 +1,6 @@
 <script>
-  import { formatRelative } from 'date-fns'
-  import { enGB } from 'date-fns/locale/index.js';
+  import formatRelative from 'date-fns/formatRelative/index.js';
+  import enGB from 'date-fns/locale/en-GB/index.js';
 
   const formatRelativeLocale = {
     lastWeek: "'last' eeee 'at' HH:mm",

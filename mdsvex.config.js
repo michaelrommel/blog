@@ -52,13 +52,15 @@ async function myHighlighter (code, lang) {
 
   let html = highlighter.codeToHtml(code, { lang });
 
+  // additional html escapes that svelte needs
   const htmlEscapes = {
     '{': '&#123;',
     '}': '&#125;',
-    '`': '&#96;'
+    '`': '&#96;',
+    '\\': '\\\\'
   };
 
-  html = html.replace(/[{}`]/g, chr => htmlEscapes[chr]);
+  html = html.replace(/[{}`\\]/g, chr => htmlEscapes[chr]);
 
   return `{@html \`${html}\` }`;
 }
