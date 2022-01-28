@@ -50,10 +50,17 @@ async function myHighlighter (code, lang) {
     theme
   });
 
-  const html = highlighter.codeToHtml(code, { lang });
+  let html = highlighter.codeToHtml(code, { lang });
+
+  const htmlEscapes = {
+    '{': '&123;',
+    '}': '&125;',
+    '`': '&#96;'
+  };
+
+  html = html.replace(/[{}`]/g, chr => htmlEscapes[chr]);
 
   return `{@html \`${html}\` }`;
-  // return `<pre><code>${twoslashResults}</code></pre>`;
 }
 
 const config = {
