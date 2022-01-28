@@ -1,6 +1,6 @@
 ---
-title: "Markdown Sample"
-description: "A sample markdown text with many attributes/tags etc."
+title: "Markdown Code Sample"
+description: "A sample markdown code sample"
 thumbnailUrl: "/favicon.ico"
 thumbnailTitle: "Icon representing markdown text documents"
 creationDate: "2022-01-25T03:21:13+01:00"
@@ -9,6 +9,10 @@ authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
 tags: ["new", "locked", "consume", "code"]
 published: true
 ---
+
+## Here is a code sample
+
+The following sample was highlighted using Shiki.
 
 ``` javascript
 'use strict';
