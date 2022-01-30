@@ -41,6 +41,16 @@
        type="xygrid"
        id="grid2888" />
   </sodipodi:namedview>
+  <style type="text-css">
+    <![CDATA[
+      @font-face {
+        font-family: "Victor Mono";
+        src: url("/VictorMono-Regular.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+    ]]>
+  </style>
   <defs
      id="defs2824">
     <marker
