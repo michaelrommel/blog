@@ -64,7 +64,7 @@ p {
 pre[class*="shiki"] > code,
 code[class*="language-"],
 pre[class*="language-"] {
-  font-family: VictorMono, Consolas, Monaco, "Andale Mono", monospace;
+  font-family: "Victor Mono", Consolas, Monaco, "Andale Mono", monospace;
   font-style: normal;
   /* font-size: 16px; */
   direction: ltr;
