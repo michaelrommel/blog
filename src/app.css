@@ -24,6 +24,7 @@
   font-family: 'VictorMono';
   src: url('/VictorMono-Regular.woff2') format('woff2');
   font-weight: normal;
+  /* unicode-range: U+20,U+21,U+24,U+26-30,U+32,U+39-3B,U+3D,U+3E,U+41,U+43-46,U+49,U+4B,U+4D-50,U+52,U+53,U+55,U+5A-5E,U+60-7B,U+7D; */
 }
 
 @font-face {

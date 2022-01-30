@@ -12,9 +12,24 @@ published: true
 
 # Setup of Wireguard with WSL2
 
+::::div{.grid-left-right}
+
 :::img{.img-right}
-![DevNet](/2022-01-23-wireguard-wsl/infrastructure-devnet.svg "Infrastructure Development Network")
+![DevNet](/2022-01-23-wireguard-wsl/network-overview.svg "Infrastructure Lab Network")
 :::
+
+:::div{.text-left}
+This is an example networking setup, where there is a home office user connected
+to a remote network via a VPN. Inside this network is an separated development
+network with a gateway host firewalling it off from the rest of the network.
+
+The challenge is to securely bridge those networks that it is possible to 
+connect from inside the WSL2 container on the user's computer to individual
+hosts inside the development network directly, i.e. by connecting to the
+`192.168.10.0/24` addresses.
+:::
+
+::::
 
 
 ## WSL2 Setup

@@ -10,12 +10,11 @@ import { h } from 'hastscript';
 import { getHighlighter } from 'shiki';
 import { theme } from './gruvbox-theme.mjs';
 
-const directiveNames = ['note', 'comment', 'img', 'div'];
-
 // This plugin is an example to turn `::note` into divs, passing arbitrary
 // attributes.
 /** @type {import('unified').Plugin<[], import('mdast').Root>} */
 function myRemarkPlugin () {
+  const directiveNames = ['note', 'comment', 'img', 'div'];
   return (tree) => {
     visit(tree, (node) => {
       // console.log(node);

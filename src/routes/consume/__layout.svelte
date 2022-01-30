@@ -54,7 +54,7 @@ h4 {
 }
 
 p {
-  @apply my-4 leading-snug;
+  @apply mb-4 leading-snug;
 }
 
 .img-right {
