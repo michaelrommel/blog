@@ -17,8 +17,8 @@
   };
 
   export let cardData
-  // cardData.displayDate = formatISO(cardData.creationDate, { representation: 'date' });
-  cardData.displayDate = formatRelative(cardData.creationDate, new Date(), { locale });
+  const creationDate = new Date(cardData.creationDate);
+  cardData.displayDate = formatRelative(creationDate, new Date(), { locale });
 </script>
 
 <div class="m-1 max-w-sm lg:max-w-xl w-full flex flex-col lg:flex-row">
@@ -52,9 +52,9 @@
     </div>
     <div class="flex items-center">
       <img class="w-15 h-15 rounded-full mr-4" src="{cardData.authorAvatarUrl}" alt="Avatar of {cardData.authorName}">
-      <div class="text-sm">
-        <p class="font-bold text-gruvgray dark:text-gruvgray leading-none">{cardData.authorName}</p>
-        <p class="text-gruvgray">{cardData.displayDate}</p>
+      <div class="mt-1 text-sm">
+        <p class="mb-0 font-bold text-gruvgray dark:text-gruvgray leading-none">{cardData.authorName}</p>
+        <p class="mb-0 text-gruvgray">{cardData.displayDate}</p>
       </div>
     </div>
   </div>

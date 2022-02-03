@@ -3,18 +3,20 @@
    * @type {import('@sveltejs/kit').Load}
    */
   export async function load({ url, fetch }) {
-    const post = await fetch(`${url.pathname}.json`).then(res => res.json());
+    console.log(`url: ${JSON.stringify(url, null, 2)}`);
+    const article = await fetch(`${url.pathname}.json`).then(res => res.json());
+    console.log(`article: ${JSON.stringify(article, null, 2)}`);
 
-    if (!post || !post.published) {
+    if (!article || !article.published) {
       return {
         status: 404,
-        error: new Error('Post could not be found')
+        error: new Error('Article could not be found')
       };
     }
 
     return {
       props: {
-        post
+        article
       }
     };
   }
@@ -24,10 +26,10 @@
   import '../../app.css';
   import PageHead from '$lib/components/PageHead.svelte';
 
-  export let post;
+  export let article;
 </script>
 
-<PageHead title={post.title} description={post.description} />
+<PageHead title={article.title} description={article.description} />
 
 <div class="grid grid-cols-12 gap-4 m-3">
   <div class="col-span-12">

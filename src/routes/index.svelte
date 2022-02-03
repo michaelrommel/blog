@@ -1,17 +1,19 @@
 <script context="module">
-  export async function load({ fetch }) {
-    const cardDataList = [
-      {
-        thumbnailUrl: '/ourvinyl-morgan-wade-1.jpg',
-        thumbnailTitle: 'Photo of Morgan Wade sitting on a bar stool holding a guitar',
-        title: 'Morgan Wade',
-        description: 'Last fall I discovered Morgan Wade. Here I share my favourite tracks and a link to a good, raw performance. There is also a link to a Spotify playlist I made.',
-        creationDate: new Date('2022-01-16T23:21:13+01:00'),
-        authorName: 'Michael Rommel',
-        authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4',
-        tags: ['new', 'locked', 'consume', 'music', 'country', 'female', 'songwriter']
+  export async function load({ url, fetch }) {
+    console.log(`index url: ${JSON.stringify(url.pathname, null, 2)}`);
+    let cardDataList = null;
+    if (url.pathname === '/') {
+      cardDataList = await fetch('index.json').then(res => res.json());
+      // console.log(`articles: ${JSON.stringify(cardDataList, null, 2)}`);
+
+      if (!cardDataList) {
+        return {
+          status: 404,
+          error: new Error('Article list could not be found')
+        };
       }
-    ];
+    };
+
     return {
       props: {
         cardDataList
@@ -27,8 +29,12 @@
   export let cardDataList;
 </script>
 
-<div class="flex justify-center">
+<div class="flex flex-col">
 {#each cardDataList as cardData}
-  <a href="/consume/2022-01-16-morgan-wade/"><Card cardData={cardData}/></a>
+  <div class="self-center">
+    <a href="/{cardData.articleCategory}/{cardData.slug}">
+      <Card cardData={cardData}/>
+    </a>
+  </div>
 {/each}
 </div>
