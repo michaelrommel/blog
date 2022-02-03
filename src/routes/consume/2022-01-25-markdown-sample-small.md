@@ -15,3 +15,10 @@ published: true
 :::note{.comment}
 I shall have a yellow background.
 :::
+
+$$
+l = \sqrt{d^2 + r_1 * r_2}
+$$
+
+![Turntable Design](/2022-02-02-turntable-calculations/turntable-construction.svg "Turntable Construction")
+![Turntable Trigonometry](/2022-02-02-turntable-calculations/turntable-trigonometry.svg "Turntable Trigonometry")

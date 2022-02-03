@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="640"
+   height="480"
+   viewBox="0 0 640 480"
+   version="1.1"
+   id="svg2827"
+   inkscape:version="1.2-dev (6bee14a5, 2022-01-29)"
+   sodipodi:docname="network-windows.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2829"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="true"
+     units="px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     showborder="true"
+     inkscape:showpageshadow="false"
+     inkscape:zoom="2.08125"
+     inkscape:cx="194.35435"
+     inkscape:cy="239.51952"
+     inkscape:current-layer="layer4"
+     inkscape:blackoutopacity="0.0"
+     showguides="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2888" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2824">
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mstart"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path3400" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Send"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Send"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.2,0,0,-0.2,-1.2,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path3391" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker3662"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path3660" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path3403" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path3379" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path3397" />
+    </marker>
+    <symbol
+       id="server">
+      <title
+         id="title1396">server</title>
+      <g
+         id="g746-2">
+        <path
+           d="m 47,69 h 6 v 8 h -6 z"
+           id="path732-1" />
+        <path
+           d="m 47,81 h 6 v 6 h -6 z"
+           id="path734-9" />
+        <path
+           d="m 57,81 h 29 v 6 H 57 Z"
+           id="path736-5" />
+        <path
+           d="m 14,81 h 29 v 6 H 14 Z"
+           id="path738-9" />
+        <path
+           d="M 78.42,53 H 21.58 C 19.603,53 18,54.603 18,56.58 v 8.84 C 18,67.397 19.603,69 21.58,69 H 78.42 C 80.397,69 82,67.397 82,65.42 V 56.58 C 82,54.603 80.397,53 78.42,53 Z M 28,63 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z m 10,0 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z m 10,0 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z"
+           id="path740-0" />
+        <path
+           d="M 78.42,33 H 21.58 C 19.603,33 18,34.603 18,36.58 v 8.84 C 18,47.397 19.603,49 21.58,49 H 78.42 C 80.397,49 82,47.397 82,45.42 V 36.58 C 82,34.603 80.397,33 78.42,33 Z M 28,43 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z m 10,0 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z m 10,0 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z"
+           id="path742-2" />
+        <path
+           d="M 78.42,13 H 21.58 C 19.603,13 18,14.603 18,16.58 v 8.84 C 18,27.397 19.603,29 21.58,29 H 78.42 C 80.397,29 82,27.397 82,25.42 V 16.58 C 82,14.603 80.397,13 78.42,13 Z M 28,23 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z m 10,0 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z m 10,0 c -1.105,0 -2,-0.895 -2,-2 0,-1.105 0.895,-2 2,-2 1.105,0 2,0.895 2,2 0,1.105 -0.895,2 -2,2 z"
+           id="path744-2" />
+      </g>
+    </symbol>
+    <symbol
+       id="consctructionpc">
+      <title
+         id="title1809">consctructionpc</title>
+      <g
+         id="g1452">
+        <path
+           d="m 34.532,34.506 h 2 v -1.219 c 9.229,2.8 13.582,9.454 13.245,20.207 H 47.532 V 61 h 7.507 V 53.494 H 52.774 C 53.06,43.694 49.752,36.76 42.902,32.776 l 14.678,2.7 c 0.23,1.452 1.482,2.522 2.952,2.524 0.022,0 0.042,-0.006 0.063,-0.006 L 60.532,51.5 c 0,0.276 0.224,0.5 0.5,0.5 0.157,0 0.306,-0.074 0.4,-0.2 l 4.61,-5.792 7.414,-0.141 c 0.276,0 0.5,-0.224 0.5,-0.5 0,-0.157 -0.074,-0.306 -0.2,-0.4 L 62.931,36.785 c 0.995,-1.318 0.733,-3.193 -0.585,-4.188 -1.319,-0.994 -3.193,-0.732 -4.188,0.586 -0.079,0.103 -0.15,0.212 -0.214,0.325 L 36.532,29.572 V 27 h -7.506 v 7.506 z M 53.039,59 h -3.507 v -3.506 h 3.507 z M 31.026,29 h 3.506 v 3.506 h -3.506 z"
+           id="path1448" />
+        <path
+           d="M 86,16 H 14 c -2.206,0.007 -3.993,1.794 -4,4 v 48 c 0.007,2.206 1.794,3.993 4,4 h 28 v 6 H 32 v 6 H 68 V 78 H 58 v -6 h 28 c 2.206,-0.007 3.993,-1.794 4,-4 V 20 C 89.993,17.794 88.206,16.007 86,16 Z M 84,66 H 16 V 22 h 68 z"
+           id="path1450" />
+      </g>
+    </symbol>
+    <symbol
+       id="symbol32102">
+      <title
+         id="title1791">pc</title>
+      <g
+         id="g1422-1">
+        <path
+           d="M 58,60 H 10 V 28 H 58 Z M 60,22 H 8 c -2.2,0 -4,1.8 -4,4 v 36 c 0,2.2 1.8,4 4,4 h 20 v 6 h -9 v 6 h 30 v -6 h -9 v -6 h 20 c 2.2,0 4,-1.8 4,-4 V 26 c 0,-2.2 -1.8,-4 -4,-4 z"
+           id="path1418-72" />
+        <path
+           d="M 92,32 H 72 v -6 h 20 z m 0,10 H 72 V 36 H 92 Z M 82,72 c -1.7,0 -3,-1.3 -3,-3 0,-1.7 1.3,-3 3,-3 1.7,0 3,1.3 3,3 0,1.7 -1.3,3 -3,3 z M 92,22 H 72 c -2.2,0 -4,1.8 -4,4 v 48 c 0,2.2 1.8,4 4,4 h 20 c 2.2,0 4,-1.8 4,-4 V 26 c 0,-2.2 -1.8,-4 -4,-4 z"
+           id="path1420-2" />
+      </g>
+    </symbol>
+  </defs>
+  <g
+     inkscape:label="Background Colour"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill:#1d2021;fill-opacity:1"
+       id="rect2991"
+       width="640"
+       height="480"
+       x="0"
+       y="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Drawing"
+     style="display:inline">
+    <rect
+       style="fill:none;stroke:#ebdbb2;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect13968"
+       width="195"
+       height="237"
+       x="30.145411"
+       y="176.5"
+       ry="9.999999"
+       rx="10" />
+    <rect
+       style="fill:none;stroke:#98971a;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect14154"
+       width="165"
+       height="75"
+       x="45.145409"
+       y="312.94681"
+       ry="10.000001"
+       rx="10" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:26.1333px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none"
+       x="68.896477"
+       y="446.45041"
+       id="text14158"><tspan
+         sodipodi:role="line"
+         id="tspan14156"
+         x="68.896477"
+         y="446.45041"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:26.1333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ebdbb2">Windows</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:26.1333px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#98971a;fill-opacity:1;stroke:none"
+       x="100.88045"
+       y="359.17407"
+       id="text20534"><tspan
+         sodipodi:role="line"
+         id="tspan20532"
+         x="100.88045"
+         y="359.17407"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:26.1333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#98971a">WSL</tspan></text>
+    <g
+       id="use32078"
+       style="fill:#ebdbb2;stroke-width:0.555813"
+       transform="matrix(1.6630435,0,0,1.9464286,-1405.6807,-269.6139)">
+      <g
+         clip-path="url(#clip165)"
+         id="g19752">
+        <path
+           d="m 930,203 h -48 v -32 h 48 z m 2,-38 h -52 c -2.2,0 -4,1.8 -4,4 v 36 c 0,2.2 1.8,4 4,4 h 20 v 6 h -9 v 6 h 30 v -6 h -9 v -6 h 20 c 2.2,0 4,-1.8 4,-4 v -36 c 0,-2.2 -1.8,-4 -4,-4 z"
+           id="path19748" />
+        <path
+           d="m 964,175 h -20 v -6 h 20 z m 0,10 h -20 v -6 h 20 z m -10,30 c -1.7,0 -3,-1.3 -3,-3 0,-1.7 1.3,-3 3,-3 1.7,0 3,1.3 3,3 0,1.7 -1.3,3 -3,3 z m 10,-50 h -20 c -2.2,0 -4,1.8 -4,4 v 48 c 0,2.2 1.8,4 4,4 h 20 c 2.2,0 4,-1.8 4,-4 v -48 c 0,-2.2 -1.8,-4 -4,-4 z"
+           id="path19750" />
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.3333px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none"
+       x="435"
+       y="75"
+       id="text7220"><tspan
+         sodipodi:role="line"
+         id="tspan7218"
+         x="435"
+         y="75"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#ebdbb2">Windows</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="101.66663"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#ebdbb2"
+         id="tspan9050">vEthernet (WSL)</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="128.33325"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#ebdbb2"
+         id="tspan9054">172.27.0.1/20 (random)</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="154.99988"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#98971a"
+         id="tspan9056">192.168.140.17/30 (statically assigned)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.3333px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#98971a;fill-opacity:1;stroke:none"
+       x="435"
+       y="225"
+       id="text11236"><tspan
+         sodipodi:role="line"
+         id="tspan11228"
+         x="435"
+         y="225"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#98971a">WSL</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="251.66663"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#98971a"
+         id="tspan11234">eth0</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="278.33325"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#98971a"
+         id="tspan13057">172.27.11.1/20 (random)</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="304.99988"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#98971a"
+         id="tspan19701">192.168.140.18/30 (statically assigned)</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="331.6665"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#d79921"
+         id="tspan20623">wg0</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="358.33313"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#d79921"
+         id="tspan20625">192.168.140.21/30 (statically assigned)</tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="384.99976"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#98971a"
+         id="tspan39468">static route to <tspan
+   style="fill:#83a598"
+   id="tspan42861">192.168.10.0/24</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="435"
+         y="411.66638"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#98971a"
+         id="tspan39470">pointing to interface wg0</tspan></text>
+  </g>
+</svg>

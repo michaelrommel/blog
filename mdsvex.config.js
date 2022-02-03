@@ -4,6 +4,8 @@ import remarkParse from 'remark-parse';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeMathjax from 'rehype-mathjax';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
@@ -79,11 +81,13 @@ const config = {
     myRemarkPlugin,
     remarkEmoji,
     remarkGithub,
-    remarkGfm
+    remarkGfm,
+    remarkMath
   ],
   rehypePlugins: [
     [rehypeAutolinkHeadings, { behaviour: 'wrap' }],
-    myRehypePlugin
+    myRehypePlugin,
+    rehypeMathjax
   ]
 };
 
