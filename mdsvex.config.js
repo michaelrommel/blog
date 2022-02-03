@@ -4,18 +4,19 @@ import remarkParse from 'remark-parse';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeMathjax from 'rehype-mathjax';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
 import { getHighlighter } from 'shiki';
 import { theme } from './gruvbox-theme.mjs';
 
-const directiveNames = ['note', 'comment', 'img', 'div'];
-
 // This plugin is an example to turn `::note` into divs, passing arbitrary
 // attributes.
 /** @type {import('unified').Plugin<[], import('mdast').Root>} */
 function myRemarkPlugin () {
+  const directiveNames = ['note', 'comment', 'img', 'div'];
   return (tree) => {
     visit(tree, (node) => {
       // console.log(node);
@@ -80,11 +81,13 @@ const config = {
     myRemarkPlugin,
     remarkEmoji,
     remarkGithub,
-    remarkGfm
+    remarkGfm,
+    remarkMath
   ],
   rehypePlugins: [
     [rehypeAutolinkHeadings, { behaviour: 'wrap' }],
-    myRehypePlugin
+    myRehypePlugin,
+    rehypeMathjax
   ]
 };
 

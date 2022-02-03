@@ -1,9 +1,9 @@
 ---
 title: "Markdown Code Sample"
-description: "A sample markdown code sample"
-thumbnailUrl: "/favicon.ico"
+description: "I have added code highlighting to this blog. Here is an example of Javascript code highlighted in the gruvbox colour scheme."
+thumbnailUrl: "/2022-01-27-code-sample/thumbnail.png"
 thumbnailTitle: "Icon representing markdown text documents"
-creationDate: "2022-01-25T03:21:13+01:00"
+creationDate: "2022-01-27T13:10:45+01:00"
 authorName: "Michael Rommel"
 authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
 tags: ["new", "locked", "consume", "code"]
