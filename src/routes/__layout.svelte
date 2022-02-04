@@ -1,50 +1,11 @@
-<script context="module">
-  /**
-   * @type {import('@sveltejs/kit').Load}
-   */
-  export async function load({ url, fetch }) {
-    console.log(`top layout url: ${JSON.stringify(url.pathname, null, 2)}`);
-    let article = null;
-    if (url.pathname.match(/.*\.(md|svx|svelte\.md)/i)) {
-      const short = url.pathname.replace(
-        /.*?([^\/]+)\.(md|svx|svelte\.md)$/g,
-        '$1'
-      );
-      console.log(`short: ${short}`);
-      article = await fetch(`/${short}.json`).then((res) => {
-        console.log(`res: ${JSON.stringify(res, null, 2)}`);
-        return res.json();
-      });
-      console.log(`article: ${JSON.stringify(article, null, 2)}`);
-
-      if (!article || !article.published) {
-        return {
-          status: 404,
-          error: new Error('Article could not be found')
-        };
-      }
-    }
-
-    return {
-      props: {
-        article
-      }
-    };
-  }
-</script>
-
 <script>
   import '../app.css';
   import Navigation from '$lib/components/Navigation.svelte';
   import PageHead from '$lib/components/PageHead.svelte';
-
-  export let article;
 </script>
 
 <Navigation />
 <div>
-  <!-- <PageHead title={article.title} description={article.description} /> -->
-
   <div class="grid grid-cols-12 gap-4 m-3">
     <div class="col-span-12">
       <slot />
@@ -53,27 +14,27 @@
 </div>
 
 <style lang="postcss" global>
-  h1 {
+  .mdsvx h1 {
     @apply text-2xl font-bold my-6;
   }
 
-  h2 {
+  .mdsvx h2 {
     @apply text-xl font-bold my-6;
   }
 
-  h3 {
+  .mdsvx h3 {
     @apply text-lg font-bold my-4;
   }
 
-  h4 {
+  .mdsvx h4 {
     @apply font-bold my-4;
   }
 
-  p {
+  .mdsvx p {
     @apply mb-4 leading-snug;
   }
 
-  .img-right {
+  .mdsvx .img-right {
     @apply max-w-2xl;
   }
 

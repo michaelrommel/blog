@@ -1,11 +1,14 @@
-import { slugFromPath, categoryFromPath } from '$lib/util';
+import { slugFromPath } from '$lib/util';
 
-/** @type {import('@sveltejs/kit').RequestHandler} */
+/**
+ * @type {import('@sveltejs/kit').RequestHandler}
+ */
 export async function get({ url, params }) {
-  for (const [key, value] of url.searchParams) {
-    console.log(`root index searchParams: ${key} = ${value}`);
-  }
   const modules = import.meta.glob('./**/*.{md,svx,svelte.md}');
+
+  for (const [key, value] of url.searchParams) {
+    console.log(`root json index searchParams: ${key} = ${value}`);
+  }
 
   const articlePromises = [];
   const limit = Number(url.searchParams.get('limit') ?? Infinity);
@@ -18,7 +21,7 @@ export async function get({ url, params }) {
   }
 
   for (const [path, resolver] of Object.entries(modules)) {
-    // console.log(`path: ${path}, resolver: ${resolver}`);
+    console.log(`root json index path: ${path}, resolver: ${resolver}`);
     const [articleCategory, articleName] =
       path.match(/\.\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
     const slug = slugFromPath(path);

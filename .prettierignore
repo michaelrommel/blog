@@ -1,5 +1,7 @@
-build
-coverage
-static
+.svelte-kit/**
+static/**
+build/**
+node_modules/**
+coverage/**
 tags
 *.svg
