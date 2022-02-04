@@ -1,6 +1,6 @@
 ---
 title: "Turntable Trigonometry"
-description: "Having fun dissecting how a turntable's math works."
+description: "Having fun disecting how a turntable's math works."
 thumbnailUrl: "/2022-02-02-turntable-trigonometry/thumbnail.svg"
 thumbnailTitle: "thumbnail of an turntable pickup with geometric lines"
 creationDate: "2022-02-02T21:17:45+01:00"
@@ -14,7 +14,6 @@ published: true
 
 ![Turntable Design](/2022-02-02-turntable-trigonometry/turntable-construction.svg "Turntable Construction")
 ![Turntable Trigonometry](/2022-02-02-turntable-trigonometry/turntable-trigonometry.svg "Turntable Trigonometry")
-
 
 
 :::note{.comment}
