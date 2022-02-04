@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import got from 'got';
 const tokenURL = 'https://github.com/login/oauth/access_token';
 const userURL = 'https://api.github.com/user';
 
@@ -18,7 +18,7 @@ export async function get(request) {
 }
 
 async function getUser(token) {
-  return fetch(userURL, {
+  return got(userURL, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -28,7 +28,7 @@ async function getUser(token) {
 }
 
 async function getToken(code) {
-  return fetch(tokenURL, {
+  return got(tokenURL, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
