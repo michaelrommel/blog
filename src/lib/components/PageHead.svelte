@@ -1,10 +1,10 @@
 <script>
-    export let title;
-    export let description;
+  export let title;
+  export let description;
 
-    const siteTitle = 'Michael Rommel';
-    const formattedTitle = title ? `${title} | ${siteTitle}` : siteTitle;
-  </script>
+  const siteTitle = 'Michael Rommel';
+  const formattedTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+</script>
 
 <svelte:head>
   <title>{formattedTitle}</title>

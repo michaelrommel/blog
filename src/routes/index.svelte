@@ -1,18 +1,17 @@
 <script context="module">
-  export async function load({ url, fetch }) {
-    console.log(`index url: ${JSON.stringify(url.pathname, null, 2)}`);
+  export async function load({ url, params, fetch }) {
+    console.log(`index pathname: ${JSON.stringify(url.pathname, null, 2)}`);
+    console.log(`category params: ${JSON.stringify(params, null, 2)}`);
     let cardDataList = null;
-    if (url.pathname === '/') {
-      cardDataList = await fetch('index.json').then(res => res.json());
-      // console.log(`articles: ${JSON.stringify(cardDataList, null, 2)}`);
+    cardDataList = await fetch('index.json').then((res) => res.json());
+    console.log(`articles: ${JSON.stringify(cardDataList, null, 2)}`);
 
-      if (!cardDataList) {
-        return {
-          status: 404,
-          error: new Error('Article list could not be found')
-        };
-      }
-    };
+    if (!cardDataList) {
+      return {
+        status: 404,
+        error: new Error('Article list could not be found')
+      };
+    }
 
     return {
       props: {
@@ -30,11 +29,11 @@
 </script>
 
 <div class="flex flex-col">
-{#each cardDataList as cardData}
-  <div class="self-center">
-    <a href="/{cardData.articleCategory}/{cardData.slug}">
-      <Card cardData={cardData}/>
-    </a>
-  </div>
-{/each}
+  {#each cardDataList as cardData}
+    <div class="self-center">
+      <a href="/{cardData.articleCategory}/{cardData.slug}">
+        <Card {cardData} />
+      </a>
+    </div>
+  {/each}
 </div>

@@ -2,5 +2,4 @@ build
 coverage
 static
 tags
-*.svelte
 *.svg
