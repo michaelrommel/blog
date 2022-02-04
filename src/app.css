@@ -11,12 +11,12 @@
 @layer components {
   .logodark .logostrokecolor {
     stop-color: theme('colors.gruvdfg');
-    stop-opacity:1;
+    stop-opacity: 1;
   }
 
   .logo .logostrokecolor {
     stop-color: theme('colors.gruvlfg');
-    stop-opacity:1;
+    stop-opacity: 1;
   }
 }
 
@@ -46,4 +46,3 @@
   font-weight: bold;
   font-style: italic;
 }
-

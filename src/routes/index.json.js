@@ -1,7 +1,7 @@
 import { slugFromPath, categoryFromPath } from '$lib/util';
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
-export async function get ({ url, params }) {
+export async function get({ url, params }) {
   for (const [key, value] of url.searchParams) {
     console.log(`root index searchParams: ${key} = ${value}`);
   }
@@ -19,7 +19,8 @@ export async function get ({ url, params }) {
 
   for (const [path, resolver] of Object.entries(modules)) {
     // console.log(`path: ${path}, resolver: ${resolver}`);
-    const [articleCategory, articleName] = path.match(/\.\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
+    const [articleCategory, articleName] =
+      path.match(/\.\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
     const slug = slugFromPath(path);
     if (!category || articleCategory === category) {
       const promise = resolver().then((article) => {
@@ -37,12 +38,12 @@ export async function get ({ url, params }) {
 
   const articles = await Promise.all(articlePromises);
   // console.log(articles);
-  const publishedArticles = articles.filter(
-    (article) => article.published
-  ).slice(0, limit);
+  const publishedArticles = articles
+    .filter((article) => article.published)
+    .slice(0, limit);
 
-  publishedArticles.sort(
-    (a, b) => (new Date(a.creationDate) > new Date(b.creationDate) ? -1 : 1)
+  publishedArticles.sort((a, b) =>
+    new Date(a.creationDate) > new Date(b.creationDate) ? -1 : 1
   );
 
   return {

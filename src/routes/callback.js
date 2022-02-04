@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 const tokenURL = 'https://github.com/login/oauth/access_token';
 const userURL = 'https://api.github.com/user';
 
-export async function get (request) {
+export async function get(request) {
   const code = request.url.searchParams.get('code');
   const token = await getToken(code);
   const user = await getUser(token);
@@ -17,17 +17,17 @@ export async function get (request) {
   };
 }
 
-async function getUser (token) {
+async function getUser(token) {
   return fetch(userURL, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`
     }
-  }).then(reply => reply.json());
+  }).then((reply) => reply.json());
 }
 
-async function getToken (code) {
+async function getToken(code) {
   return fetch(tokenURL, {
     method: 'POST',
     headers: {
@@ -39,6 +39,7 @@ async function getToken (code) {
       client_secret: import.meta.env.VITE_CLIENT_SECRET,
       code
     })
-  }).then(reply => reply.json())
-    .then(reply => reply.access_token);
+  })
+    .then((reply) => reply.json())
+    .then((reply) => reply.access_token);
 }
