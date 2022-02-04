@@ -3,7 +3,7 @@ import { slugFromPath } from '$lib/util';
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function get ({ params }) {
+export async function get({ params }) {
   const modules = import.meta.glob('./**/*.{md,svx,svelte.md}');
   console.log(`slug modules: ${JSON.stringify(modules, null, 2)}`);
   console.log(`slug param: ${JSON.stringify(params, null, 2)}`);

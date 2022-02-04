@@ -1,12 +1,12 @@
 ---
-title: "Markdown Code Sample"
-description: "I have added code highlighting to this blog. Here is an example of Javascript code highlighted in the gruvbox colour scheme."
-thumbnailUrl: "/2022-01-27-code-sample/thumbnail.png"
-thumbnailTitle: "Icon representing markdown text documents"
-creationDate: "2022-01-27T13:10:45+01:00"
-authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
-tags: ["new", "locked", "consume", "code"]
+title: 'Markdown Code Sample'
+description: 'I have added code highlighting to this blog. Here is an example of Javascript code highlighted in the gruvbox colour scheme.'
+thumbnailUrl: '/2022-01-27-code-sample/thumbnail.png'
+thumbnailTitle: 'Icon representing markdown text documents'
+creationDate: '2022-01-27T13:10:45+01:00'
+authorName: 'Michael Rommel'
+authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
+tags: ['new', 'locked', 'consume', 'code']
 published: true
 ---
 
@@ -14,7 +14,7 @@ published: true
 
 The following sample was highlighted using Shiki.
 
-``` javascript
+```javascript
 'use strict';
 
 import forge from 'node-forge';
@@ -119,4 +119,3 @@ const getCn = (certOrCsr) => {
 function uniqueFilter (value, index, self) {
   return self.indexOf(value) === index && value !== null;
 ```
-

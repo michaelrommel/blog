@@ -1,4 +1,4 @@
-export async function get (request) {
+export async function get(request) {
   request.locals.user = null;
 
   return {

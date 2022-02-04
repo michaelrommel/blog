@@ -1,6 +1,6 @@
 import cookie from 'cookie';
 
-export async function handle ({ request, resolve }) {
+export async function handle({ request, resolve }) {
   const cookies = Object.assign(
     {
       user: null
@@ -12,13 +12,14 @@ export async function handle ({ request, resolve }) {
 
   const response = await resolve(request);
 
-  response.headers['set-cookie'] =
-    `user=${request.locals.user || ''}; path=/; HttpOnly`;
+  response.headers['set-cookie'] = `user=${
+    request.locals.user || ''
+  }; path=/; HttpOnly`;
 
   return response;
 }
 
-export async function getSession (request) {
+export async function getSession(request) {
   return {
     user: request.locals.user
   };
