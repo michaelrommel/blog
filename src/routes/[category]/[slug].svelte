@@ -1,4 +1,5 @@
 <script context="module">
+  import { slugFromPath } from '$lib/util';
   /**
    * @type {import('@sveltejs/kit').Load}
    */
@@ -7,29 +8,36 @@
       `slug svelte pathname: ${JSON.stringify(url.pathname, null, 2)}`
     );
     console.log(`slug svelte params: ${JSON.stringify(params, null, 2)}`);
-    let article = null;
-    // if (url.pathname.match(/.*\.(md|svx|svelte\.md)/i)) {
-    const short = url.pathname;
-    // const short = url.pathname.replace(
-    //   /.*?([^\/]+)\.(md|svx|svelte\.md)$/g,
-    //   '$1'
-    // );
-    console.log(`slug svelge short: ${short}`);
-    article = await fetch(`${short}.json`).then((res) => {
-      console.log(`slug svelte res: ${JSON.stringify(res, null, 2)}`);
-      return res.json();
-    });
-    console.log(`slug svelte article: ${JSON.stringify(article, null, 2)}`);
-    if (!article || !article.published) {
+
+    const modules = import.meta.glob('../articles/**/*.{md,svx,svelte.md}');
+
+    let match;
+    for (const path in modules) {
+      if (slugFromPath(path) === params.slug) {
+        match = modules[path];
+        break;
+      }
+    }
+
+    if (!match) {
       return {
         status: 404,
         error: new Error('Article could not be found')
       };
     }
-    // }
+
+    const article = await match();
+
+    if (!article.metadata.published) {
+      return {
+        status: 404,
+        error: new Error('Article could not be found')
+      };
+    }
+
     return {
       props: {
-        article
+        article: article.default
       }
     };
   }
@@ -41,5 +49,5 @@
 </script>
 
 <div class="mdsvx">
-  {article}
+  <svelte:component this={article} />
 </div>

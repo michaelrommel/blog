@@ -4,7 +4,7 @@ import { slugFromPath } from '$lib/util';
  * @type {import('@sveltejs/kit').RequestHandler}
  */
 export async function get({ url, params }) {
-  const modules = import.meta.glob('./**/*.{md,svx,svelte.md}');
+  const modules = import.meta.glob('./articles/**/*.{md,svx,svelte.md}');
 
   for (const [key, value] of url.searchParams) {
     console.log(`root json index searchParams: ${key} = ${value}`);
@@ -23,7 +23,7 @@ export async function get({ url, params }) {
   for (const [path, resolver] of Object.entries(modules)) {
     console.log(`root json index path: ${path}, resolver: ${resolver}`);
     const [articleCategory, articleName] =
-      path.match(/\.\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
+      path.match(/\.\/articles\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
     const slug = slugFromPath(path);
     if (!category || articleCategory === category) {
       const promise = resolver().then((article) => {
