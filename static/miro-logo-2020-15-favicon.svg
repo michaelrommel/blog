@@ -7,7 +7,7 @@
    viewBox="0 0 204 204"
    version="1.1"
    id="logo"
-   inkscape:version="1.2-dev (6bee14a5, 2022-01-29)"
+   inkscape:version="1.2.2 (b0a84865, 2022-12-01)"
    sodipodi:docname="miro-logo-2020-15-favicon.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -25,21 +25,23 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.6894514"
-     inkscape:cx="127.79678"
-     inkscape:cy="109.90794"
+     inkscape:cx="69.793574"
+     inkscape:cy="112.34733"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="script"
      showgrid="false"
      units="px"
-     inkscape:window-width="3840"
-     inkscape:window-height="1500"
-     inkscape:window-x="0"
-     inkscape:window-y="1"
-     inkscape:window-maximized="1"
+     inkscape:window-width="2242"
+     inkscape:window-height="1205"
+     inkscape:window-x="693"
+     inkscape:window-y="106"
+     inkscape:window-maximized="0"
      inkscape:snap-global="true"
      showguides="false"
      inkscape:pagecheckerboard="0"
-     inkscape:blackoutopacity="0.0" />
+     inkscape:blackoutopacity="0.0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#aaaaaa" />
   <defs
      id="defs1143">
     <linearGradient
@@ -102,7 +104,7 @@
       <path
          sodipodi:nodetypes="ccccccccccsssscc"
          inkscape:connector-curvature="0"
-         d="m 443.02424,245.87038 37.9353,-17.26373 -26.92379,48.88562 54.90141,-48.88562 -24.94993,48.88562 54.38199,-48.88562 -25.36547,48.88562 63.39829,-48.88562 -33.83262,48.88562 c 0,0 13.10925,-8.21098 24.96484,-12.00914 12.23811,-3.92074 20.35642,-6.5092 26.03015,-4.06832 4.39181,1.88939 6.85988,7.20717 3.58673,11.66853 -3.19508,4.35495 -10.80913,5.47787 -14.73377,2.82089 -4.43865,-3.00497 -6.06974,-7.77526 0.39665,-17.69439 8.68621,-13.32422 24.37115,-24.9809 41.10648,-29.60319 -8.19267,12.82244 -4.28535,20.07605 3.96373,18.69073"
+         d="m 443.02424,245.87038 37.9353,-17.26373 -24.92379,48.88562 50.90141,-48.88562 -22.94993,48.88562 50.38199,-48.88562 -23.36547,48.88562 69.39829,-48.88562 -31.83262,48.88562 c 0,0 7.10925,-8.21098 18.96484,-12.00914 12.23811,-3.92074 20.35642,-6.5092 26.03015,-4.06832 4.39181,1.88939 6.85988,7.20717 3.58673,11.66853 -3.19508,4.35495 -10.80913,5.47787 -14.73377,2.82089 -4.43865,-3.00497 -6.06974,-7.77526 0.39665,-17.69439 8.68621,-13.32422 24.37115,-24.9809 41.10648,-29.60319 -8.19267,12.82244 -4.28535,20.07605 3.96373,18.69073"
          style="fill:none;stroke:#ebdbb2;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="miro" />
     </g>
