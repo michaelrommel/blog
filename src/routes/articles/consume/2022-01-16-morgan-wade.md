@@ -1,7 +1,7 @@
 ---
 title: 'Morgan Wade'
 description: 'Last fall I discovered Morgan Wade. Here I share my favourite tracks and a link to a good, raw performance. There is also a link to a Spotify playlist I made.'
-thumbnailUrl: '/ourvinyl-morgan-wade-1.jpg'
+thumbnailUrl: '/2022-01-16-morgan-wade/thumbnail.jpg'
 thumbnailTitle: 'Photo of Morgan Wade sitting on a bar stool holding a guitar'
 creationDate: '2022-01-16T23:21:13+01:00'
 authorName: 'Michael Rommel'
