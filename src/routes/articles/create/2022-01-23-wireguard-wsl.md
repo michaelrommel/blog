@@ -237,8 +237,8 @@ most cases already configured:
 Now that the firewall is configured, the wireguard configuration is
 created:
 
-```shell
-erlh1cla# cat wg0.conf
+wg0.conf:
+```toml
 [Interface]
 Address = 192.168.140.1/24
 ListenPort = 39333
@@ -255,9 +255,9 @@ We need to ensure non-overlapping networks, for Tobias this would then be:
 
 On this machine the service can be properly enabled via systemd:
 
-```shell
-systemctl enable wg-quick@wg0
-systemctl start wg-quick@wg0
+```shellsession
+root@erlh1cla# systemctl enable wg-quick@wg0
+root@erlh1cla# systemctl start wg-quick@wg0
 ```
 
 ### Target Development machines
