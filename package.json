@@ -32,6 +32,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"fast-glob": "^3.3.2",
 		"hastscript": "^9.0.0",
 		"rehype-attr": "^3.0.3",
 		"rehype-autolink-headings": "^7.1.0",
