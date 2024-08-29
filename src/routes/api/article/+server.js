@@ -8,9 +8,7 @@ import mdsvexConfig from '../../../../mdsvex.config.js';
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url, params }) {
 	// console.log(`root article params: ${JSON.stringify(params, null, 2)}`);
-	const articlenames = await fg.glob([
-		'./src/routes/articles/**/*.{md,svx,svelte.md}'
-	]);
+	const articlenames = await fg.glob(['./articles/**/*.{md,svx,svelte.md}']);
 
 	// for (const [key, value] of url.searchParams) {
 	// 	console.log(`root article searchParams: ${key} = ${value}`);
@@ -23,8 +21,7 @@ export async function GET({ url, params }) {
 	for (const path of articlenames) {
 		// console.log(`root article path: ${path}`);
 		const [articleCategory, articleName] =
-			path.match(/\.\/src\/routes\/articles\/(.*)\/(.*)$/i)?.slice(1, 3) ??
-			null;
+			path.match(/\.\/articles\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
 		const articleSlug = slugFromPath(path);
 		if (!category || articleCategory === category) {
 			if (articleSlug === slug) {
