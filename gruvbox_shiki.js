@@ -1,9 +1,7 @@
-import tw from './tailwind.config.cjs';
-const c = tw.theme.extend.colors;
+import c from './gruvbox_colors.js';
 
 export const theme = {
-	name: 'Gruvbox ish Dark Hard',
-	type: 'dark',
+	name: 'gruvbox',
 	colors: {
 		// {{{
 		'activityBar.background': '#1d2021',
@@ -25,7 +23,7 @@ export const theme = {
 		'dropdown.background': '#1d2021',
 		'dropdown.border': '#282828',
 		'dropdown.foreground': '#dfbf8e',
-		'editor.background': '#1d2021',
+		'editor.background': c.gruvdbg0,
 		'editor.findMatchBackground': '#83a59870',
 		'editor.findMatchHighlightBackground': '#e78a4e30',
 		'editor.findRangeHighlightBackground': '#83a59870',

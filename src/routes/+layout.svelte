@@ -61,10 +61,6 @@
 		hyphens: none;
 	}
 
-	/* gruvbox light */
-
-	/* prismjs gruvbox dark */
-
 	@media (prefers-color-scheme: dark) {
 		code[class*="language-"],
 		pre[class*="language-"] {

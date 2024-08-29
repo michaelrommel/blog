@@ -4,5 +4,5 @@
 </script>
 
 <div class="mdsvx">
-	<svelte:component this={data.article} />
+	{@html data.code}
 </div>
