@@ -1,4 +1,3 @@
-import { slugFromPath } from '$lib/util';
 /** @type {import('./$types').PageLoad} */
 export async function load({ url, params, fetch }) {
 	// console.log(`slug svelte pathname: ${JSON.stringify(url.pathname, null, 2)}`);
@@ -24,7 +23,9 @@ export async function load({ url, params, fetch }) {
 		};
 	}
 
+	//const parsedArticle = await compile(articles[0].md, mdsvexConfig);
+
 	return {
-		code: articles[0].code
+		html: articles[0].html
 	};
 }

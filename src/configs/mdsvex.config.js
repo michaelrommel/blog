@@ -10,7 +10,10 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
 import { getSingletonHighlighter } from 'shiki';
-import rehypeShiki from '@shikijs/rehype';
+import {
+	transformerNotationDiff,
+	transformerNotationHighlight
+} from '@shikijs/transformers';
 import { theme } from './gruvbox_shiki.js';
 import { escapeSvelte } from 'mdsvex';
 
@@ -61,7 +64,8 @@ async function myHighlighter(code, lang = 'text') {
 			themes: {
 				dark: theme,
 				light: theme
-			}
+			},
+			transformers: [transformerNotationDiff(), transformerNotationHighlight()]
 		})
 	);
 

@@ -13,6 +13,7 @@
 	"devDependencies": {
 		"@poppanator/sveltekit-svg": "^4.2.1",
 		"@shikijs/rehype": "^1.14.1",
+		"@shikijs/transformers": "^1.14.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.2.2",
 		"@sveltejs/kit": "^2.0.0",
@@ -48,10 +49,12 @@
 		"remark-math": "^5.0.0",
 		"remark-parse": "^10.0.1",
 		"remark-rehype": "^11.1.0",
+		"remark-stringify": "^11.0.0",
 		"shiki": "^1.14.1",
 		"svelte-preprocess": "^6.0.2",
 		"to-vfile": "^8.0.0",
 		"unified": "^11.0.5",
-		"unist-util-visit": "^5.0.0"
+		"unist-util-visit": "^5.0.0",
+		"vfile-matter": "^5.0.0"
 	}
 }

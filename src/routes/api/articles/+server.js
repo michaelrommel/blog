@@ -3,7 +3,7 @@ import { json } from '@sveltejs/kit';
 import fg from 'fast-glob';
 import fs from 'node:fs/promises';
 import { compile } from 'mdsvex';
-import mdsvexConfig from '../../../../mdsvex.config.js';
+import mdsvexConfig from '../../../configs/mdsvex.config.js';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url, params }) {
