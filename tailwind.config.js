@@ -1,9 +1,15 @@
 const c = require('./src/configs/gruvbox_colors.js');
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	darkMode: 'media',
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
+		fontFamily: {
+			sans: ['"Noto Sans"', ...defaultTheme.fontFamily.sans],
+			mono: ['"Noto Sans Mono"', ...defaultTheme.fontFamily.mono]
+		},
 		extend: {
 			screens: {
 				xs: '375px'
@@ -12,7 +18,7 @@ export default {
 			typography: {
 				gruvbox: {
 					css: {
-						maxWidth: '90ch',
+						maxWidth: '80ch',
 						'--tw-prose-body': c.gruvfg,
 						'--tw-prose-headings': c.gruvfg,
 						'--tw-prose-lead': c.gruvfg,

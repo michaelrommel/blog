@@ -21,12 +21,12 @@
 	cardData.displayDate = formatRelative(creationDate, new Date(), { locale });
 </script>
 
-<div class="m-1 max-w-sm lg:max-w-xl w-full flex flex-col lg:flex-row">
+<div class="m-1 flex flex-col lg:flex-row max-w-[40ch] lg:max-w-prose">
 	<div
 		class="min-h-max lg:h-auto lg:w-64 flex bg-gruvlbg dark:bg-gruvdbg lg:flex-col justify-center border-l border-t border-r lg:border-r-0 border-gruvlfg dark:border-gruvdfg lg:border-b rounded-t lg:rounded-t-none lg:rounded-l"
 	>
 		<div
-			class="mx-4 h-60 w-60 flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
+			class="mx-4 w-40 h-40 xs:w-52 xs:h-52 flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
 			style="background-image: url({cardData.thumbnailUrl});"
 			title={cardData.thumbnailTitle}
 		/>
@@ -36,26 +36,28 @@
 	>
 		<div class="mb-3">
 			<div
-				class="text-gruvlemphblue dark:text-gruvblue font-bold text-xl mb-2"
+				class="text-gruvlemphblue dark:text-gruvblue font-bold text-sm xs:text-base md:text-xl mb-2"
 			>
 				{cardData.title}
 			</div>
-			<p class="text-gruvlfg dark:text-gruvdfg text-base mb-2">
+			<p
+				class="text-gruvlfg dark:text-gruvdfg text-xs xs:text-sm md:text-base mb-2"
+			>
 				{cardData.description}
 			</p>
 			<div
-				class="text-sm text-gruvlpurple dark:text-gruvpurple flex flex-wrap items-center"
+				class="text-xs text-gruvlpurple dark:text-gruvpurple flex flex-wrap items-center"
 			>
 				{#each cardData.tags as tag}
 					{#if tag === "new"}
 						<span
-							class="inline-flex mb-2 mr-2 items-center bg-gruvlemphgreen dark:bg-gruvdemphgreen rounded-full px-3 py-0 text-sm font-semibold text-gruvdfg dark:text-gruvlfg"
+							class="inline-flex mb-2 mr-2 items-center bg-gruvlemphgreen dark:bg-gruvdemphgreen rounded-full px-3 py-0 font-semibold text-gruvdfg dark:text-gruvlfg"
 						>
 							{tag}
 						</span>
 					{:else}
 						<span
-							class="inline-flex mb-2 mr-2 items-center border border-gruvlemphpurple dark:border-gruvlemphpurple rounded-full px-3 py-0 text-sm font-semibold text-gruvlemphpurple dark:gruvpurple"
+							class="inline-flex mb-2 mr-2 items-center border border-gruvlemphpurple dark:border-gruvlemphpurple rounded-full px-3 py-0 font-semibold text-gruvlemphpurple dark:gruvpurple"
 						>
 							{#if tag === "locked"}
 								<svg
@@ -80,7 +82,7 @@
 				src={cardData.authorAvatarUrl}
 				alt="Avatar of {cardData.authorName}"
 			/>
-			<div class="mt-1 text-sm">
+			<div class="mt-1 text-xs">
 				<p
 					class="mb-0 font-bold text-gruvgray dark:text-gruvgray leading-none"
 				>

@@ -4,9 +4,9 @@
 </script>
 
 <Navigation />
-<div>
-	<div class="grid grid-cols-12 gap-4 m-3">
-		<div class="col-span-12">
+<div class="overflow-auto m-3">
+	<div class="grid grid-cols-12 gap-4">
+		<div class="col-span-12 md:mx-auto">
 			<slot />
 		</div>
 	</div>

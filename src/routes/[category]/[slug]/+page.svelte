@@ -3,6 +3,6 @@
 	export let data;
 </script>
 
-<div class="mdsvx prose prose-gruvbox dark:prose-invert lg:prose-lg">
+<div class="mdsvx prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert">
 	{@html data.html}
 </div>
