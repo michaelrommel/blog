@@ -201,13 +201,13 @@ export const theme = {
 		{
 			scope: 'header',
 			settings: {
-				foreground: '#458588'
+				foreground: c.gruvblue
 			}
 		},
 		{
 			scope: ['comment', 'punctuation.definition.comment'],
 			settings: {
-				foreground: '#928374',
+				foreground: c.gruvgray,
 				fontStyle: 'italic'
 			}
 		},
@@ -424,7 +424,7 @@ export const theme = {
 				'source.json meta.structure.dictionary.json support.type.property-name.json'
 			],
 			settings: {
-				foreground: '#e78a4e'
+				foreground: c.gruvyellow
 			}
 		},
 		{
@@ -433,7 +433,7 @@ export const theme = {
 				'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json'
 			],
 			settings: {
-				foreground: '#cea64a'
+				foreground: c.gruvdemphyellow
 			}
 		},
 		{
@@ -451,7 +451,7 @@ export const theme = {
 				'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json'
 			],
 			settings: {
-				foreground: '#83a598'
+				foreground: c.gruvdemphblue
 			}
 		},
 		{
@@ -464,20 +464,20 @@ export const theme = {
 				'support.constant.property-value.css.sass'
 			],
 			settings: {
-				foreground: '#dfbf8e'
+				foreground: c.gruvlemphyellow
 			}
 		},
 		{
 			scope: 'variable.parameter.url.css',
 			settings: {
-				foreground: '#d3869b',
+				foreground: c.gruvdemphpurple,
 				fontStyle: 'underline'
 			}
 		},
 		{
 			scope: 'punctuation.definition.entity.css',
 			settings: {
-				foreground: '#cea64a'
+				foreground: c.gruvyellow
 			}
 		},
 		{
@@ -523,7 +523,7 @@ export const theme = {
 				'keyword.control.at-rule.css.sass'
 			],
 			settings: {
-				foreground: '#d75f5f'
+				foreground: c.gruvdemphred
 			}
 		},
 		{
@@ -533,13 +533,13 @@ export const theme = {
 				'source.sass variable.other'
 			],
 			settings: {
-				foreground: '#d3869b'
+				foreground: c.gruvdemphpurple
 			}
 		},
 		{
 			scope: ['support.type.property-name.css'],
 			settings: {
-				foreground: '#83a598'
+				foreground: c.gruvdemphblue
 			}
 		},
 		{
@@ -548,13 +548,13 @@ export const theme = {
 				'entity.other.attribute-name.pseudo-class.css'
 			],
 			settings: {
-				foreground: '#d65d0e'
+				foreground: c.gruvorange
 			}
 		},
 		{
 			scope: 'source.css meta.selector',
 			settings: {
-				foreground: '#dfbf8e'
+				foreground: c.gruvdemphyellow
 			}
 		},
 		{
@@ -563,7 +563,7 @@ export const theme = {
 				'entity.other.attribute-selector.sass'
 			],
 			settings: {
-				foreground: '#cea64a'
+				foreground: c.gruvyellow
 			}
 		},
 		{
@@ -579,7 +579,7 @@ export const theme = {
 		{
 			scope: ['punctuation.definition.tag'],
 			settings: {
-				foreground: '#928374'
+				foreground: c.gruvgray
 			}
 		},
 		{
@@ -617,7 +617,7 @@ export const theme = {
 				'entity.other.inherited-class.ts'
 			],
 			settings: {
-				foreground: '#cea64a'
+				foreground: c.gruvdemphyellow
 			}
 		},
 		{
