@@ -1,7 +1,7 @@
 ---
 title: 'Markdown Code Sample'
 description: 'I have added code highlighting to this blog. Here is an example of Javascript code highlighted in the gruvbox colour scheme.'
-thumbnailUrl: '/2022-01-27-code-sample/thumbnail.png'
+thumbnailUrl: '/articles/assets/2022-01-27-code-sample/thumbnail.png'
 thumbnailTitle: 'Icon representing markdown text documents'
 creationDate: '2022-01-27T13:10:45+01:00'
 authorName: 'Michael Rommel'

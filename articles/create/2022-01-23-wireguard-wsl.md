@@ -1,7 +1,7 @@
 ---
 title: 'Setup of Wireguard with WSL2'
 description: 'This is a short article how to connect a WSL2 subsystem to a development network behind a VPN server'
-thumbnailUrl: '/2022-01-23-wireguard-wsl/thumbnail.svg'
+thumbnailUrl: '/articles/assets/2022-01-23-wireguard-wsl/thumbnail.svg'
 thumbnailTitle: 'Schematic network diagram'
 creationDate: '2022-01-23T11:16:13+01:00'
 authorName: 'Michael Rommel'
@@ -15,7 +15,7 @@ published: true
 ::::div{.grid-left-right}
 
 :::img{.img-right}
-![DevNet](/2022-01-23-wireguard-wsl/network-overview.svg 'Infrastructure Lab Network')
+![DevNet](/articles/assets/2022-01-23-wireguard-wsl/network-overview.svg 'Infrastructure Lab Network')
 :::
 
 :::div{.text-left}

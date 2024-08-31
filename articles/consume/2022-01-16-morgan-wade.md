@@ -1,7 +1,7 @@
 ---
 title: 'Morgan Wade'
 description: 'Last fall I discovered Morgan Wade. Here I share my favourite tracks and a link to a good, raw performance. There is also a link to a Spotify playlist I made.'
-thumbnailUrl: '/2022-01-16-morgan-wade/thumbnail.jpg'
+thumbnailUrl: '/articles/assets/2022-01-16-morgan-wade/thumbnail.jpg'
 thumbnailTitle: 'Photo of Morgan Wade sitting on a bar stool holding a guitar'
 creationDate: '2022-01-16T23:21:13+01:00'
 authorName: 'Michael Rommel'
@@ -29,7 +29,7 @@ rattle my younger self into awareness and push him into talking instead of
 shutting everyone out.
 
 ![OurVinyl cover art of Morgan Wade's
-session](/2022-01-16-morgan-wade/ourvinyl-morgan-wade-1.jpg 'OurVinyl Sessions: Morgan Wade')
+session](/articles/assets/2022-01-16-morgan-wade/ourvinyl-morgan-wade-1.jpg 'OurVinyl Sessions: Morgan Wade')
 
 Seriously, watch it.
 [OurVinyl Sessions: Morgan Wade](https://youtu.be/G0v055Ze2uU)

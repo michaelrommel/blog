@@ -1,7 +1,7 @@
 ---
 title: 'Turntable Trigonometry'
 description: "Having fun disecting how a turntable's math works."
-thumbnailUrl: '/2022-02-02-turntable-trigonometry/thumbnail.svg'
+thumbnailUrl: '/articles/assets/2022-02-02-turntable-trigonometry/thumbnail.svg'
 thumbnailTitle: 'thumbnail of an turntable pickup with geometric lines'
 creationDate: '2022-02-02T21:17:45+01:00'
 authorName: 'Michael Rommel'
@@ -12,8 +12,8 @@ published: true
 
 # Constructional elements of a turntable
 
-![Turntable Design](/2022-02-02-turntable-trigonometry/turntable-construction.svg 'Turntable Construction')
-![Turntable Trigonometry](/2022-02-02-turntable-trigonometry/turntable-trigonometry.svg 'Turntable Trigonometry')
+![Turntable Design](/articles/assets/2022-02-02-turntable-trigonometry/turntable-construction.svg 'Turntable Construction')
+![Turntable Trigonometry](/articles/assets/2022-02-02-turntable-trigonometry/turntable-trigonometry.svg 'Turntable Trigonometry')
 
 :::note{.comment}
 This formula is used to calculate the length of a turntable arm so that

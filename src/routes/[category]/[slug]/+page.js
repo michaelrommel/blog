@@ -24,6 +24,7 @@ export async function load({ url, params, fetch }) {
 	}
 
 	//const parsedArticle = await compile(articles[0].md, mdsvexConfig);
+	// console.log(articles[0]);
 
 	return {
 		html: articles[0].html

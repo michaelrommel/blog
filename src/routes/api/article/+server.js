@@ -14,11 +14,11 @@ import mdsvexConfig from '../../../configs/mdsvex.config.js';
  * @typedef {import('unist').Node} Node
  * @typedef {import('vfile').VFile} VFile
  */
-function myUnifiedPluginHandlingYamlMatter() {
-	return function (tree, file) {
-		matter(file);
-	};
-}
+// function myUnifiedPluginHandlingYamlMatter() {
+// 	return function (tree, file) {
+// 		matter(file);
+// 	};
+// }
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url, params }) {
@@ -54,6 +54,7 @@ export async function GET({ url, params }) {
 						// console.log(vfile.data.matter);
 						// only extracting frontmatter
 						const compiledArticle = await compile(article, mdsvexConfig);
+						// console.log(compiledArticle.code);
 						return {
 							slug,
 							articleCategory,

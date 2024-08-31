@@ -1,7 +1,7 @@
 ---
 title: 'Markdown Sample'
 description: 'A sample markdown text with many attributes/tags etc.'
-thumbnailUrl: '/2022-01-25-markdown-sample/thumbnail.svg'
+thumbnailUrl: '/articles/assets/2022-01-25-markdown-sample/thumbnail.svg'
 thumbnailTitle: 'Icon representing markdown text documents'
 creationDate: '2022-01-25T03:21:13+01:00'
 authorName: 'Michael Rommel'
