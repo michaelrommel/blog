@@ -14,7 +14,8 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeStringify from 'rehype-stringify';
 
-import rehypeShiki from '@shikijs/rehype';
+import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
+import { createHighlighterCore } from 'shiki/core';
 import {
 	transformerNotationDiff,
 	transformerNotationHighlight
@@ -60,6 +61,23 @@ function remarkDirectiveHandler() {
 }
 
 async function compile(article) {
+	const highlighter = await createHighlighterCore({
+		langs: [
+			import('shiki/langs/js.mjs'),
+			import('shiki/langs/shellsession.mjs'),
+			import('shiki/langs/shell.mjs'),
+			import('shiki/langs/bash.mjs'),
+			import('shiki/langs/zsh.mjs'),
+			import('shiki/langs/powershell.mjs'),
+			import('shiki/langs/lua.mjs'),
+			import('shiki/langs/rust.mjs'),
+			import('shiki/langs/python.mjs'),
+			import('shiki/langs/toml.mjs'),
+			import('shiki/langs/yaml.mjs')
+		],
+		loadWasm: import('shiki/wasm')
+	});
+
 	const vfile = await unified()
 		.use(remarkParse)
 		.use(remarkFrontmatter)
@@ -72,11 +90,24 @@ async function compile(article) {
 		.use(remarkMath)
 		.use(remarkRehype)
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
-		.use(rehypeShiki, {
+		.use(rehypeShikiFromHighlighter, highlighter, {
 			themes: {
 				dark: theme,
 				light: theme
 			},
+			langs: [
+				'js',
+				'shellsession',
+				'shell',
+				'bash',
+				'zsh',
+				'powershell',
+				'lua',
+				'rust',
+				'python',
+				'toml',
+				'yaml'
+			],
 			defaultLanguage: 'text',
 			fallbackLanguage: 'text',
 			transformers: [transformerNotationDiff(), transformerNotationHighlight()]
