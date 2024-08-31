@@ -2,8 +2,21 @@ import { slugFromPath } from '$lib/util';
 import { json } from '@sveltejs/kit';
 import fg from 'fast-glob';
 import fs from 'node:fs/promises';
-import { compile } from 'mdsvex';
-import mdsvexConfig from '../../../configs/mdsvex.config.js';
+import { unified } from 'unified';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { matter } from 'vfile-matter';
+
+/**
+ * @typedef {import('unist').Node} Node
+ * @typedef {import('vfile').VFile} VFile
+ */
+function remarkGetFm() {
+	return function (tree, file) {
+		matter(file);
+	};
+}
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url, params }) {
@@ -32,14 +45,18 @@ export async function GET({ url, params }) {
 			const promise = fs
 				.readFile(path, { encoding: 'utf8' })
 				.then(async (article) => {
-					// console.log(`article: ${JSON.stringify(article, null, 2)}`);
-					// console.log(`slug: ${JSON.stringify(articleSlug, null, 2)}`);
-					const parsedArticle = await compile(article, mdsvexConfig);
+					// only extracting frontmatter
+					const vfile = await unified()
+						.use(remarkParse)
+						.use(remarkStringify)
+						.use(remarkFrontmatter)
+						.use(remarkGetFm)
+						.process(article);
 					return {
 						slug: articleSlug,
 						articleCategory,
 						articleName,
-						...parsedArticle.data.fm
+						...vfile.data.matter
 					};
 				});
 			articlePromises.push(promise);

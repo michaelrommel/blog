@@ -12,7 +12,7 @@
 	},
 	"devDependencies": {
 		"@poppanator/sveltekit-svg": "^4.2.1",
-		"@shikijs/rehype": "^1.14.1",
+		"@shikijs/rehype": "^1.15.2",
 		"@shikijs/transformers": "^1.14.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.2.2",
@@ -35,9 +35,9 @@
 	"dependencies": {
 		"fast-glob": "^3.3.2",
 		"hastscript": "^9.0.0",
-		"mdsvex": "^0.11.2",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-mathjax": "^5.0.0",
+		"rehype-stringify": "^10.0.0",
 		"remark-directive": "^2.0.1",
 		"remark-emoji": "^5.0.1",
 		"remark-frontmatter": "^5.0.0",
@@ -45,8 +45,12 @@
 		"remark-github": "^12.0.0",
 		"remark-math": "^5.0.0",
 		"remark-parse": "^10.0.1",
+		"remark-rehype": "^11.1.0",
+		"remark-stringify": "^11.0.0",
 		"shiki": "^1.14.1",
 		"svelte-preprocess": "^6.0.2",
-		"unist-util-visit": "^5.0.0"
+		"unified": "^11.0.5",
+		"unist-util-visit": "^5.0.0",
+		"vfile-matter": "^5.0.0"
 	}
 }

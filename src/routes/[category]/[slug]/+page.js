@@ -1,6 +1,95 @@
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import remarkFrontmatter from 'remark-frontmatter';
+import { matter } from 'vfile-matter';
+import remarkDirective from 'remark-directive';
+import { visit } from 'unist-util-visit';
+import { h } from 'hastscript';
+import remarkGithub from 'remark-github';
+import remarkEmoji from 'remark-emoji';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeMathjax from 'rehype-mathjax';
+import rehypeStringify from 'rehype-stringify';
+
+import rehypeShiki from '@shikijs/rehype';
+import {
+	transformerNotationDiff,
+	transformerNotationHighlight
+} from '@shikijs/transformers';
+import { theme } from '../../../configs/gruvbox_shiki.js';
+
+/**
+ * @typedef {import('unist').Node} Node
+ * @typedef {import('vfile').VFile} VFile
+ */
+function remarkGetFm() {
+	// this gets the frontmatter in YAML into data.matter
+	return function (tree, file) {
+		matter(file);
+	};
+}
+
+// This plugin is an example to turn `::note` into divs, passing arbitrary
+// attributes.
+// /** @type {import('unified').Plugin<[], import('mdast').Root>} */
+function remarkDirectiveHandler() {
+	// console.log('In myRemarkPlugin');
+	const directiveNames = ['note', 'comment', 'img', 'div'];
+	return (tree) => {
+		visit(tree, (node) => {
+			// console.log(node);
+			if (
+				node.type === 'textDirective' ||
+				node.type === 'leafDirective' ||
+				node.type === 'containerDirective'
+			) {
+				if (!directiveNames.includes(node.name)) return;
+
+				const data = node.data || (node.data = {});
+				const attributes = node.attributes || {};
+				const tagName = node.type === 'textDirective' ? 'span' : 'div';
+
+				data.hName = tagName;
+				data.hProperties = h(tagName, attributes).properties;
+			}
+		});
+	};
+}
+
+async function compile(article) {
+	const vfile = await unified()
+		.use(remarkParse)
+		.use(remarkFrontmatter)
+		.use(remarkGetFm)
+		.use(remarkDirective)
+		.use(remarkDirectiveHandler)
+		.use(remarkEmoji)
+		.use(remarkGithub, { repository: 'https://github.com/michaelrommel/blog' })
+		.use(remarkGfm)
+		.use(remarkMath)
+		.use(remarkRehype)
+		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
+		.use(rehypeShiki, {
+			themes: {
+				dark: theme,
+				light: theme
+			},
+			defaultLanguage: 'text',
+			fallbackLanguage: 'text',
+			transformers: [transformerNotationDiff(), transformerNotationHighlight()]
+		})
+		.use(rehypeMathjax)
+		.use(rehypeStringify)
+		.process(article);
+	return vfile;
+}
+
 /** @type {import('./$types').PageLoad} */
 export async function load({ params, fetch }) {
-	console.log(`slug svelte params: ${JSON.stringify(params, null, 2)}`);
+	// console.log(`slug svelte params: ${JSON.stringify(params, null, 2)}`);
 
 	let articles = null;
 	articles = await fetch(
@@ -21,10 +110,10 @@ export async function load({ params, fetch }) {
 		};
 	}
 
-	//const parsedArticle = await compile(articles[0].md, mdsvexConfig);
-	// console.log(articles[0]);
+	const parsedArticle = await compile(articles[0].md);
+	// console.log(parsedArticle);
 
 	return {
-		html: articles[0].html
+		html: parsedArticle.value
 	};
 }

@@ -2,23 +2,21 @@ import { slugFromPath } from '$lib/util';
 import { json } from '@sveltejs/kit';
 import fg from 'fast-glob';
 import fs from 'node:fs/promises';
-// import { unified } from 'unified';
-// import remarkFrontmatter from 'remark-frontmatter';
-// import remarkParse from 'remark-parse';
-// import remarkStringify from 'remark-stringify';
-// import { matter } from 'vfile-matter';
-import { compile } from 'mdsvex';
-import mdsvexConfig from '../../../configs/mdsvex.config.js';
+import { unified } from 'unified';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { matter } from 'vfile-matter';
 
 /**
  * @typedef {import('unist').Node} Node
  * @typedef {import('vfile').VFile} VFile
  */
-// function myUnifiedPluginHandlingYamlMatter() {
-// 	return function (tree, file) {
-// 		matter(file);
-// 	};
-// }
+function remarkGetFm() {
+	return function (tree, file) {
+		matter(file);
+	};
+}
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }) {
@@ -37,22 +35,18 @@ export async function GET({ url }) {
 			.then(async (article) => {
 				// console.log('Article: ', article);
 				// only extracting frontmatter
-				// const vfile = await unified()
-				// 	.use(remarkParse)
-				// 	.use(remarkStringify)
-				// 	.use(remarkFrontmatter)
-				// 	.use(myUnifiedPluginHandlingYamlMatter)
-				// 	.process(article);
-				// console.log(vfile.data.matter);
-				// only extracting frontmatter
-				const compiledArticle = await compile(article, mdsvexConfig);
-				// console.log(compiledArticle.code);
+				const vfile = await unified()
+					.use(remarkParse)
+					.use(remarkStringify)
+					.use(remarkFrontmatter)
+					.use(remarkGetFm)
+					.process(article);
 				return {
 					slug,
 					category,
 					articleName,
-					html: compiledArticle.code,
-					...compiledArticle.data.fm
+					md: article,
+					...vfile.data.matter
 				};
 			});
 		articlePromises.push(promise);
