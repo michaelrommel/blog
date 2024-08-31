@@ -28,5 +28,10 @@ export default defineConfig({
 				]
 			}
 		})
-	]
+	],
+	server: {
+		fs: {
+			allow: ['articles/']
+		}
+	}
 });

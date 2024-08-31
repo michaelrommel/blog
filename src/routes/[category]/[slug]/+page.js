@@ -1,13 +1,11 @@
 /** @type {import('./$types').PageLoad} */
-export async function load({ url, params, fetch }) {
-	// console.log(`slug svelte pathname: ${JSON.stringify(url.pathname, null, 2)}`);
-	// console.log(`slug svelte params: ${JSON.stringify(params, null, 2)}`);
+export async function load({ params, fetch }) {
+	console.log(`slug svelte params: ${JSON.stringify(params, null, 2)}`);
 
 	let articles = null;
-	articles = await fetch(`/api/article?slug=${params.slug}`).then((res) =>
-		res.json()
-	);
-	// console.log(`articles: ${JSON.stringify(articles, null, 2)}`);
+	articles = await fetch(
+		`/api/article?category=${params.category}&slug=${params.slug}`
+	).then((res) => res.json());
 
 	if (!articles) {
 		return {

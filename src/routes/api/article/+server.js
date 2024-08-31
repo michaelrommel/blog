@@ -21,51 +21,41 @@ import mdsvexConfig from '../../../configs/mdsvex.config.js';
 // }
 
 /** @type {import('./$types').RequestHandler} */
-export async function GET({ url, params }) {
-	// console.log(`root article params: ${JSON.stringify(params, null, 2)}`);
-	const articlenames = await fg.glob(['./articles/**/*.{md,svx,svelte.md}']);
-
-	// for (const [key, value] of url.searchParams) {
-	// 	console.log(`root article searchParams: ${key} = ${value}`);
-	// }
-
-	const articlePromises = [];
+export async function GET({ url }) {
 	const category = url.searchParams.get('category') ?? null;
 	const slug = url.searchParams.get('slug') ?? null;
+	const articlepaths = await fg.glob([`./articles/${category}/${[slug]}.md`]);
 
-	for (const path of articlenames) {
+	const articlePromises = [];
+
+	for (const path of articlepaths) {
 		// console.log(`root article path: ${path}`);
-		const [articleCategory, articleName] =
-			path.match(/\.\/articles\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
-		const articleSlug = slugFromPath(path);
-		if (!category || articleCategory === category) {
-			if (articleSlug === slug) {
-				const promise = fs
-					.readFile(path, { encoding: 'utf8' })
-					.then(async (article) => {
-						// console.log('Article: ', article);
-						// only extracting frontmatter
-						// const vfile = await unified()
-						// 	.use(remarkParse)
-						// 	.use(remarkStringify)
-						// 	.use(remarkFrontmatter)
-						// 	.use(myUnifiedPluginHandlingYamlMatter)
-						// 	.process(article);
-						// console.log(vfile.data.matter);
-						// only extracting frontmatter
-						const compiledArticle = await compile(article, mdsvexConfig);
-						// console.log(compiledArticle.code);
-						return {
-							slug,
-							articleCategory,
-							articleName,
-							html: compiledArticle.code,
-							...compiledArticle.data.fm
-						};
-					});
-				articlePromises.push(promise);
-			}
-		}
+		const [articleName] =
+			path.match(/\.\/articles\/.*\/(.*)$/i)?.slice(1, 3) ?? null;
+		const promise = fs
+			.readFile(path, { encoding: 'utf8' })
+			.then(async (article) => {
+				// console.log('Article: ', article);
+				// only extracting frontmatter
+				// const vfile = await unified()
+				// 	.use(remarkParse)
+				// 	.use(remarkStringify)
+				// 	.use(remarkFrontmatter)
+				// 	.use(myUnifiedPluginHandlingYamlMatter)
+				// 	.process(article);
+				// console.log(vfile.data.matter);
+				// only extracting frontmatter
+				const compiledArticle = await compile(article, mdsvexConfig);
+				// console.log(compiledArticle.code);
+				return {
+					slug,
+					category,
+					articleName,
+					html: compiledArticle.code,
+					...compiledArticle.data.fm
+				};
+			});
+		articlePromises.push(promise);
 	}
 
 	const articles = await Promise.all(articlePromises);
