@@ -1,7 +1,6 @@
 export async function GET({ fetch, setHeaders }) {
 	let articleList = null;
 	articleList = await fetch(`/api/articles`).then((res) => res.json());
-	console.log(articleList);
 
 	setHeaders({
 		'Content-Type': 'application/xml'

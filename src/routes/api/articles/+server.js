@@ -23,7 +23,7 @@ export async function GET({ url, params }) {
 	const articlenames = await fg.glob(['./articles/**/*.{md,svx,svelte.md}']);
 
 	// for (const [key, value] of url.searchParams) {
-	// 	console.log(`root articles index searchParams: ${key} = ${value}`);
+	// 	console.log(`api articles index searchParams: ${key} = ${value}`);
 	// }
 
 	const articlePromises = [];
