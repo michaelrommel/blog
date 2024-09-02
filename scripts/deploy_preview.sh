@@ -1,4 +1,5 @@
 #! /bin/bash
+npm run build
 rm -rf ../blog-prod/*
 cp -r package* build articles ../blog-prod/
 cd ../blog-prod || exit
