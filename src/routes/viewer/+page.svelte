@@ -5,8 +5,6 @@
 	export let data;
 </script>
 
-<div class="flex flex-col">
-	<div class="self-center">
-		<StlViewer stl={data.stl} />
-	</div>
+<div class="col-span-12">
+	<StlViewer stl={data.stl} />
 </div>

@@ -33,37 +33,44 @@
 	room.scale.set(300, 300, 300);
 	// scene.add(room);
 
-	const mainLight = new THREE.PointLight(0xffffff, 10000, 200, 1.5);
-	mainLight.power = 200000;
+	const ambientLight = new THREE.AmbientLight(0x888888, 4);
+	scene.add(ambientLight);
+
+	const mainLight = new THREE.PointLight(0xffffff, 10000, 0, 1.5);
+	mainLight.power = 100000;
 	mainLight.position.set(-80, 100, 50);
 	scene.add(mainLight);
 
-	const fillLight = new THREE.PointLight(0xffffff, 1000, 0, 2);
-	fillLight.power = 100000;
+	const fillLight = new THREE.PointLight(0xffffff, 10000, 0, 1.5);
+	fillLight.power = 50000;
 	fillLight.position.set(100, -100, -100);
 	scene.add(fillLight);
 
-	const ambientLight = new THREE.AmbientLight(0x888888);
-	scene.add(ambientLight);
+	const backspotlight = new THREE.SpotLight(0xffffff, 10000);
+	backspotlight.power = 20000;
+	backspotlight.position.set(30, 30, -100);
+	backspotlight.angle = Math.PI / 2;
+	backspotlight.decay = 1.5;
+	scene.add(backspotlight);
 
 	// so many lights
 	const toplight = new THREE.DirectionalLight(0xffffff, 4);
 	toplight.position.set(0, 1, 0);
 	scene.add(toplight);
 
-	const bottomlight = new THREE.DirectionalLight(0xffffff, 0.5);
+	const bottomlight = new THREE.DirectionalLight(0xffffff, 1.5);
 	bottomlight.position.set(0, -1, 0);
 	scene.add(bottomlight);
 
-	const frontlight = new THREE.DirectionalLight(0xffffff, 1);
+	const frontlight = new THREE.DirectionalLight(0xffffff, 1.5);
 	frontlight.position.set(0, 0, 1);
 	scene.add(frontlight);
 
-	const backlight = new THREE.DirectionalLight(0xffffff, 0.2);
+	const backlight = new THREE.DirectionalLight(0xffffff, 1.5);
 	backlight.position.set(0, 0, -1);
 	scene.add(backlight);
 
-	const rightlight = new THREE.DirectionalLight(0xffffff, 0.4);
+	const rightlight = new THREE.DirectionalLight(0xffffff, 1);
 	rightlight.position.set(1, 0, 0);
 	scene.add(rightlight);
 
@@ -132,13 +139,18 @@
 
 	let initialZoom = false;
 
-	function moveCamera(zoom) {
-		camera.position.x *= zoom;
-		camera.position.y *= zoom;
-		camera.position.z *= zoom;
+	function moveCamera(factor) {
+		camera.position.x *= factor;
+		camera.position.y *= factor;
+		camera.position.z *= factor;
 	}
 
+	let canvasWidth = null;
+	let canvasHeight = null;
+	let updateSize = false;
+
 	let renderer;
+	let controls;
 
 	const animate = () => {
 		requestAnimationFrame(animate);
@@ -149,16 +161,32 @@
 				const bbox = new THREE.Box3().setFromObject(mesh);
 				if (bbox.max.x - bbox.min.x < 100) {
 					moveCamera(0.3);
-					initialZoom = true;
 				}
+				initialZoom = true;
 			}
+
+			controls.update();
+		}
+		if (el && canvasWidth && updateSize) {
+			console.log("resizing canvas, renderer and camera");
+			// we have a canvas element assigned
+			el.width = canvasWidth;
+			el.height = canvasHeight;
+			renderer.setSize(canvasWidth, canvasHeight, false);
+			camera.aspect = canvasWidth / canvasHeight;
+			camera.updateProjectionMatrix();
+			updateSize = false;
 		}
 		renderer.render(scene, camera);
 	};
 
 	const resize = () => {
-		renderer.setSize(800, 600);
-		camera.updateProjectionMatrix();
+		console.log("resize event");
+		if (el) {
+			canvasWidth = el.clientWidth;
+			canvasHeight = el.clientHeight;
+			updateSize = true;
+		}
 	};
 
 	const renderScene = (el) => {
@@ -167,19 +195,25 @@
 			antialias: true,
 			canvas: el,
 		});
-		const controls = new OrbitControls(camera, renderer.domElement);
+		controls = new OrbitControls(camera, renderer.domElement);
 		controls.enableDamping = true;
+		controls.dampingFactor = 0.1;
 
 		resize();
 		animate();
 	};
 
-	//window.addEventListener("resize", resize);
+	const observer = new ResizeObserver(resize);
+
 	let el;
 	onMount(() => {
 		loadStl();
 		renderScene(el);
+		observer.observe(el);
 	});
 </script>
 
-<canvas style="background-color: #33333a" bind:this={el}></canvas>
+<canvas class="min-w-full max-w-full bg-gruvdbg2 block" bind:this={el}></canvas>
+
+<style>
+</style>
