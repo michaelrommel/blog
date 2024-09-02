@@ -116,7 +116,7 @@
 		let bbox = null;
 
 		stlLoader.load(
-			`http://localhost:5173/${stl}`,
+			`${stl}`,
 			(geometry) => {
 				geometry.rotateX(THREE.MathUtils.degToRad(-90));
 				mesh = new THREE.Mesh(geometry, bluematerial);
