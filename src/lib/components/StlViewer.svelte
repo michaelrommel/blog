@@ -65,7 +65,7 @@
 
 		const backspotlight = new THREE.SpotLight(0xffffff, 10000);
 		backspotlight.power = 20000;
-		backspotlight.position.set(30, 30, -100);
+		backspotlight.position.set(300, 300, -100);
 		backspotlight.angle = Math.PI / 2;
 		backspotlight.decay = 1.5;
 		scene.add(backspotlight);
@@ -129,6 +129,8 @@
 		material.depthWrite = true;
 		material.shininess = 100;
 		material.combine = THREE.MultiplyOperation;
+		// material.side = THREE.FrontSide;
+		// material.side = THREE.BackSide;
 		material.side = THREE.DoubleSide;
 		material.reflectivity = 0.8;
 
@@ -184,15 +186,18 @@
 				model.scale.set(1000, 1000, 1000);
 				model.traverse((child) => {
 					if (child.isMesh) {
-						const colour = child.material.color;
 						const newmaterial = templatematerial.clone();
-						newmaterial.color = colour;
+						newmaterial.color = child.material.color;
+						newmaterial.opacity = child.material.opacity;
+						newmaterial.transparent = child.material.transparent;
 						child.material = newmaterial;
+						// bluematerial.transparent = true;
+						// bluematerial.opacity = 0.8;
 					}
 				});
-				// gltf.parser.getDependencies("material").then((materials) => {
-				// 	console.log(materials);
-				// });
+				gltf.parser.getDependencies("material").then((materials) => {
+					console.log(materials);
+				});
 				await renderer.compileAsync(model, camera, scene);
 				scene.add(model);
 				loaded = true;
@@ -214,6 +219,10 @@
 		camera.position.z *= factor;
 	}
 
+	let fpsInterval = 10 / 1000;
+	let then = Date.now();
+	let now;
+
 	function animate() {
 		requestAnimationFrame(animate);
 		// if (meshes.length > 0) {
@@ -233,9 +242,14 @@
 				initialZoom = true;
 			}
 		}
-		controls.update();
-		resizeCanvasToDisplaySize(canvasElement);
-		renderer.render(scene, camera);
+		now = Date.now();
+		const elapsed = now - then;
+		if (elapsed > fpsInterval) {
+			then = now - (elapsed % fpsInterval);
+			controls.update();
+			resizeCanvasToDisplaySize(canvasElement);
+			renderer.render(scene, camera);
+		}
 	}
 
 	function renderScene(canvasElement) {
