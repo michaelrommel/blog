@@ -84,9 +84,9 @@
 		mainLight.decay = 1.3;
 		scene.add(mainLight);
 
-		const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
-		scene.add(mainSpotLightHelper);
-
+		// const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
+		// scene.add(mainSpotLightHelper);
+		//
 		const fillLight = new THREE.SpotLight(0xffffff, 10000);
 		fillLight.position.set(3 * size.x, -3 * size.y, -3 * size.z);
 		fillLight.angle = Math.PI / 4;
@@ -256,12 +256,14 @@
 		);
 	}
 
-	// 10 frames per socond is absolutely sufficient for the use case
-	let fpsInterval = 1000 / 20;
+	// 25 frames per socond is absolutely sufficient for the use case
+	const fpsInterval = 1000 / 25;
+	const stopdelay = 200;
 	let frameCount = 0;
 	let then = Date.now();
 	let startTime = then;
 	let now;
+	let elapsed;
 	let until = null;
 
 	function animate() {
@@ -271,36 +273,36 @@
 		// to let a movement dampen smoothely
 		if (until) {
 			if (now < until) {
-				// console.log(until - now);
+				// keep animating
 				requestAnimationFrame(animate);
 			} else {
+				// stop until triggered by movement again
 				until = null;
 			}
 		}
 		// precaution measure, if there are not models loaded, we cannot
 		// determine the bounding box and cannot reset the scene
-		if (loaded) {
-			if (!initialZoom) {
-				const bbox = new THREE.Box3().setFromObject(scene);
-				const size = bbox.getSize(new THREE.Vector3());
-				initialZoom = true;
-				resetScene(size);
-			}
+		if (!initialZoom && loaded) {
+			const bbox = new THREE.Box3().setFromObject(scene);
+			const size = bbox.getSize(new THREE.Vector3());
+			initialZoom = true;
+			resetScene(size);
 		}
-		// second improvement: only rerender
-		const elapsed = now - then;
-		if (elapsed > fpsInterval) {
+		// second improvement: only rerender if we are past the framerate
+		// virtual next tick. Also, if until has already elapsed, skip rerendering
+		// that gets rid of all past fired Control Events, that are now obsolete
+		// but still trickling in
+		elapsed = now - then;
+		if (elapsed > fpsInterval && until) {
 			// Get ready for next frame by setting then=now, but...
 			// Also, adjust for fpsInterval not being multiple of 16.67
 			// from: https://jsfiddle.net/m1erickson/CtsY3/
-			then = now - (elapsed % fpsInterval);
+			// then = now - (elapsed % fpsInterval);
+			then = now;
 
-			var sinceStart = now - startTime;
-			fps = (
-				Math.round((1000 / (sinceStart / ++frameCount)) * 100) / 100
-			).toFixed(2);
+			fps = ((++frameCount * 1000) / (now - startTime)).toFixed(2);
 			// console.log(
-			// 	`${until ? until - now : 0}/${elapsed}/${fpsInterval}/${frameCount} :: ${Math.round((sinceStart / 1000) * 100) / 100} secs @ ${fps} fps`,
+			// 	`${until ? until - now : 0}/${until}/${elapsed}/${fpsInterval}/${frameCount} :: ${now - startTime} secs @ ${fps} fps`,
 			// );
 
 			controls.update();
@@ -320,17 +322,15 @@
 		// controls.rotateSpeed = 10;
 
 		controls = new OrbitControls(camera, renderer.domElement);
-		// controls.minPolarAngle = -Math.PI;
-		// controls.maxPolarAngle = Math.PI;
 		controls.addEventListener("change", () => {
 			if (!until) {
 				startTime = Date.now();
-				frameCount = 0;
+				frameCount = 1;
+				if (frameCount < 20) {
+					until = new Date(Date.now().valueOf() + stopdelay);
+				}
 			}
-			if (frameCount < 20) {
-				animate();
-				until = new Date(Date.now().valueOf() + 500);
-			}
+			animate();
 		});
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.2;
