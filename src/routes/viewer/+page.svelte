@@ -6,5 +6,5 @@
 </script>
 
 <div class="col-span-12">
-	<StlViewer file={data.file} dpr={data.dpr} />
+	<StlViewer file={data.file} dpr={data.dpr} inertia={data.inertia} />
 </div>

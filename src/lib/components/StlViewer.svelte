@@ -11,7 +11,8 @@
 	// StlViewer component from a page that embeds it.
 	export let file;
 	export let dpr;
-	export let fps;
+	export let inertia;
+	let fps;
 
 	// we need those variables in different functions and do not always have
 	// the ability to supplu those as parameters
@@ -258,7 +259,6 @@
 
 	// 25 frames per socond is absolutely sufficient for the use case
 	const fpsInterval = 1000 / 25;
-	const stopdelay = 200;
 	let frameCount = 0;
 	let then = Date.now();
 	let startTime = then;
@@ -300,7 +300,14 @@
 			// then = now - (elapsed % fpsInterval);
 			then = now;
 
-			fps = ((++frameCount * 1000) / (now - startTime)).toFixed(2);
+			fps =
+				now == startTime
+					? "   0.00"
+					: String(
+							((++frameCount * 1000) / (now - startTime)).toFixed(
+								2,
+							),
+						).padStart(7, " ");
 			// console.log(
 			// 	`${until ? until - now : 0}/${until}/${elapsed}/${fpsInterval}/${frameCount} :: ${now - startTime} secs @ ${fps} fps`,
 			// );
@@ -325,9 +332,9 @@
 		controls.addEventListener("change", () => {
 			if (!until) {
 				startTime = Date.now();
-				frameCount = 1;
+				frameCount = 0;
 				if (frameCount < 20) {
-					until = new Date(Date.now().valueOf() + stopdelay);
+					until = new Date(Date.now().valueOf() + inertia);
 				}
 			}
 			animate();
@@ -336,9 +343,7 @@
 		controls.dampingFactor = 0.2;
 
 		resizeCanvasToDisplaySize(canvasElement);
-		until = new Date(Date.now().valueOf() + 5000);
-		console.log("Initial setting of until");
-		console.log(until.valueOf());
+		until = new Date(Date.now().valueOf() + 3000);
 		animate();
 	}
 
