@@ -5,6 +5,7 @@
 	import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 	import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+	import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
 
 	// this letx us access props passed in as key/value pairs to the
 	// StlViewer component from a page that embeds it.
@@ -26,6 +27,7 @@
 	let initialZoom = false;
 	// the global scene and camera objects
 	let scene = null;
+	let zUpRoot = null;
 	let camera = null;
 
 	// the map stores for each canvas the sizes they should be displayed in pixels
@@ -35,7 +37,23 @@
 		// initialize the scene to which all elements are added
 		scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x3c3836);
+		let zUpRoot = new THREE.Group();
+		zUpRoot.rotation.x = -Math.PI * 0.5;
+		scene.add(zUpRoot);
+		const axesHelper = new THREE.AxesHelper(5);
+		zUpRoot.add(axesHelper);
+		// zUpRoot.add(yourZUpScene);
+		return [scene, zUpRoot];
+	}
 
+	function initCamera() {
+		// const camera = new THREE.OrthographicCamera(-60, 60, 45, -45, 0.1, 1000);
+		const camera = new THREE.PerspectiveCamera(40, 4 / 3, 0.1, 10000);
+		// camera.position.set(0, 0, 1);
+		return camera;
+	}
+
+	function initLights(size) {
 		// const roomgeometry = new THREE.BoxGeometry();
 		// roomgeometry.deleteAttribute("uv");
 		// const roomMaterial = new THREE.MeshStandardMaterial({
@@ -50,63 +68,65 @@
 		// room.scale.set(300, 300, 300);
 		// scene.add(room);
 
-		const ambientLight = new THREE.AmbientLight(0x888888, 4);
+		const ambientLight = new THREE.AmbientLight(0x888888, 0.3);
 		scene.add(ambientLight);
 
-		const mainLight = new THREE.PointLight(0xffffff, 10000, 0, 1.5);
-		mainLight.power = 100000;
-		mainLight.position.set(-80, 100, 50);
+		const mainLight = new THREE.SpotLight(0xffffff, 10000);
+		mainLight.position.set(-3 * size.x, 3 * size.y, 3 * size.z);
+		mainLight.angle = Math.PI / 4;
+		mainLight.decay = 1.3;
 		scene.add(mainLight);
 
-		const fillLight = new THREE.PointLight(0xffffff, 10000, 0, 1.5);
-		fillLight.power = 50000;
-		fillLight.position.set(100, -100, -100);
+		const fillLight = new THREE.SpotLight(0xffffff, 10000);
+		fillLight.position.set(3 * size.x, -3 * size.y, -3 * size.z);
+		fillLight.angle = Math.PI / 4;
+		fillLight.decay = 1.3;
 		scene.add(fillLight);
 
-		const backspotlight = new THREE.SpotLight(0xffffff, 10000);
-		backspotlight.power = 20000;
-		backspotlight.position.set(300, 300, -100);
-		backspotlight.angle = Math.PI / 2;
-		backspotlight.decay = 1.5;
-		scene.add(backspotlight);
+		const backSpotlight = new THREE.SpotLight(0xffffff, 2000);
+		backSpotlight.position.set(0, 0, -3 * size.z);
+		backSpotlight.angle = Math.PI / 2;
+		backSpotlight.decay = 1.3;
+		scene.add(backSpotlight);
 
-		// so many lights
-		const toplight = new THREE.DirectionalLight(0xffffff, 4);
+		// // so many lights
+		const toplight = new THREE.DirectionalLight(0xffffff, 2);
 		toplight.position.set(0, 1, 0);
 		scene.add(toplight);
 
-		const bottomlight = new THREE.DirectionalLight(0xffffff, 1.5);
+		const bottomlight = new THREE.DirectionalLight(0xffffff, 0.3);
 		bottomlight.position.set(0, -1, 0);
 		scene.add(bottomlight);
 
-		const frontlight = new THREE.DirectionalLight(0xffffff, 1.5);
+		const frontlight = new THREE.DirectionalLight(0xffffff, 1);
 		frontlight.position.set(0, 0, 1);
 		scene.add(frontlight);
 
-		const backlight = new THREE.DirectionalLight(0xffffff, 1.5);
+		const backlight = new THREE.DirectionalLight(0xffffff, 0.3);
 		backlight.position.set(0, 0, -1);
 		scene.add(backlight);
 
-		const rightlight = new THREE.DirectionalLight(0xffffff, 1);
+		const rightlight = new THREE.DirectionalLight(0xffffff, 0.5);
 		rightlight.position.set(1, 0, 0);
 		scene.add(rightlight);
 
-		const leftlight = new THREE.DirectionalLight(0xffffff, 0.4);
+		const leftlight = new THREE.DirectionalLight(0xffffff, 0.3);
 		leftlight.position.set(-1, 0, 0);
 		scene.add(leftlight);
-
-		return scene;
 	}
 
-	function initCamera() {
-		// const camera = new THREE.OrthographicCamera(-60, 60, 45, -45, 0.1, 1000);
-		const camera = new THREE.PerspectiveCamera(40, 4 / 3, 0.1, 10000);
-		// camera.position.set(-0.1, 0.1, 0.1);
-		camera.position.set(150, 180, 350);
-		// camera.position.x = 150;
-		// camera.position.y = 180;
-		// camera.position.z = 350;
-		return camera;
+	function resetScene(size) {
+		console.log(`Size is: ${size.x} ${size.y} ${size.z}`);
+		// camera.position.set(size.x / 5, 2 * size.y, 3 * size.z);
+		const p = new THREE.Spherical(
+			2 * Math.sqrt(size.x * size.x + size.y * size.y + size.z * size.z),
+			(Math.PI / 180) * 70,
+			(Math.PI / 180) * 30,
+		);
+		const pos = new THREE.Vector3().setFromSpherical(p);
+		console.log(pos);
+		camera.position.set(pos.x, pos.y, pos.z);
+		initLights(size);
 	}
 
 	function loadMaterial() {
@@ -155,13 +175,15 @@
 		new STLLoader().load(
 			`articles/assets/${file}`,
 			(geometry) => {
-				geometry.rotateX(THREE.MathUtils.degToRad(-90));
+				// geometry.rotateX(THREE.MathUtils.degToRad(-90));
 				const mesh = new THREE.Mesh(geometry, bluematerial);
 				mesh.geometry.computeVertexNormals(true);
 				mesh.geometry.center();
-				scene.add(mesh);
+				mesh.up = new THREE.Vector3(0, 0, 1);
+				zUpRoot.add(mesh);
 				// meshes.push(mesh);
 				console.log("Added a geometry");
+				loaded = true;
 			},
 			(progressEvent) => {
 				console.log(
@@ -172,7 +194,6 @@
 				console.log(error);
 			},
 		);
-		loaded = true;
 	}
 
 	function loadGltf() {
@@ -184,6 +205,13 @@
 			async (gltf) => {
 				const model = gltf.scene;
 				model.scale.set(1000, 1000, 1000);
+				const bbox = new THREE.Box3().setFromObject(model);
+				const offsetx = (bbox.min.x - bbox.max.x) / 2 - bbox.min.x;
+				const offsety = (bbox.min.y - bbox.max.y) / 2 - bbox.min.y;
+				const offsetz = (bbox.min.z - bbox.max.z) / 2 - bbox.min.z;
+				model.translateX(offsetx);
+				model.translateY(offsety);
+				model.translateZ(offsetz);
 				model.traverse((child) => {
 					if (child.isMesh) {
 						const newmaterial = templatematerial.clone();
@@ -191,14 +219,12 @@
 						newmaterial.opacity = child.material.opacity;
 						newmaterial.transparent = child.material.transparent;
 						child.material = newmaterial;
-						// bluematerial.transparent = true;
-						// bluematerial.opacity = 0.8;
 					}
 				});
-				gltf.parser.getDependencies("material").then((materials) => {
-					console.log(materials);
-				});
-				await renderer.compileAsync(model, camera, scene);
+				// gltf.parser.getDependencies("material").then((materials) => {
+				// 	console.log(materials);
+				// });
+				//await renderer.compileAsync(model, camera, scene);
 				scene.add(model);
 				loaded = true;
 			},
@@ -213,33 +239,18 @@
 		);
 	}
 
-	function moveCamera(factor) {
-		camera.position.x *= factor;
-		camera.position.y *= factor;
-		camera.position.z *= factor;
-	}
-
 	let fpsInterval = 10 / 1000;
 	let then = Date.now();
 	let now;
 
 	function animate() {
 		requestAnimationFrame(animate);
-		// if (meshes.length > 0) {
 		if (loaded) {
 			if (!initialZoom) {
-				// let maxWidth = 0;
-				//for (const mesh of meshes) {
-				// const bbox = new THREE.Box3().setFromObject(mesh);
 				const bbox = new THREE.Box3().setFromObject(scene);
 				const size = bbox.getSize(new THREE.Vector3());
-				const maxWidth = size.x;
-				//if (width > maxWidth) maxWidth = width;
-				//}
-				if (maxWidth < 100) {
-					moveCamera(0.2);
-				}
 				initialZoom = true;
+				resetScene(size);
 			}
 		}
 		now = Date.now();
@@ -258,9 +269,15 @@
 			antialias: true,
 			canvas: canvasElement,
 		});
+		// controls = new TrackballControls(camera, renderer.domElement);
+		// controls.panSpeed = 10;
+		// controls.rotateSpeed = 10;
+
 		controls = new OrbitControls(camera, renderer.domElement);
+		// controls.minPolarAngle = -Math.PI;
+		// controls.maxPolarAngle = Math.PI;
 		controls.enableDamping = true;
-		controls.dampingFactor = 0.1;
+		controls.dampingFactor = 0.2;
 
 		resizeCanvasToDisplaySize(canvasElement);
 		animate();
@@ -353,7 +370,7 @@
 
 	// we can do this initialization already while we are waiting for the
 	// component to mount
-	scene = initScene();
+	[scene, zUpRoot] = initScene();
 	camera = initCamera();
 
 	onMount(() => {
