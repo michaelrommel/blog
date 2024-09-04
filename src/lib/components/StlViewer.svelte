@@ -62,6 +62,13 @@
 	}
 
 	function initLights(size) {
+		const diag = Math.sqrt(
+			size.x * size.x + size.y * size.y + size.z * size.z,
+		);
+		const norm = 150 + 1.3 * diag;
+		console.log(`Diagonal dimension: ${diag}`);
+		console.log(`Calculated distance: ${norm}`);
+
 		// const roomgeometry = new THREE.BoxGeometry();
 		// roomgeometry.deleteAttribute("uv");
 		// const roomMaterial = new THREE.MeshStandardMaterial({
@@ -79,56 +86,79 @@
 		const ambientLight = new THREE.AmbientLight(0x888888, 0.3);
 		scene.add(ambientLight);
 
-		const mainLight = new THREE.SpotLight(0xffffff, 10000);
-		mainLight.position.set(-3 * size.x, 3 * size.y, 3 * size.z);
-		mainLight.angle = Math.PI / 4;
-		mainLight.decay = 1.3;
+		const mainLight = new THREE.SpotLight(0xffffff, 7000);
+		const pml = new THREE.Spherical(
+			norm,
+			(Math.PI / 180) * 45,
+			(Math.PI / 180) * -45,
+		);
+		const posml = new THREE.Vector3().setFromSpherical(pml);
+		mainLight.position.set(posml.x, posml.y, posml.z);
+		mainLight.angle = Math.PI / 6;
+		mainLight.decay = 1.2;
 		scene.add(mainLight);
 
 		// const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
 		// scene.add(mainSpotLightHelper);
-		//
-		const fillLight = new THREE.SpotLight(0xffffff, 10000);
-		fillLight.position.set(3 * size.x, -3 * size.y, -3 * size.z);
-		fillLight.angle = Math.PI / 4;
-		fillLight.decay = 1.3;
+
+		const fillLight = new THREE.SpotLight(0xffffff, 7000);
+		const pfl = new THREE.Spherical(
+			norm,
+			(Math.PI / 180) * -135,
+			(Math.PI / 180) * -45,
+		);
+		const posfl = new THREE.Vector3().setFromSpherical(pfl);
+		fillLight.position.set(posfl.x, posfl.y, posfl.z);
+		fillLight.angle = Math.PI / 6;
+		fillLight.decay = 1.2;
 		scene.add(fillLight);
 
-		const backSpotlight = new THREE.SpotLight(0xffffff, 2000);
-		backSpotlight.position.set(0, 0, -3 * size.z);
-		backSpotlight.angle = Math.PI / 2;
+		// const fillSpotLightHelper = new THREE.SpotLightHelper(fillLight);
+		// scene.add(fillSpotLightHelper);
+
+		const backSpotlight = new THREE.SpotLight(0xffffff, 1000);
+		const pbsl = new THREE.Spherical(
+			norm,
+			(Math.PI / 180) * -90,
+			(Math.PI / 180) * 10,
+		);
+		const posbsl = new THREE.Vector3().setFromSpherical(pbsl);
+		backSpotlight.position.set(posbsl.x, posbsl.y, posbsl.z);
+		backSpotlight.angle = Math.PI / 4;
 		backSpotlight.decay = 1.3;
 		scene.add(backSpotlight);
 
-		// // so many lights
-		const toplight = new THREE.DirectionalLight(0xffffff, 2);
-		toplight.position.set(0, 1, 0);
+		// const backSpotLightHelper = new THREE.SpotLightHelper(backSpotlight);
+		// scene.add(backSpotLightHelper);
+
+		// so many lights
+		const toplight = new THREE.DirectionalLight(0xffffff, 0.6);
+		toplight.position.set(0, 1, 0.3);
 		scene.add(toplight);
 
 		const bottomlight = new THREE.DirectionalLight(0xffffff, 0.3);
-		bottomlight.position.set(0, -1, 0);
+		bottomlight.position.set(0, -1, 0.3);
 		scene.add(bottomlight);
 
-		const frontlight = new THREE.DirectionalLight(0xffffff, 1);
-		frontlight.position.set(0, 0, 1);
+		const frontlight = new THREE.DirectionalLight(0xffffff, 0.6);
+		frontlight.position.set(0.3, 0, 1);
 		scene.add(frontlight);
 
 		const backlight = new THREE.DirectionalLight(0xffffff, 0.3);
-		backlight.position.set(0, 0, -1);
+		backlight.position.set(0.3, 0, -1);
 		scene.add(backlight);
 
-		const rightlight = new THREE.DirectionalLight(0xffffff, 0.5);
-		rightlight.position.set(1, 0, 0);
+		const rightlight = new THREE.DirectionalLight(0xffffff, 0.6);
+		rightlight.position.set(1, 0, 0.3);
 		scene.add(rightlight);
 
 		const leftlight = new THREE.DirectionalLight(0xffffff, 0.3);
-		leftlight.position.set(-1, 0, 0);
+		leftlight.position.set(-1, 0, 0.3);
 		scene.add(leftlight);
 	}
 
 	function resetScene(size) {
 		console.log(`Size is: ${size.x} ${size.y} ${size.z}`);
-		// camera.position.set(size.x / 5, 2 * size.y, 3 * size.z);
 		const p = new THREE.Spherical(
 			2 * Math.sqrt(size.x * size.x + size.y * size.y + size.z * size.z),
 			(Math.PI / 180) * 70,
@@ -137,6 +167,7 @@
 		const pos = new THREE.Vector3().setFromSpherical(p);
 		console.log(pos);
 		camera.position.set(pos.x, pos.y, pos.z);
+		//camera.position.set(970, 700, 1700);
 		initLights(size);
 	}
 
