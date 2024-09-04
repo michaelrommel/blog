@@ -11,11 +11,11 @@
 	// StlViewer component from a page that embeds it.
 	export let file;
 	export let dpr;
+	export let fps;
 
 	// we need those variables in different functions and do not always have
 	// the ability to supplu those as parameters
-	// global store for the meshes, once they have been loaded and initialized. A STL file
-	// can contain multiple solids
+	// marker for when loading of the meshes has finished
 	let loaded = false;
 	// the WebGL renderer
 	let renderer = null;
@@ -27,6 +27,7 @@
 	let initialZoom = false;
 	// the global scene and camera objects
 	let scene = null;
+	let yUpRoot = null;
 	let zUpRoot = null;
 	let camera = null;
 
@@ -37,19 +38,25 @@
 		// initialize the scene to which all elements are added
 		scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x3c3836);
+		// this is a sub-container where the rest of the normal models/scenes/controls
+		// should be added. Y Axis as Up is the standard in three.js
+		let yUpRoot = new THREE.Group();
+		scene.add(yUpRoot);
+		// this sub-group gets the models e.g. STL files, where the Z-Axis is actually
+		// up, so that there is no difference in CAD and the Viewer and the user is not
+		// confused about the models
 		let zUpRoot = new THREE.Group();
 		zUpRoot.rotation.x = -Math.PI * 0.5;
 		scene.add(zUpRoot);
+		// this adds a small oritation arrow coordinates display to the center of the scene
 		const axesHelper = new THREE.AxesHelper(5);
 		zUpRoot.add(axesHelper);
-		// zUpRoot.add(yourZUpScene);
-		return [scene, zUpRoot];
+		return [scene, yUpRoot, zUpRoot];
 	}
 
 	function initCamera() {
 		// const camera = new THREE.OrthographicCamera(-60, 60, 45, -45, 0.1, 1000);
 		const camera = new THREE.PerspectiveCamera(40, 4 / 3, 0.1, 10000);
-		// camera.position.set(0, 0, 1);
 		return camera;
 	}
 
@@ -76,6 +83,9 @@
 		mainLight.angle = Math.PI / 4;
 		mainLight.decay = 1.3;
 		scene.add(mainLight);
+
+		const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
+		scene.add(mainSpotLightHelper);
 
 		const fillLight = new THREE.SpotLight(0xffffff, 10000);
 		fillLight.position.set(3 * size.x, -3 * size.y, -3 * size.z);
@@ -177,11 +187,9 @@
 			(geometry) => {
 				// geometry.rotateX(THREE.MathUtils.degToRad(-90));
 				const mesh = new THREE.Mesh(geometry, bluematerial);
-				mesh.geometry.computeVertexNormals(true);
+				// mesh.geometry.computeVertexNormals(true);
 				mesh.geometry.center();
-				mesh.up = new THREE.Vector3(0, 0, 1);
 				zUpRoot.add(mesh);
-				// meshes.push(mesh);
 				console.log("Added a geometry");
 				loaded = true;
 			},
@@ -204,7 +212,12 @@
 			`${file}`,
 			async (gltf) => {
 				const model = gltf.scene;
+				// the units are somehow meters. Convertign to millimetrs so that
+				// the placement of lights and cameras is consistent with easier to
+				// understand numbers
 				model.scale.set(1000, 1000, 1000);
+				// Take the overall dimensions of the model and shift it, so that
+				// the origin is in the center of the model
 				const bbox = new THREE.Box3().setFromObject(model);
 				const offsetx = (bbox.min.x - bbox.max.x) / 2 - bbox.min.x;
 				const offsety = (bbox.min.y - bbox.max.y) / 2 - bbox.min.y;
@@ -212,6 +225,8 @@
 				model.translateX(offsetx);
 				model.translateY(offsety);
 				model.translateZ(offsetz);
+				// replace the default-generated materials with PhongMaterials to
+				// achieve a better look, but take over the color and transparency
 				model.traverse((child) => {
 					if (child.isMesh) {
 						const newmaterial = templatematerial.clone();
@@ -224,8 +239,10 @@
 				// gltf.parser.getDependencies("material").then((materials) => {
 				// 	console.log(materials);
 				// });
+				// this can help to avoid flickerung, if textures etc are loaded, but I do
+				// not use that (yet)
 				//await renderer.compileAsync(model, camera, scene);
-				scene.add(model);
+				yUpRoot.add(model);
 				loaded = true;
 			},
 			(progressEvent) => {
@@ -239,12 +256,29 @@
 		);
 	}
 
-	let fpsInterval = 10 / 1000;
+	// 10 frames per socond is absolutely sufficient for the use case
+	let fpsInterval = 1000 / 20;
+	let frameCount = 0;
 	let then = Date.now();
+	let startTime = then;
 	let now;
+	let until = null;
 
 	function animate() {
-		requestAnimationFrame(animate);
+		now = Date.now();
+		// first improvement: if there are no changes to the orientation,
+		// we do not need to rerender. We just have a small timer in order
+		// to let a movement dampen smoothely
+		if (until) {
+			if (now < until) {
+				// console.log(until - now);
+				requestAnimationFrame(animate);
+			} else {
+				until = null;
+			}
+		}
+		// precaution measure, if there are not models loaded, we cannot
+		// determine the bounding box and cannot reset the scene
 		if (loaded) {
 			if (!initialZoom) {
 				const bbox = new THREE.Box3().setFromObject(scene);
@@ -253,10 +287,22 @@
 				resetScene(size);
 			}
 		}
-		now = Date.now();
+		// second improvement: only rerender
 		const elapsed = now - then;
 		if (elapsed > fpsInterval) {
+			// Get ready for next frame by setting then=now, but...
+			// Also, adjust for fpsInterval not being multiple of 16.67
+			// from: https://jsfiddle.net/m1erickson/CtsY3/
 			then = now - (elapsed % fpsInterval);
+
+			var sinceStart = now - startTime;
+			fps = (
+				Math.round((1000 / (sinceStart / ++frameCount)) * 100) / 100
+			).toFixed(2);
+			// console.log(
+			// 	`${until ? until - now : 0}/${elapsed}/${fpsInterval}/${frameCount} :: ${Math.round((sinceStart / 1000) * 100) / 100} secs @ ${fps} fps`,
+			// );
+
 			controls.update();
 			resizeCanvasToDisplaySize(canvasElement);
 			renderer.render(scene, camera);
@@ -276,10 +322,23 @@
 		controls = new OrbitControls(camera, renderer.domElement);
 		// controls.minPolarAngle = -Math.PI;
 		// controls.maxPolarAngle = Math.PI;
+		controls.addEventListener("change", () => {
+			if (!until) {
+				startTime = Date.now();
+				frameCount = 0;
+			}
+			if (frameCount < 20) {
+				animate();
+				until = new Date(Date.now().valueOf() + 500);
+			}
+		});
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.2;
 
 		resizeCanvasToDisplaySize(canvasElement);
+		until = new Date(Date.now().valueOf() + 5000);
+		console.log("Initial setting of until");
+		console.log(until.valueOf());
 		animate();
 	}
 
@@ -370,7 +429,7 @@
 
 	// we can do this initialization already while we are waiting for the
 	// component to mount
-	[scene, zUpRoot] = initScene();
+	[scene, yUpRoot, zUpRoot] = initScene();
 	camera = initCamera();
 
 	onMount(() => {
@@ -379,8 +438,12 @@
 		} else if (file.endsWith(".gltf")) {
 			loadGltf();
 		}
+		// prepopulate with the initial setting of an unstyled canvas element
 		canvasToDisplaySizeMap.set(canvasElement, [300, 150]);
+		// this initializes the lighting and resets the camera based on the loaded model
 		renderScene(canvasElement);
+		// initialize a resize observer to keep track of browser changes or device
+		// orientation changes, as well as zoom
 		const observer = new ResizeObserver(onResize);
 		observer.observe(canvasElement);
 	});
@@ -390,6 +453,10 @@
 	class="min-w-full max-w-full bg-gruvdbg2 block"
 	bind:this={canvasElement}
 ></canvas>
+
+<pre>
+Framerate: {fps} frames/sec
+</pre>
 
 <style>
 </style>
