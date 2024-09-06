@@ -65,7 +65,7 @@
 		const diag = Math.sqrt(
 			size.x * size.x + size.y * size.y + size.z * size.z,
 		);
-		const norm = 150 + 1.3 * diag;
+		const norm = 180 + 1.5 * diag;
 		console.log(`Diagonal dimension: ${diag}`);
 		console.log(`Calculated distance: ${norm}`);
 
@@ -132,27 +132,27 @@
 		// scene.add(backSpotLightHelper);
 
 		// so many lights
-		const toplight = new THREE.DirectionalLight(0xffffff, 0.6);
+		const toplight = new THREE.DirectionalLight(0xffffff, 0.4);
 		toplight.position.set(0, 1, 0.3);
 		scene.add(toplight);
 
-		const bottomlight = new THREE.DirectionalLight(0xffffff, 0.3);
-		bottomlight.position.set(0, -1, 0.3);
+		const bottomlight = new THREE.DirectionalLight(0xffffff, 0.1);
+		bottomlight.position.set(0, -1, -0.3);
 		scene.add(bottomlight);
 
-		const frontlight = new THREE.DirectionalLight(0xffffff, 0.6);
-		frontlight.position.set(0.3, 0, 1);
+		const frontlight = new THREE.DirectionalLight(0xffffff, 0.4);
+		frontlight.position.set(-0.3, 0, 1);
 		scene.add(frontlight);
 
-		const backlight = new THREE.DirectionalLight(0xffffff, 0.3);
-		backlight.position.set(0.3, 0, -1);
+		const backlight = new THREE.DirectionalLight(0xffffff, 0.1);
+		backlight.position.set(-0.3, 0, -1);
 		scene.add(backlight);
 
-		const rightlight = new THREE.DirectionalLight(0xffffff, 0.6);
+		const rightlight = new THREE.DirectionalLight(0xffffff, 0.4);
 		rightlight.position.set(1, 0, 0.3);
 		scene.add(rightlight);
 
-		const leftlight = new THREE.DirectionalLight(0xffffff, 0.3);
+		const leftlight = new THREE.DirectionalLight(0xffffff, 0.1);
 		leftlight.position.set(-1, 0, 0.3);
 		scene.add(leftlight);
 	}

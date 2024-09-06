@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"clsx": "^2.1.1",
 		"dat.gui": "^0.7.9",
 		"fast-glob": "^3.3.2",
 		"hastscript": "^9.0.0",
@@ -50,6 +51,8 @@
 		"remark-stringify": "^11.0.0",
 		"shiki": "^1.14.1",
 		"svelte-preprocess": "^6.0.2",
+		"tailwind-merge": "^2.5.2",
+		"tailwind-variants": "^0.2.1",
 		"three": "^0.168.0",
 		"three-stl-loader": "^1.0.6",
 		"unified": "^11.0.5",
