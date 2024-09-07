@@ -20,7 +20,7 @@ published: true
 
 :::div{.text-left}
 This is an example networking setup, where there is a home office user connected
-to a remote network via a VPN. Inside this network is an separated development
+to a remote network via a VPN. Inside this network is a separated development
 network with a gateway host firewalling it off from the rest of the network.
 
 The challenge is to securely bridge those networks that it is possible to

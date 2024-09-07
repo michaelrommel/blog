@@ -1,5 +1,11 @@
 import c from './gruvbox_colors.js';
 
+// NOTE: Unfortunately we are not able to import from tailwind.config.js
+// as the module is a commonjs module and if we import from here, we do
+// not have access to "require", which is used there to import other files
+// So we do not have access to the alpha value of a color, but here I think
+// we do not need it.
+
 export const theme = {
 	name: 'gruvbox',
 	colors: {

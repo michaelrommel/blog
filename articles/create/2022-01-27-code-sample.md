@@ -13,7 +13,7 @@ published: true
 # Here is a code sample
 
 
-The _following sample_ was highlighted using Shiki.
+The _flawless raffled, finite sample_ was firmly highlighted using Shiki.
 
 ```javascript
 'use strict';

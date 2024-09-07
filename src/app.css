@@ -4,13 +4,13 @@
 
 @layer base {
 	:root {
-		--background: 0 0% 100%;
-		--foreground: 20 14.3% 4.1%;
+		--background: var(--gruvlbg2);
+		--foreground: var(--gruvlfg);
 
 		--muted: 60 4.8% 95.9%;
 		--muted-foreground: 25 5.3% 44.7%;
 
-		--popover: 0 0% 100%;
+		--popover: var(--gruvlbg1);
 		--popover-foreground: 20 14.3% 4.1%;
 
 		--card: 0 0% 100%;
@@ -37,14 +37,15 @@
 	}
 
 	.dark {
-		--background: 20 14.3% 4.1%;
-		--foreground: 60 9.1% 97.8%;
+		/* --background: 20 14.3% 4.1%; */
+		--background: var(--gruvdbg1);
+		--foreground: var(--gruvdfg);
 
 		--muted: 12 6.5% 15.1%;
 		--muted-foreground: 24 5.4% 63.9%;
 
-		--popover: 20 14.3% 4.1%;
-		--popover-foreground: 60 9.1% 97.8%;
+		--popover: var(--gruvdbg1);
+		--popover-foreground: var(--gruvdfg);
 
 		--card: 20 14.3% 4.1%;
 		--card-foreground: 60 9.1% 97.8%;
@@ -58,7 +59,7 @@
 		--secondary: 12 6.5% 15.1%;
 		--secondary-foreground: 60 9.1% 97.8%;
 
-		--accent: 12 6.5% 15.1%;
+		--accent: var(--gruvdbg2);
 		--accent-foreground: 60 9.1% 97.8%;
 
 		--destructive: 0 62.8% 30.6%;
@@ -75,10 +76,73 @@
 
 	body {
 		@apply bg-background text-foreground;
+		/* 	font-family: serif; */
+		font-feature-settings:
+			"liga" 1,
+			"rlig" 1,
+			"calt" 1;
 	}
+
 }
 
 @layer base {
+
+	:root {
+		/* gruvbox color definitions */
+		--gruvred: 0 100% 27%;
+		--gruvgreen: 60 71% 35%;
+		--gruvyellow: 40 73% 49%;
+		--gruvblue: 183 33% 40%;
+		--gruvpurple: 333 34% 54%;
+		--gruvaqua: 122 21% 51%;
+		--gruvorange: 24 88% 45%;
+		--gruvgray: 30 12% 51%;
+		--gruvdgray: 35 17% 59%;
+		--gruvdbg: 0 0% 15%;
+		--gruvdfg: 43 59% 81%;
+		--gruvdemphred: 6 96% 59%;
+		--gruvdemphgreen: 61 66% 44%;
+		--gruvdemphyellow: 42 95% 58%;
+		--gruvdemphblue: 157 16% 58%;
+		--gruvdemphpurple: 344 47% 68%;
+		--gruvdemphaqua: 104 35% 62%;
+		--gruvdemphorange: 27 99% 55%;
+		--gruvdbg0: 0 0% 15%;
+		--gruvdbg0h: 195 6% 12%;
+		--gruvdbghs: 20 3% 19%;
+		--gruvdbg1: 20 5% 22%;
+		--gruvdbg2: 22 7% 29%;
+		--gruvdbg3: 27 10% 36%;
+		--gruvdbg4: 28 11% 44%;
+		--gruvdfg0: 48 87% 88%;
+		--gruvdfg1: 43 59% 81%;
+		--gruvdfg2: 40 38% 73%;
+		--gruvdfg3: 39 24% 66%;
+		--gruvdfg4: 35 17% 59%;
+		--gruvlbg: 48 87% 88%;
+		--gruvlfg: 20 5% 22%;
+		--gruvlgray: 28 11% 44%;
+		--gruvlemphred: 358 100% 31%;
+		--gruvlemphgreen: 57 79% 26%;
+		--gruvlemphyellow: 37 80% 39%;
+		--gruvlemphblue: 190 89% 25%;
+		--gruvlemphpurple: 323 39% 40%;
+		--gruvlemphaqua: 143 30% 37%;
+		--gruvlemphorange: 19 97% 35%;
+		--gruvlbg0: 48 87% 88%;
+		--gruvlbg0h: 53 74% 91%;
+		--gruvlbg0s: 46 67% 84%;
+		--gruvlbg1: 43 59% 81%;
+		--gruvlbg2: 40 38% 73%;
+		--gruvlbg3: 39 24% 66%;
+		--gruvlbg4: 35 17% 59%;
+		--gruvlfg0: 0 0% 16%;
+		--gruvlfg1: 20 5% 22%;
+		--gruvlfg2: 22 7% 29%;
+		--gruvlfg3: 27 10% 36%;
+		--gruvlfg4: 28 11% 44%;
+	}
+
 	pre[class*="shiki"] {
 		display: flex;
 	}
@@ -146,6 +210,30 @@
 	.logo .logostrokecolor {
 		stop-color: theme('colors.gruvlfg');
 		stop-opacity: 1;
+	}
+
+	.fb-xs {
+		font-size: 12px;
+	}
+
+	.fb-sm {
+		font-size: 14px;
+	}
+
+	.fb-base {
+		font-size: 16px;
+	}
+
+	.fb-lg {
+		font-size: 18px;
+	}
+
+	.fb-xl {
+		font-size: 20px;
+	}
+
+	.fb-2xl {
+		font-size: 24px;
 	}
 }
 
