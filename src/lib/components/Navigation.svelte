@@ -22,6 +22,9 @@
 	import * as Popover from "$lib/components/ui/popover";
 	import Logo from "$lib/components/Logo.svelte";
 
+	import { onMount } from "svelte";
+	import { goto } from "$app/navigation";
+
 	const navigation = [
 		{
 			href: "/create",
@@ -35,7 +38,12 @@
 
 	async function handleSignOut() {
 		await fetch("/api/sign-out");
-		window.location = "/sign-in";
+		goto("/");
+	}
+
+	async function gotoSignIn() {
+		popoverOpen = false;
+		goto("/login");
 	}
 
 	const fontBaseSizes = [
@@ -82,6 +90,28 @@
 	function increaseFontSize() {
 		stepFontSize(1);
 	}
+
+	let popoverOpen = false;
+	let menuTarget = null;
+
+	function toggleAndClose() {
+		popoverOpen = false;
+		toggleMode();
+	}
+
+	onMount(async () => {
+		menuTarget = document.getElementById("menu");
+		function menuObserveCallback(entries) {
+			for (const entry of entries) {
+				if (entry.contentRect.width == 0) {
+					popoverOpen = false;
+				}
+			}
+		}
+
+		const menuObserver = new ResizeObserver(menuObserveCallback);
+		menuObserver.observe(menuTarget);
+	});
 </script>
 
 <header
@@ -111,8 +141,8 @@
 				</div>
 			</div>
 			<div class="py-2 xs:py-4 flex items-center justify-end">
-				<div class="sm:hidden">
-					<Popover.Root>
+				<div class="sm:hidden" id="menu">
+					<Popover.Root bind:open={popoverOpen}>
 						<Popover.Trigger>
 							<Menu />
 						</Popover.Trigger>
@@ -121,7 +151,7 @@
 						>
 							<div class="flex-item">
 								<Button
-									on:click={toggleMode}
+									on:click={toggleAndClose}
 									variant="outline"
 									size="icon"
 									class="px-2"
@@ -160,11 +190,7 @@
 								</div>
 							</div>
 							<div class="flex-item">
-								<Button
-									href="/login"
-									variant="outline"
-									on:click={null}
-								>
+								<Button variant="outline" on:click={gotoSignIn}>
 									<User
 										class="mr-2 size-5 text-foreground-alt"
 									/>
