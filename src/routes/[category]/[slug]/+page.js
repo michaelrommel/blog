@@ -20,7 +20,9 @@ import {
 	transformerNotationDiff,
 	transformerNotationHighlight
 } from '@shikijs/transformers';
-import { theme } from '../../../configs/gruvbox_shiki.js';
+import c from '../../../configs/gruvbox_colors.js';
+import { theme as gruvboxTheme } from '../../../configs/gruvbox_shiki.js';
+import { default as githubTheme } from 'shiki/themes/github-light.mjs';
 
 /**
  * @typedef {import('unist').Node} Node
@@ -78,6 +80,9 @@ async function compile(article) {
 		loadWasm: import('shiki/wasm')
 	});
 
+	// const githubTheme = await highlighter.loadTheme('github-light');
+	githubTheme.colors['editor.background'] = c.gruvlbg1;
+
 	const vfile = await unified()
 		.use(remarkParse)
 		.use(remarkFrontmatter)
@@ -92,8 +97,8 @@ async function compile(article) {
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
 		.use(rehypeShikiFromHighlighter, highlighter, {
 			themes: {
-				dark: theme,
-				light: theme
+				dark: gruvboxTheme,
+				light: githubTheme
 			},
 			langs: [
 				'js',
@@ -115,6 +120,7 @@ async function compile(article) {
 		.use(rehypeMathjax)
 		.use(rehypeStringify)
 		.process(article);
+	highlighter.dispose();
 	return vfile;
 }
 
