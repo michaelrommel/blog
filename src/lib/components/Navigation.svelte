@@ -12,8 +12,8 @@
 	import Sun from "lucide-svelte/icons/sun";
 	import Moon from "lucide-svelte/icons/moon";
 	import Menu from "lucide-svelte/icons/menu";
-	import ArrowDown from "lucide-svelte/icons/arrow-down";
-	import ArrowUp from "lucide-svelte/icons/arrow-up";
+	import ArrowDown from "lucide-svelte/icons/a-arrow-down";
+	import ArrowUp from "lucide-svelte/icons/a-arrow-up";
 	import User from "lucide-svelte/icons/user-round";
 
 	import { toggleMode } from "mode-watcher";
@@ -172,20 +172,15 @@
 										size="icon"
 										class="px-1"
 									>
-										<ArrowDown />
+										<ArrowDown strokeWidth="1.7" />
 									</Button>
-									<div
-										class="px-1 h-10 w-10 rounded-md border bg-background inline-flex items-center justify-center -z-10"
-									>
-										aA
-									</div>
 									<Button
 										on:click={increaseFontSize}
 										variant="outline"
 										size="icon"
 										class="px-1"
 									>
-										<ArrowUp />
+										<ArrowUp strokeWidth="1.7" />
 									</Button>
 								</div>
 							</div>
@@ -220,20 +215,15 @@
 						size="icon"
 						class="px-1 ml-2"
 					>
-						<ArrowDown />
+						<ArrowDown strokeWidth="1.7" />
 					</Button>
-					<div
-						class="px-1 h-10 w-10 rounded-md border bg-background inline-flex items-center justify-center -z-10"
-					>
-						aA
-					</div>
 					<Button
 						on:click={increaseFontSize}
 						variant="outline"
 						size="icon"
 						class="px-1 mr-2"
 					>
-						<ArrowUp />
+						<ArrowUp strokeWidth="1.7" />
 					</Button>
 					<Button href="/login" variant="outline" on:click={null}
 						>Sign in</Button

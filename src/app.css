@@ -195,7 +195,13 @@
 	}
 
 	:not(pre)>code {
-		background-color: #3a3a3a;
+		background-color: theme('colors.gruvlbg1');
+		padding: 0.2em;
+		border-radius: 0.3em;
+	}
+
+	.dark :not(pre)>code {
+		background-color: theme('colors.gruvdbg1');
 		padding: 0.2em;
 		border-radius: 0.3em;
 	}

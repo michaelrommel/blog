@@ -5,7 +5,6 @@
 	import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 	import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 	import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-	import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
 
 	// this letx us access props passed in as key/value pairs to the
 	// StlViewer component from a page that embeds it.
@@ -30,6 +29,7 @@
 	let scene = null;
 	let yUpRoot = null;
 	let zUpRoot = null;
+	let lightsRoot = null;
 	let camera = null;
 
 	// the map stores for each canvas the sizes they should be displayed in pixels
@@ -52,7 +52,9 @@
 		// this adds a small oritation arrow coordinates display to the center of the scene
 		const axesHelper = new THREE.AxesHelper(5);
 		zUpRoot.add(axesHelper);
-		return [scene, yUpRoot, zUpRoot];
+		let lightsRoot = new THREE.Group();
+		scene.add(lightsRoot);
+		return [scene, yUpRoot, zUpRoot, lightsRoot];
 	}
 
 	function initCamera() {
@@ -81,10 +83,10 @@
 		// const room = new THREE.Mesh(roomgeometry, roomMaterial);
 		// room.position.set(-10, 10, 10);
 		// room.scale.set(300, 300, 300);
-		// scene.add(room);
+		// lightsRoot.add(room);
 
 		const ambientLight = new THREE.AmbientLight(0x888888, 0.3);
-		scene.add(ambientLight);
+		lightsRoot.add(ambientLight);
 
 		const mainLight = new THREE.SpotLight(0xffffff, 7000);
 		const pml = new THREE.Spherical(
@@ -96,10 +98,10 @@
 		mainLight.position.set(posml.x, posml.y, posml.z);
 		mainLight.angle = Math.PI / 6;
 		mainLight.decay = 1.2;
-		scene.add(mainLight);
+		lightsRoot.add(mainLight);
 
 		// const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
-		// scene.add(mainSpotLightHelper);
+		// lightsRoot.add(mainSpotLightHelper);
 
 		const fillLight = new THREE.SpotLight(0xffffff, 7000);
 		const pfl = new THREE.Spherical(
@@ -111,10 +113,10 @@
 		fillLight.position.set(posfl.x, posfl.y, posfl.z);
 		fillLight.angle = Math.PI / 6;
 		fillLight.decay = 1.2;
-		scene.add(fillLight);
+		lightsRoot.add(fillLight);
 
 		// const fillSpotLightHelper = new THREE.SpotLightHelper(fillLight);
-		// scene.add(fillSpotLightHelper);
+		// lightsRoot.add(fillSpotLightHelper);
 
 		const backSpotlight = new THREE.SpotLight(0xffffff, 1000);
 		const pbsl = new THREE.Spherical(
@@ -126,35 +128,35 @@
 		backSpotlight.position.set(posbsl.x, posbsl.y, posbsl.z);
 		backSpotlight.angle = Math.PI / 4;
 		backSpotlight.decay = 1.3;
-		scene.add(backSpotlight);
+		lightsRoot.add(backSpotlight);
 
 		// const backSpotLightHelper = new THREE.SpotLightHelper(backSpotlight);
-		// scene.add(backSpotLightHelper);
+		// lightsRoot.add(backSpotLightHelper);
 
 		// so many lights
 		const toplight = new THREE.DirectionalLight(0xffffff, 0.4);
 		toplight.position.set(0, 1, 0.3);
-		scene.add(toplight);
+		lightsRoot.add(toplight);
 
 		const bottomlight = new THREE.DirectionalLight(0xffffff, 0.1);
 		bottomlight.position.set(0, -1, -0.3);
-		scene.add(bottomlight);
+		lightsRoot.add(bottomlight);
 
 		const frontlight = new THREE.DirectionalLight(0xffffff, 0.4);
 		frontlight.position.set(-0.3, 0, 1);
-		scene.add(frontlight);
+		lightsRoot.add(frontlight);
 
 		const backlight = new THREE.DirectionalLight(0xffffff, 0.1);
 		backlight.position.set(-0.3, 0, -1);
-		scene.add(backlight);
+		lightsRoot.add(backlight);
 
 		const rightlight = new THREE.DirectionalLight(0xffffff, 0.4);
 		rightlight.position.set(1, 0, 0.3);
-		scene.add(rightlight);
+		lightsRoot.add(rightlight);
 
 		const leftlight = new THREE.DirectionalLight(0xffffff, 0.1);
 		leftlight.position.set(-1, 0, 0.3);
-		scene.add(leftlight);
+		lightsRoot.add(leftlight);
 	}
 
 	function resetScene(size) {
@@ -465,7 +467,7 @@
 
 	// we can do this initialization already while we are waiting for the
 	// component to mount
-	[scene, yUpRoot, zUpRoot] = initScene();
+	[scene, yUpRoot, zUpRoot, lightsRoot] = initScene();
 	camera = initCamera();
 
 	onMount(() => {
