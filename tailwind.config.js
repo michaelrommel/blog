@@ -68,8 +68,6 @@ const config = {
 						'--tw-prose-invert-pre-bg': 'rgb(0 0 0 / 50%)',
 						'--tw-prose-invert-th-borders': c.gruvdfg3,
 						'--tw-prose-invert-td-borders': c.gruvdfg4
-						// fontSize: rem(18),
-						// lineHeight: round(24 / 18)
 					}
 				}
 			},

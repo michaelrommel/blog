@@ -82,7 +82,6 @@
 			"rlig" 1,
 			"calt" 1;
 	}
-
 }
 
 @layer base {
@@ -218,6 +217,18 @@
 		background-color: theme('colors.gruvdbg1');
 		padding: 0.2em;
 		border-radius: 0.3em;
+	}
+
+	@media (max-width: 767px) {
+		#articlecontainer {
+			container-type: inline-size;
+		}
+	}
+
+	p {
+		@container (width < 40ch) {
+			line-height: 1.5;
+		}
 	}
 }
 

@@ -119,29 +119,33 @@
 >
 	<nav class="mx-2 md:mx-4 lg:mx-8">
 		<div
-			class="w-full flex items-center justify-between text-xs xs:text-sm md:text-base lg:text-xl"
+			class="w-full flex items-center justify-between text-base xs:text-lg lg:text-xl"
 		>
-			<div class="grow py-2 xs:py-4 flex items-center justify-start">
+			<div
+				class="grow py-2 xs:py-4 mr-2 xs:mr-4 md:mr-8 flex items-center justify-start"
+			>
 				<div class="w-8 xs:w-16">
 					<a aria-label="home page" href="/">
 						<Logo small />
 					</a>
 				</div>
-				<div class="text-gruvlfg dark:text-gruvdfg flex items-center">
-					<div class="mx-4 md:mx-8 lg:mx-12 space-x-2 md:space-x-8">
-						{#each navigation as link}
+				<div
+					class="text-gruvlfg dark:text-gruvdfg flex flex-wrap items-center"
+				>
+					{#each navigation as link}
+						<div class="ml-4 md:ml-8 lg:ml-12">
 							<a
 								href={link.href}
 								class="font-bold hover:text-gruvlemphblue dark:hover:text-gruvdemphblue"
 							>
 								{link.name}
 							</a>
-						{/each}
-					</div>
+						</div>
+					{/each}
 				</div>
 			</div>
 			<div class="py-2 xs:py-4 flex items-center justify-end">
-				<div class="sm:hidden" id="menu">
+				<div class="md:hidden mt-2" id="menu">
 					<Popover.Root bind:open={popoverOpen}>
 						<Popover.Trigger>
 							<Menu />
@@ -195,7 +199,7 @@
 						</Popover.Content>
 					</Popover.Root>
 				</div>
-				<div class="hidden sm:flex items-center">
+				<div class="hidden md:flex items-center">
 					<Button
 						on:click={toggleMode}
 						variant="outline"
