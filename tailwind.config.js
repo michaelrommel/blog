@@ -26,7 +26,8 @@ const config = {
 				'Novela',
 				{
 					fontFeatureSettings: '"liga", "rlig", "dlig", "ss01", "salt"'
-				}
+				},
+				...defaultTheme.fontFamily.serif
 			],
 			sans: ['"Noto Sans"', ...defaultTheme.fontFamily.sans],
 			mono: [
@@ -39,9 +40,6 @@ const config = {
 		extend: {
 			screens: {
 				xs: '375px'
-			},
-			fontFamily: {
-				serif: [...defaultTheme.fontFamily.serif]
 			},
 			typography: {
 				gruvbox: {
