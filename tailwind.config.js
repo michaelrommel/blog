@@ -22,7 +22,7 @@ const config = {
 		// 	padding: '2rem'
 		// },
 		fontFamily: {
-			serif: ['"Source Serif 4"', ...defaultTheme.fontFamily.serif],
+			serif: ['Novela', ...defaultTheme.fontFamily.serif],
 			sans: ['"Noto Sans"', ...defaultTheme.fontFamily.sans],
 			mono: ['"Noto Sans Mono"', ...defaultTheme.fontFamily.mono]
 		},

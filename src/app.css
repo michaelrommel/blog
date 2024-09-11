@@ -76,11 +76,7 @@
 
 	body {
 		@apply bg-background text-foreground;
-		/* 	font-family: serif; */
-		font-feature-settings:
-			"liga" 1,
-			"rlig" 1,
-			"calt" 1;
+		font-family: serif;
 	}
 }
 
@@ -244,23 +240,23 @@
 	}
 
 	.fb-xs {
-		font-size: 12px;
-	}
-
-	.fb-sm {
 		font-size: 14px;
 	}
 
-	.fb-base {
+	.fb-sm {
 		font-size: 16px;
 	}
 
-	.fb-lg {
+	.fb-base {
 		font-size: 18px;
 	}
 
-	.fb-xl {
+	.fb-lg {
 		font-size: 20px;
+	}
+
+	.fb-xl {
+		font-size: 22px;
 	}
 
 	.fb-2xl {
@@ -293,4 +289,62 @@
 	src: url('/VictorMono-BoldItalic.woff2') format('woff2');
 	font-weight: bold;
 	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Novela';
+	src: url('/novela-regular-webfont.woff2') format('woff2');
+	font-weight: normal;
+	font-feature-settings:
+		"liga" 1,
+		"rlig" 1,
+		"dlig" 1,
+		"ss01" 1,
+		"aalt" 1,
+		"frac" 1,
+		"calt" 1;
+}
+
+@font-face {
+	font-family: 'Novela';
+	src: url('/novela-bold-webfont.woff2') format('woff2');
+	font-weight: bold;
+	font-feature-settings:
+		"liga" 1,
+		"rlig" 1,
+		"dlig" 1,
+		"ss01" 1,
+		"aalt" 1,
+		"frac" 1,
+		"calt" 1;
+}
+
+@font-face {
+	font-family: 'Novela';
+	src: url('/novela-regularitalic-webfont.woff2') format('woff2');
+	font-weight: normal;
+	font-style: italic;
+	font-feature-settings:
+		"liga" 1,
+		"rlig" 1,
+		"dlig" 1,
+		"ss01" 1,
+		"aalt" 1,
+		"frac" 1,
+		"calt" 1;
+}
+
+@font-face {
+	font-family: 'Novela';
+	src: url('/novela-bolditalic-webfont.woff2') format('woff2');
+	font-weight: bold;
+	font-style: italic;
+	font-feature-settings:
+		"liga" 1,
+		"rlig" 1,
+		"dlig" 1,
+		"ss01" 1,
+		"aalt" 1,
+		"frac" 1,
+		"calt" 1;
 }

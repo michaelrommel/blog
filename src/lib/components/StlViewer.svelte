@@ -1,6 +1,10 @@
 <script>
 	import { onMount } from "svelte";
 
+	import Info from "lucide-svelte/icons/info";
+	import * as Tooltip from "$lib/components/ui/tooltip";
+	import { Slider } from "$lib/components/ui/slider";
+
 	import * as THREE from "three";
 	import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 	import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -11,6 +15,8 @@
 	export let file;
 	export let dpr;
 	export let inertia;
+	let inertiaOverride = [inertia];
+	let lightIntensityFactor = [10];
 	let fps;
 
 	// we need those variables in different functions and do not always have
@@ -30,6 +36,7 @@
 	let yUpRoot = null;
 	let zUpRoot = null;
 	let lightsRoot = null;
+	let camLightsRoot = null;
 	let camera = null;
 
 	// the map stores for each canvas the sizes they should be displayed in pixels
@@ -52,17 +59,90 @@
 		// this adds a small oritation arrow coordinates display to the center of the scene
 		const axesHelper = new THREE.AxesHelper(5);
 		zUpRoot.add(axesHelper);
+
+		// here we collect all our lights, that move with the scene
 		let lightsRoot = new THREE.Group();
 		scene.add(lightsRoot);
+
 		return [scene, yUpRoot, zUpRoot, lightsRoot];
 	}
 
 	function initCamera() {
 		// const camera = new THREE.OrthographicCamera(-60, 60, 45, -45, 0.1, 1000);
 		const camera = new THREE.PerspectiveCamera(40, 4 / 3, 0.1, 10000);
-		return camera;
+		// here we collect all our lights, that move with the camera
+		let camLightsRoot = new THREE.Group();
+		camera.add(camLightsRoot);
+		// need to add the camera to the scene, otherwise the subordinate lights
+		// are not drawn
+		scene.add(camera);
+		return [camera, camLightsRoot];
 	}
 
+	function initCamLights(size) {
+		const diag = Math.sqrt(
+			size.x * size.x + size.y * size.y + size.z * size.z,
+		);
+		//const norm = 180 + 1.5 * diag;
+
+		const mainLight = new THREE.SpotLight(0xffffff, 2);
+		mainLight.baseIntensity = 2;
+		const pml = new THREE.Spherical(
+			1 * diag,
+			(Math.PI / 180) * 45,
+			(Math.PI / 180) * -45,
+		);
+		const posml = new THREE.Vector3().setFromSpherical(pml);
+		mainLight.position.set(posml.x, posml.y, posml.z);
+		mainLight.angle = Math.PI / 2;
+		mainLight.decay = 0;
+		camLightsRoot.add(mainLight);
+
+		// const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
+		// camLightsRoot.add(mainSpotLightHelper);
+
+		const fillLight = new THREE.SpotLight(0xffffff, 2);
+		fillLight.baseIntensity = 2;
+		const pfl = new THREE.Spherical(
+			1 * diag,
+			(Math.PI / 180) * -45,
+			(Math.PI / 180) * -60,
+		);
+		const posfl = new THREE.Vector3().setFromSpherical(pfl);
+		fillLight.position.set(posfl.x, posfl.y, posfl.z);
+		fillLight.angle = Math.PI / 2;
+		fillLight.decay = 0;
+		camLightsRoot.add(fillLight);
+
+		// const fillSpotLightHelper = new THREE.SpotLightHelper(fillLight);
+		// camLightsRoot.add(fillSpotLightHelper);
+
+		const hairLight = new THREE.SpotLight(0xffffff, 1);
+		hairLight.baseIntensity = 1;
+		const phsl = new THREE.Spherical(
+			1 * diag,
+			(Math.PI / 180) * -45,
+			(Math.PI / 180) * 60,
+		);
+		const poshsl = new THREE.Vector3().setFromSpherical(phsl);
+		hairLight.position.set(poshsl.x, poshsl.y, poshsl.z);
+		hairLight.angle = Math.PI / 2;
+		hairLight.decay = 0;
+		camLightsRoot.add(hairLight);
+
+		// const hairLightHelper = new THREE.SpotLightHelper(hairLight);
+		// camLightsRoot.add(hairLightHelper);
+	}
+
+	function changeLightIntensity() {
+		console.log(`LightIntensity: ${lightIntensityFactor}`);
+		for (const light of camLightsRoot.children) {
+			light.intensity =
+				(light.baseIntensity * lightIntensityFactor[0]) / 10;
+			console.log(`new: ${light.intensity}`);
+		}
+		if (loaded) renderer.render(scene, camera);
+	}
 	function initLights(size) {
 		const diag = Math.sqrt(
 			size.x * size.x + size.y * size.y + size.z * size.z,
@@ -85,56 +165,11 @@
 		// room.scale.set(300, 300, 300);
 		// lightsRoot.add(room);
 
-		const ambientLight = new THREE.AmbientLight(0x888888, 0.3);
+		const ambientLight = new THREE.AmbientLight(0x888888, 0.2);
 		lightsRoot.add(ambientLight);
 
-		const mainLight = new THREE.SpotLight(0xffffff, 7000);
-		const pml = new THREE.Spherical(
-			norm,
-			(Math.PI / 180) * 45,
-			(Math.PI / 180) * -45,
-		);
-		const posml = new THREE.Vector3().setFromSpherical(pml);
-		mainLight.position.set(posml.x, posml.y, posml.z);
-		mainLight.angle = Math.PI / 6;
-		mainLight.decay = 1.2;
-		lightsRoot.add(mainLight);
-
-		// const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
-		// lightsRoot.add(mainSpotLightHelper);
-
-		const fillLight = new THREE.SpotLight(0xffffff, 7000);
-		const pfl = new THREE.Spherical(
-			norm,
-			(Math.PI / 180) * -135,
-			(Math.PI / 180) * -45,
-		);
-		const posfl = new THREE.Vector3().setFromSpherical(pfl);
-		fillLight.position.set(posfl.x, posfl.y, posfl.z);
-		fillLight.angle = Math.PI / 6;
-		fillLight.decay = 1.2;
-		lightsRoot.add(fillLight);
-
-		// const fillSpotLightHelper = new THREE.SpotLightHelper(fillLight);
-		// lightsRoot.add(fillSpotLightHelper);
-
-		const backSpotlight = new THREE.SpotLight(0xffffff, 1000);
-		const pbsl = new THREE.Spherical(
-			norm,
-			(Math.PI / 180) * -90,
-			(Math.PI / 180) * 10,
-		);
-		const posbsl = new THREE.Vector3().setFromSpherical(pbsl);
-		backSpotlight.position.set(posbsl.x, posbsl.y, posbsl.z);
-		backSpotlight.angle = Math.PI / 4;
-		backSpotlight.decay = 1.3;
-		lightsRoot.add(backSpotlight);
-
-		// const backSpotLightHelper = new THREE.SpotLightHelper(backSpotlight);
-		// lightsRoot.add(backSpotLightHelper);
-
 		// so many lights
-		const toplight = new THREE.DirectionalLight(0xffffff, 0.4);
+		const toplight = new THREE.DirectionalLight(0xffffff, 0.3);
 		toplight.position.set(0, 1, 0.3);
 		lightsRoot.add(toplight);
 
@@ -142,15 +177,18 @@
 		bottomlight.position.set(0, -1, -0.3);
 		lightsRoot.add(bottomlight);
 
-		const frontlight = new THREE.DirectionalLight(0xffffff, 0.4);
+		const frontlight = new THREE.DirectionalLight(0xffffff, 0.3);
 		frontlight.position.set(-0.3, 0, 1);
 		lightsRoot.add(frontlight);
+
+		// const frontLightHelper = new THREE.DirectionalLightHelper(frontlight);
+		// lightsRoot.add(frontLightHelper);
 
 		const backlight = new THREE.DirectionalLight(0xffffff, 0.1);
 		backlight.position.set(-0.3, 0, -1);
 		lightsRoot.add(backlight);
 
-		const rightlight = new THREE.DirectionalLight(0xffffff, 0.4);
+		const rightlight = new THREE.DirectionalLight(0xffffff, 0.3);
 		rightlight.position.set(1, 0, 0.3);
 		lightsRoot.add(rightlight);
 
@@ -161,6 +199,8 @@
 
 	function resetScene(size) {
 		console.log(`Size is: ${size.x} ${size.y} ${size.z}`);
+		initLights(size);
+
 		const p = new THREE.Spherical(
 			2 * Math.sqrt(size.x * size.x + size.y * size.y + size.z * size.z),
 			(Math.PI / 180) * 70,
@@ -170,7 +210,8 @@
 		console.log(pos);
 		camera.position.set(pos.x, pos.y, pos.z);
 		//camera.position.set(970, 700, 1700);
-		initLights(size);
+
+		initCamLights(size);
 	}
 
 	function loadMaterial() {
@@ -288,6 +329,10 @@
 				console.log(error);
 			},
 		);
+	}
+
+	function changeInertia() {
+		inertia = inertiaOverride[0];
 	}
 
 	// 25 frames per socond is absolutely sufficient for the use case
@@ -468,7 +513,7 @@
 	// we can do this initialization already while we are waiting for the
 	// component to mount
 	[scene, yUpRoot, zUpRoot, lightsRoot] = initScene();
-	camera = initCamera();
+	[camera, camLightsRoot] = initCamera();
 
 	onMount(() => {
 		if (file.endsWith(".stl")) {
@@ -492,9 +537,44 @@
 	bind:this={canvasElement}
 ></canvas>
 
-<pre>
-Framerate: {fps} frames/sec
-</pre>
+<div class="my-2 flex flex-row">
+	<div class="font-mono">Light Intensity:</div>
+	<div class="px-4 flex-grow self-center">
+		<Slider
+			bind:value={lightIntensityFactor}
+			min={0}
+			max={30}
+			step={1}
+			onValueChange={changeLightIntensity}
+			class="max-w-full"
+		></Slider>
+	</div>
+	<div class="font-mono">
+		Inertia:
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<Info class="mr-2" size="20" />
+			</Tooltip.Trigger>
+			<Tooltip.Content>
+				<p>
+					Controls the time, the model rotates after releasing a mouse
+					button. For complex models, drag the slider to the left.
+				</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
+	</div>
+	<div class="px-4 w-[25%] self-center">
+		<Slider
+			bind:value={inertiaOverride}
+			min={1}
+			max={2000}
+			step={5}
+			onValueChange={changeInertia}
+			class="max-w-full"
+		></Slider>
+	</div>
+</div>
+<div class="font-mono">Rendering Speed: {fps} f/sec</div>
 
 <style>
 </style>
