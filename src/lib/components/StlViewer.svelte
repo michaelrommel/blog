@@ -549,29 +549,35 @@
 			class="max-w-full"
 		></Slider>
 	</div>
-	<div class="font-mono">
-		Inertia:
-		<Tooltip.Root>
-			<Tooltip.Trigger>
-				<Info class="mr-2" size="20" />
-			</Tooltip.Trigger>
-			<Tooltip.Content>
-				<p>
-					Controls the time, the model rotates after releasing a mouse
-					button. For complex models, drag the slider to the left.
-				</p>
-			</Tooltip.Content>
-		</Tooltip.Root>
-	</div>
-	<div class="px-4 w-[25%] self-center">
-		<Slider
-			bind:value={inertiaOverride}
-			min={1}
-			max={2000}
-			step={5}
-			onValueChange={changeInertia}
-			class="max-w-full"
-		></Slider>
+	<div class="font-mono w-[50%] flex">
+		<div>Inertia:</div>
+		<div class="px-4 flex-grow self-center">
+			<Slider
+				bind:value={inertiaOverride}
+				min={1}
+				max={2000}
+				step={5}
+				onValueChange={changeInertia}
+				class="max-w-full"
+			></Slider>
+		</div>
+		<div class="relative w-4">
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					<Info
+						class="absolute top-1/2 -translate-y-1/2"
+						size="1rem"
+					/>
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					<p>
+						Controls the time, the model rotates after releasing a
+						mouse button. For complex models, drag the slider to the
+						left.
+					</p>
+				</Tooltip.Content>
+			</Tooltip.Root>
+		</div>
 	</div>
 </div>
 <div class="font-mono">Rendering Speed: {fps} f/sec</div>
