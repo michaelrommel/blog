@@ -13,7 +13,8 @@ published: true
 # Here is a code sample
 
 
-The _flawless raffled, finite sample_ was firmly highlighted using Shiki.
+The _flawless raffled, finite sample_ was firmly and in a fjord highlighted using Shiki.
+An offbeat vibe is created by using ligatures like in leafhopper.
 
 ```javascript
 'use strict';

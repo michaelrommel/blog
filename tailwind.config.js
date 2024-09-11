@@ -22,18 +22,34 @@ const config = {
 		// 	padding: '2rem'
 		// },
 		fontFamily: {
-			serif: ['Novela', ...defaultTheme.fontFamily.serif],
+			serif: [
+				'Novela',
+				{
+					fontFeatureSettings: '"liga", "rlig", "dlig", "ss01", "salt"'
+				}
+			],
 			sans: ['"Noto Sans"', ...defaultTheme.fontFamily.sans],
-			mono: ['"Noto Sans Mono"', ...defaultTheme.fontFamily.mono]
+			mono: [
+				'"Luxi Mono"',
+				'"Courier Prime"',
+				'"Noto Sans Mono"',
+				...defaultTheme.fontFamily.mono
+			]
 		},
 		extend: {
 			screens: {
 				xs: '375px'
 			},
+			fontFamily: {
+				serif: [...defaultTheme.fontFamily.serif]
+			},
 			typography: {
 				gruvbox: {
 					css: {
 						maxWidth: '80ch',
+						code: {
+							fontWeight: '500'
+						},
 						'--tw-prose-body': c.gruvlfg,
 						'--tw-prose-headings': c.gruvlfg,
 						'--tw-prose-lead': c.gruvlfg,

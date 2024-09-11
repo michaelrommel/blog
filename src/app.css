@@ -295,28 +295,12 @@
 	font-family: 'Novela';
 	src: url('/novela-regular-webfont.woff2') format('woff2');
 	font-weight: normal;
-	font-feature-settings:
-		"liga" 1,
-		"rlig" 1,
-		"dlig" 1,
-		"ss01" 1,
-		"aalt" 1,
-		"frac" 1,
-		"calt" 1;
 }
 
 @font-face {
 	font-family: 'Novela';
 	src: url('/novela-bold-webfont.woff2') format('woff2');
 	font-weight: bold;
-	font-feature-settings:
-		"liga" 1,
-		"rlig" 1,
-		"dlig" 1,
-		"ss01" 1,
-		"aalt" 1,
-		"frac" 1,
-		"calt" 1;
 }
 
 @font-face {
@@ -324,14 +308,6 @@
 	src: url('/novela-regularitalic-webfont.woff2') format('woff2');
 	font-weight: normal;
 	font-style: italic;
-	font-feature-settings:
-		"liga" 1,
-		"rlig" 1,
-		"dlig" 1,
-		"ss01" 1,
-		"aalt" 1,
-		"frac" 1,
-		"calt" 1;
 }
 
 @font-face {
@@ -339,12 +315,10 @@
 	src: url('/novela-bolditalic-webfont.woff2') format('woff2');
 	font-weight: bold;
 	font-style: italic;
-	font-feature-settings:
-		"liga" 1,
-		"rlig" 1,
-		"dlig" 1,
-		"ss01" 1,
-		"aalt" 1,
-		"frac" 1,
-		"calt" 1;
+}
+
+@font-face {
+	font-family: 'Luxi Mono';
+	src: url('/LuxiMono.woff2') format('woff2');
+	font-weight: normal;
 }
