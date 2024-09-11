@@ -76,7 +76,7 @@
 
 	body {
 		@apply bg-background text-foreground;
-		font-family: serif;
+		@apply font-serif;
 	}
 }
 
