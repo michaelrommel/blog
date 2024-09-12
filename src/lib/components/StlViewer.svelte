@@ -170,30 +170,30 @@
 
 		// so many lights
 		const toplight = new THREE.DirectionalLight(0xffffff, 0.3);
-		toplight.position.set(0, 1, 0.3);
+		toplight.position.set(0, 100, 30);
 		lightsRoot.add(toplight);
 
 		const bottomlight = new THREE.DirectionalLight(0xffffff, 0.1);
-		bottomlight.position.set(0, -1, -0.3);
+		bottomlight.position.set(0, -100, -30);
 		lightsRoot.add(bottomlight);
 
 		const frontlight = new THREE.DirectionalLight(0xffffff, 0.3);
-		frontlight.position.set(-0.3, 0, 1);
+		frontlight.position.set(-30, 0, 100);
 		lightsRoot.add(frontlight);
 
 		// const frontLightHelper = new THREE.DirectionalLightHelper(frontlight);
 		// lightsRoot.add(frontLightHelper);
 
 		const backlight = new THREE.DirectionalLight(0xffffff, 0.1);
-		backlight.position.set(-0.3, 0, -1);
+		backlight.position.set(-30, 0, -100);
 		lightsRoot.add(backlight);
 
 		const rightlight = new THREE.DirectionalLight(0xffffff, 0.3);
-		rightlight.position.set(1, 0, 0.3);
+		rightlight.position.set(100, 0, 30);
 		lightsRoot.add(rightlight);
 
 		const leftlight = new THREE.DirectionalLight(0xffffff, 0.1);
-		leftlight.position.set(-1, 0, 0.3);
+		leftlight.position.set(-100, 0, 30);
 		lightsRoot.add(leftlight);
 	}
 
