@@ -23,6 +23,7 @@
 	// the ability to supplu those as parameters
 	// marker for when loading of the meshes has finished
 	let loaded = false;
+	let firstView = false;
 	// the WebGL renderer
 	let renderer = null;
 	// the Orbit controls
@@ -372,13 +373,17 @@
 		// first improvement: if there are no changes to the orientation,
 		// we do not need to rerender. We just have a small timer in order
 		// to let a movement dampen smoothely
-		if (until) {
+		if (until || !initialZoom || !firstView) {
 			if (now < until) {
 				// keep animating
 				requestAnimationFrame(animate);
 			} else {
-				// stop until triggered by movement again
-				until = null;
+				if (!initialZoom || !firstView) {
+					requestAnimationFrame(animate);
+				} else {
+					// stop until triggered by movement again
+					until = null;
+				}
 			}
 		}
 		// precaution measure, if there are not models loaded, we cannot
@@ -394,7 +399,13 @@
 		// that gets rid of all past fired Control Events, that are now obsolete
 		// but still trickling in
 		elapsed = now - then;
-		if (elapsed > fpsInterval && until) {
+		if ((!firstView && loaded) || (elapsed > fpsInterval && until)) {
+			// we have not drawn an initial render, so if we have loaded
+			// the model and reset the scene, then we set the flag and stop
+			// rendering without a reason
+			if (!firstView && initialZoom && loaded) {
+				firstView = true;
+			}
 			// Get ready for next frame by setting then=now, but...
 			// Also, adjust for fpsInterval not being multiple of 16.67
 			// from: https://jsfiddle.net/m1erickson/CtsY3/
@@ -449,7 +460,6 @@
 		controls.dampingFactor = 0.2;
 
 		resizeCanvasToDisplaySize(canvasElement);
-		// until = new Date(Date.now().valueOf() + 3000);
 		until = new Date(Date.now().valueOf() + 100);
 		animate();
 	}
