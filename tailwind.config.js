@@ -44,7 +44,7 @@ const config = {
 			typography: {
 				gruvbox: {
 					css: {
-						maxWidth: '80ch',
+						maxWidth: '75ch',
 						code: {
 							fontWeight: '500'
 						},

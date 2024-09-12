@@ -4,86 +4,9 @@
 
 @layer base {
 	:root {
-		--background: var(--gruvlbg1);
-		--foreground: var(--gruvlfg);
 
-		--muted: 60 4.8% 95.9%;
-		--muted-foreground: 25 5.3% 44.7%;
-
-		--popover: var(--gruvlbg1);
-		--popover-foreground: 20 14.3% 4.1%;
-
-		--card: 0 0% 100%;
-		--card-foreground: 20 14.3% 4.1%;
-
-		--border: 20 5.9% 90%;
-		--input: 20 5.9% 90%;
-
-		--primary: 24 9.8% 10%;
-		--primary-foreground: 60 9.1% 97.8%;
-
-		--secondary: 60 4.8% 95.9%;
-		--secondary-foreground: 24 9.8% 10%;
-
-		--accent: var(--gruvlbg2);
-		--accent-foreground: 24 9.8% 10%;
-
-		--destructive: 0 72.2% 50.6%;
-		--destructive-foreground: 60 9.1% 97.8%;
-
-		--ring: 20 14.3% 4.1%;
-
-		--radius: 0.5rem;
-	}
-
-	.dark {
-		/* --background: 20 14.3% 4.1%; */
-		--background: var(--gruvdbg1);
-		--foreground: var(--gruvdfg);
-
-		--muted: 12 6.5% 15.1%;
-		--muted-foreground: 24 5.4% 63.9%;
-
-		--popover: var(--gruvdbg1);
-		--popover-foreground: var(--gruvdfg);
-
-		--card: 20 14.3% 4.1%;
-		--card-foreground: 60 9.1% 97.8%;
-
-		--border: 12 6.5% 15.1%;
-		--input: 12 6.5% 15.1%;
-
-		--primary: 60 9.1% 97.8%;
-		--primary-foreground: 24 9.8% 10%;
-
-		--secondary: 12 6.5% 15.1%;
-		--secondary-foreground: 60 9.1% 97.8%;
-
-		--accent: var(--gruvdbg2);
-		--accent-foreground: 60 9.1% 97.8%;
-
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 60 9.1% 97.8%;
-
-		--ring: 24 5.7% 82.9%;
-	}
-}
-
-@layer base {
-	* {
-		@apply border-border;
-	}
-
-	body {
-		@apply bg-background text-foreground;
-		@apply font-serif;
-	}
-}
-
-@layer base {
-
-	:root {
 		/* gruvbox color definitions */
+
 		--gruvred: 0 100% 27%;
 		--gruvgreen: 60 71% 35%;
 		--gruvyellow: 40 73% 49%;
@@ -136,6 +59,85 @@
 		--gruvlfg2: 22 7% 29%;
 		--gruvlfg3: 27 10% 36%;
 		--gruvlfg4: 28 11% 44%;
+
+		/* shadcn-svelte color definitions */
+
+		--background: var(--gruvlbg1);
+		--foreground: var(--gruvlfg);
+
+		--muted: 60 4.8% 95.9%;
+		--muted-foreground: 25 5.3% 44.7%;
+
+		--popover: var(--gruvlbg1);
+		--popover-foreground: var(--gruvlfg);
+
+		--card: 0 0% 100%;
+		--card-foreground: 20 14.3% 4.1%;
+
+		--border: 20 5.9% 90%;
+		--input: 20 5.9% 90%;
+
+		--primary: 24 9.8% 10%;
+		--primary-foreground: 60 9.1% 97.8%;
+
+		--secondary: 60 4.8% 95.9%;
+		--secondary-foreground: 24 9.8% 10%;
+
+		--accent: var(--gruvlbg2);
+		--accent-foreground: 24 9.8% 10%;
+
+		--destructive: 0 72.2% 50.6%;
+		--destructive-foreground: 60 9.1% 97.8%;
+
+		--ring: 20 14.3% 4.1%;
+
+		--radius: 0.5rem;
+
+	}
+
+	.dark {
+
+		/* shadcn-svelte color definitions for dark style */
+
+		--background: var(--gruvdbg1);
+		--foreground: var(--gruvdfg);
+
+		--muted: 12 6.5% 15.1%;
+		--muted-foreground: 24 5.4% 63.9%;
+
+		--popover: var(--gruvdbg1);
+		--popover-foreground: var(--gruvdfg);
+
+		--card: 20 14.3% 4.1%;
+		--card-foreground: 60 9.1% 97.8%;
+
+		--border: 12 6.5% 15.1%;
+		--input: 12 6.5% 15.1%;
+
+		--primary: 60 9.1% 97.8%;
+		--primary-foreground: 24 9.8% 10%;
+
+		--secondary: 12 6.5% 15.1%;
+		--secondary-foreground: 60 9.1% 97.8%;
+
+		--accent: var(--gruvdbg2);
+		--accent-foreground: 60 9.1% 97.8%;
+
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 60 9.1% 97.8%;
+
+		--ring: 24 5.7% 82.9%;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+
+	body {
+		@apply bg-background text-foreground;
+		@apply font-serif;
 	}
 
 	html.dark .shiki,
@@ -215,30 +217,6 @@
 		border-radius: 0.3em;
 	}
 
-	@media (max-width: 767px) {
-		#articlecontainer {
-			container-type: inline-size;
-		}
-	}
-
-	p {
-		@container (width < 40ch) {
-			line-height: 1.5;
-		}
-	}
-}
-
-@layer components {
-	.logodark .logostrokecolor {
-		stop-color: theme('colors.gruvdfg');
-		stop-opacity: 1;
-	}
-
-	.logo .logostrokecolor {
-		stop-color: theme('colors.gruvlfg');
-		stop-opacity: 1;
-	}
-
 	.fb-xs {
 		font-size: 14px;
 	}
@@ -262,6 +240,40 @@
 	.fb-2xl {
 		font-size: 24px;
 	}
+
+	@media (max-width: 767px) {
+		#articlecontainer {
+			container-type: inline-size;
+		}
+	}
+
+	p {
+		@container (width < 40ch) {
+			line-height: 1.5;
+		}
+	}
+
+	.prose {
+		h1 {
+			font-family: 'Novela Display';
+			letter-spacing: 0.02em;
+
+		}
+	}
+
+}
+
+@layer components {
+	.logodark .logostrokecolor {
+		stop-color: theme('colors.gruvdfg');
+		stop-opacity: 1;
+	}
+
+	.logo .logostrokecolor {
+		stop-color: theme('colors.gruvlfg');
+		stop-opacity: 1;
+	}
+
 }
 
 @font-face {
@@ -314,6 +326,19 @@
 	font-family: 'Novela';
 	src: url('/novela-bolditalic-webfont.woff2') format('woff2');
 	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Novela Display';
+	src: url('/novela-displayregular-webfont.woff2') format('woff2');
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Novela Display';
+	src: url('/novela-displayitalic-webfont.woff2') format('woff2');
+	font-weight: normal;
 	font-style: italic;
 }
 
