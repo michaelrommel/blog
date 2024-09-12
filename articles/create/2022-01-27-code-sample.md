@@ -12,9 +12,15 @@ published: true
 
 # Here is a code sample
 
+This introduction sentences do not make any sense, they are just for testing ligatures.
 
-The _flawless raffled, finite sample_ was firmly and in a fjord highlighted using Shiki.
-An offbeat vibe is created by using ligatures like in leafhopper.
+> Those are just affectionate pearls of flawless, infinite wisdom strung together offhand
+like surfboards drawn in a raffle.
+
+Believing in them would be a futile affair,
+like creating an offbeat, flickering light in a flux compensator, carried firmly
+on the back of a leafhopper to a difficult cliffhanger in a Norwegian fjord.
+
 
 ```javascript
 'use strict';

@@ -90,7 +90,7 @@
 		const pml = new THREE.Spherical(
 			1 * diag,
 			(Math.PI / 180) * 45,
-			(Math.PI / 180) * -45,
+			(Math.PI / 180) * -20,
 		);
 		const posml = new THREE.Vector3().setFromSpherical(pml);
 		mainLight.position.set(posml.x, posml.y, posml.z);
