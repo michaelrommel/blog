@@ -25,7 +25,7 @@ const config = {
 			serif: [
 				'Novela',
 				{
-					fontFeatureSettings: '"liga", "rlig", "dlig", "ss01", "salt"'
+					fontFeatureSettings: '"liga", "ss01"'
 				},
 				...defaultTheme.fontFamily.serif
 			],

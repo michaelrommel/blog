@@ -256,8 +256,8 @@
 	.prose {
 		h1 {
 			font-family: 'Novela Display';
-			letter-spacing: 0.02em;
-
+			/* letter-spacing: 0.02em; */
+			font-weight: 400;
 		}
 	}
 
