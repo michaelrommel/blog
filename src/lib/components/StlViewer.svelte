@@ -33,11 +33,15 @@
 	let initialZoom = false;
 	// the global scene and camera objects
 	let scene = null;
+	let modelsRoot = null;
 	let yUpRoot = null;
 	let zUpRoot = null;
 	let lightsRoot = null;
 	let camLightsRoot = null;
 	let camera = null;
+
+	// let observerCamera = null;
+	// let cameraHelper = null;
 
 	// the map stores for each canvas the sizes they should be displayed in pixels
 	const canvasToDisplaySizeMap = new Map();
@@ -47,28 +51,32 @@
 		scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x3c3836);
 		// this is a sub-container where the rest of the normal models/scenes/controls
-		// should be added. Y Axis as Up is the standard in three.js
+		// should be added.
+		// Add a root for all models
+		let modelsRoot = new THREE.Group();
+		scene.add(modelsRoot);
+		// Y Axis as Up is the standard in three.js
 		let yUpRoot = new THREE.Group();
-		scene.add(yUpRoot);
-		// this sub-group gets the models e.g. STL files, where the Z-Axis is actually
-		// up, so that there is no difference in CAD and the Viewer and the user is not
-		// confused about the models
+		modelsRoot.add(yUpRoot);
+		// // this sub-group gets the models e.g. STL files, where the Z-Axis is actually
+		// // up, so that there is no difference in CAD and the Viewer and the user is not
+		// // confused about the models
 		let zUpRoot = new THREE.Group();
 		zUpRoot.rotation.x = -Math.PI * 0.5;
-		scene.add(zUpRoot);
 		// this adds a small oritation arrow coordinates display to the center of the scene
 		const axesHelper = new THREE.AxesHelper(5);
 		zUpRoot.add(axesHelper);
-
+		modelsRoot.add(zUpRoot);
 		// here we collect all our lights, that move with the scene
 		let lightsRoot = new THREE.Group();
 		scene.add(lightsRoot);
 
-		return [scene, yUpRoot, zUpRoot, lightsRoot];
+		return [scene, modelsRoot, yUpRoot, zUpRoot, lightsRoot];
 	}
 
 	function initCamera() {
 		// const camera = new THREE.OrthographicCamera(-60, 60, 45, -45, 0.1, 1000);
+		// const camera = new THREE.PerspectiveCamera(40, 4 / 3, 0.1, 10000);
 		const camera = new THREE.PerspectiveCamera(40, 4 / 3, 0.1, 10000);
 		// here we collect all our lights, that move with the camera
 		let camLightsRoot = new THREE.Group();
@@ -76,6 +84,9 @@
 		// need to add the camera to the scene, otherwise the subordinate lights
 		// are not drawn
 		scene.add(camera);
+
+		// observerCamera = new THREE.PerspectiveCamera(40, 4 / 3, 0.1, 10000);
+		// scene.add(observerCamera);
 		return [camera, camLightsRoot];
 	}
 
@@ -83,55 +94,48 @@
 		const diag = Math.sqrt(
 			size.x * size.x + size.y * size.y + size.z * size.z,
 		);
-		//const norm = 180 + 1.5 * diag;
 
 		const mainLight = new THREE.SpotLight(0xffffff, 2);
 		mainLight.baseIntensity = 2;
 		const pml = new THREE.Spherical(
 			1 * diag,
-			(Math.PI / 180) * 45,
-			(Math.PI / 180) * -20,
+			(Math.PI / 180) * 50,
+			(Math.PI / 180) * -70,
 		);
 		const posml = new THREE.Vector3().setFromSpherical(pml);
 		mainLight.position.set(posml.x, posml.y, posml.z);
-		mainLight.angle = Math.PI / 2;
+		mainLight.angle = Math.PI / 3;
 		mainLight.decay = 0;
 		camLightsRoot.add(mainLight);
-
-		// const mainSpotLightHelper = new THREE.SpotLightHelper(mainLight);
-		// camLightsRoot.add(mainSpotLightHelper);
 
 		const fillLight = new THREE.SpotLight(0xffffff, 2);
 		fillLight.baseIntensity = 2;
 		const pfl = new THREE.Spherical(
 			1 * diag,
-			(Math.PI / 180) * -45,
-			(Math.PI / 180) * -60,
+			(Math.PI / 180) * 60,
+			(Math.PI / 180) * 70,
 		);
 		const posfl = new THREE.Vector3().setFromSpherical(pfl);
 		fillLight.position.set(posfl.x, posfl.y, posfl.z);
-		fillLight.angle = Math.PI / 2;
+		fillLight.angle = Math.PI / 3;
 		fillLight.decay = 0;
 		camLightsRoot.add(fillLight);
-
-		// const fillSpotLightHelper = new THREE.SpotLightHelper(fillLight);
-		// camLightsRoot.add(fillSpotLightHelper);
 
 		const hairLight = new THREE.SpotLight(0xffffff, 1);
 		hairLight.baseIntensity = 1;
 		const phsl = new THREE.Spherical(
-			1 * diag,
-			(Math.PI / 180) * -45,
-			(Math.PI / 180) * 60,
+			4 * diag,
+			(Math.PI / 180) * -60,
+			(Math.PI / 180) * 10,
 		);
 		const poshsl = new THREE.Vector3().setFromSpherical(phsl);
 		hairLight.position.set(poshsl.x, poshsl.y, poshsl.z);
-		hairLight.angle = Math.PI / 2;
+		hairLight.angle = Math.PI / 3;
 		hairLight.decay = 0;
 		camLightsRoot.add(hairLight);
 
-		// const hairLightHelper = new THREE.SpotLightHelper(hairLight);
-		// camLightsRoot.add(hairLightHelper);
+		// const spotLightHelper = new THREE.SpotLightHelper(mainLight);
+		// modelsRoot.add(spotLightHelper);
 	}
 
 	function changeLightIntensity() {
@@ -142,6 +146,7 @@
 			console.log(`new: ${light.intensity}`);
 		}
 		if (loaded) renderer.render(scene, camera);
+		// if (loaded) renderer.render(scene, observerCamera);
 	}
 	function initLights(size) {
 		const diag = Math.sqrt(
@@ -164,9 +169,8 @@
 		// room.position.set(-10, 10, 10);
 		// room.scale.set(300, 300, 300);
 		// lightsRoot.add(room);
-
-		const ambientLight = new THREE.AmbientLight(0x888888, 0.2);
-		lightsRoot.add(ambientLight);
+		// const ambientLight = new THREE.AmbientLight(0x888888, 0.2);
+		// lightsRoot.add(ambientLight);
 
 		// so many lights
 		const toplight = new THREE.DirectionalLight(0xffffff, 0.3);
@@ -208,8 +212,16 @@
 		);
 		const pos = new THREE.Vector3().setFromSpherical(p);
 		console.log(pos);
+
+		// observerCamera.position.set(0, 1000, 0);
+		// observerCamera.lookAt(0, 0, 0);
+		// scene.add(observerCamera);
+
 		camera.position.set(pos.x, pos.y, pos.z);
-		//camera.position.set(970, 700, 1700);
+		camera.lookAt(0, 0, 0);
+		scene.add(camera);
+		// cameraHelper = new THREE.CameraHelper(camera);
+		// scene.add(cameraHelper);
 
 		initCamLights(size);
 	}
@@ -346,6 +358,17 @@
 
 	function animate() {
 		now = Date.now();
+
+		let vector = new THREE.Vector3(0, 0, -1);
+		vector.applyQuaternion(camera.quaternion);
+		console.log(`Camera looks at:`);
+		console.log(vector);
+
+		// vector = new THREE.Vector3(0, 0, -1);
+		// vector.applyQuaternion(observerCamera.quaternion);
+		// console.log(`Observer looks at:`);
+		// console.log(vector);
+
 		// first improvement: if there are no changes to the orientation,
 		// we do not need to rerender. We just have a small timer in order
 		// to let a movement dampen smoothely
@@ -361,7 +384,7 @@
 		// precaution measure, if there are not models loaded, we cannot
 		// determine the bounding box and cannot reset the scene
 		if (!initialZoom && loaded) {
-			const bbox = new THREE.Box3().setFromObject(scene);
+			const bbox = new THREE.Box3().setFromObject(modelsRoot);
 			const size = bbox.getSize(new THREE.Vector3());
 			initialZoom = true;
 			resetScene(size);
@@ -392,7 +415,11 @@
 
 			controls.update();
 			resizeCanvasToDisplaySize(canvasElement);
+			// cameraHelper.update();
+			// camera.updateProjectionMatrix();
 			renderer.render(scene, camera);
+			// observerCamera.updateProjectionMatrix();
+			//renderer.render(scene, observerCamera);
 		}
 	}
 
@@ -406,6 +433,7 @@
 		// controls.panSpeed = 10;
 		// controls.rotateSpeed = 10;
 
+		// controls = new OrbitControls(observerCamera, renderer.domElement);
 		controls = new OrbitControls(camera, renderer.domElement);
 		controls.addEventListener("change", () => {
 			if (!until) {
@@ -421,7 +449,8 @@
 		controls.dampingFactor = 0.2;
 
 		resizeCanvasToDisplaySize(canvasElement);
-		until = new Date(Date.now().valueOf() + 3000);
+		// until = new Date(Date.now().valueOf() + 3000);
+		until = new Date(Date.now().valueOf() + 100);
 		animate();
 	}
 
@@ -449,6 +478,8 @@
 				renderer.setSize(displayWidth, displayHeight, false);
 				camera.aspect = displayWidth / displayHeight;
 				camera.updateProjectionMatrix();
+				// observerCamera.aspect = displayWidth / displayHeight;
+				// observerCamera.updateProjectionMatrix();
 			}
 
 			return needResize;
@@ -512,7 +543,7 @@
 
 	// we can do this initialization already while we are waiting for the
 	// component to mount
-	[scene, yUpRoot, zUpRoot, lightsRoot] = initScene();
+	[scene, modelsRoot, yUpRoot, zUpRoot, lightsRoot] = initScene();
 	[camera, camLightsRoot] = initCamera();
 
 	onMount(() => {
