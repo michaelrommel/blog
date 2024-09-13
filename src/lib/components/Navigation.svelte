@@ -119,24 +119,28 @@
 >
 	<nav class="mx-2 md:mx-4 lg:mx-8">
 		<div
-			class="w-full flex items-center justify-between text-base xs:text-lg lg:text-xl"
+			class="w-full flex items-center justify-between text-base xs:text-lg md:text-xl lg:text-2xl"
 		>
 			<div
 				class="grow py-2 xs:py-4 mr-2 xs:mr-4 md:mr-8 flex items-center justify-start"
 			>
-				<div class="w-8 xs:w-16">
-					<a aria-label="home page" href="/">
+				<div>
+					<a
+						class="w-10 xs:w-12 md:w-16 ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full"
+						aria-label="home page"
+						href="/"
+					>
 						<Logo small />
 					</a>
 				</div>
 				<div
-					class="text-gruvlfg dark:text-gruvdfg flex flex-wrap items-center"
+					class="flex flex-wrap items-center text-gruvlfg dark:text-gruvdfg font-bold"
 				>
 					{#each navigation as link}
-						<div class="ml-4 md:ml-8 lg:ml-12">
+						<div class="ml-1 p-1 md:pl-4 lg:pl-8">
 							<a
 								href={link.href}
-								class="font-bold hover:text-gruvlemphblue dark:hover:text-gruvdemphblue"
+								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
 							>
 								{link.name}
 							</a>
@@ -145,10 +149,16 @@
 				</div>
 			</div>
 			<div class="py-2 xs:py-4 flex items-center justify-end">
-				<div class="md:hidden mt-2" id="menu">
+				<div class="md:hidden" id="menu">
 					<Popover.Root bind:open={popoverOpen}>
-						<Popover.Trigger>
-							<Menu />
+						<Popover.Trigger asChild let:builder>
+							<Button
+								builders={[builder]}
+								variant="ghost"
+								class="rounded px-2 py-1"
+							>
+								<Menu size="1.25rem" />
+							</Button>
 						</Popover.Trigger>
 						<Popover.Content
 							class="flex flex-col w-fit items-end gap-y-2"
@@ -174,7 +184,7 @@
 										on:click={decreaseFontSize}
 										variant="outline"
 										size="icon"
-										class="px-1"
+										class="mx-1"
 									>
 										<ArrowDown strokeWidth="1.7" />
 									</Button>
@@ -182,7 +192,7 @@
 										on:click={increaseFontSize}
 										variant="outline"
 										size="icon"
-										class="px-1"
+										class="mx-1"
 									>
 										<ArrowUp strokeWidth="1.7" />
 									</Button>
@@ -217,7 +227,7 @@
 						on:click={decreaseFontSize}
 						variant="outline"
 						size="icon"
-						class="px-1 ml-2"
+						class="px-1 ml-2 mr-1"
 					>
 						<ArrowDown strokeWidth="1.7" />
 					</Button>

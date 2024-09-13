@@ -84,11 +84,13 @@
 			/>
 			<div class="mt-1 text-xs">
 				<p
-					class="mb-0 font-bold text-gruvgray dark:text-gruvgray leading-none"
+					class="mb-0 font-bold text-gruvlfg2 dark:text-gruvgray leading-none"
 				>
 					{cardData.authorName}
 				</p>
-				<p class="mb-0 text-gruvgray">{cardData.displayDate}</p>
+				<p class="mb-0 text-gruvlfg3 dark:text-gruvgray">
+					{cardData.displayDate}
+				</p>
 			</div>
 		</div>
 	</div>

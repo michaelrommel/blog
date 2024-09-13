@@ -4,6 +4,7 @@
 	import Info from "lucide-svelte/icons/info";
 	import * as Popover from "$lib/components/ui/popover";
 	import { Slider } from "$lib/components/ui/slider";
+	import { Button } from "$lib/components/ui/button";
 
 	import * as THREE from "three";
 	import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
@@ -579,50 +580,60 @@
 	bind:this={canvasElement}
 ></canvas>
 
-<div class="my-2 flex flex-row">
-	<div class="font-mono">Light Intensity:</div>
-	<div class="px-4 flex-grow self-center">
-		<Slider
-			bind:value={lightIntensityFactor}
-			min={0}
-			max={30}
-			step={0.5}
-			onValueChange={changeLightIntensity}
-			class="max-w-full"
-		></Slider>
-	</div>
-	<div class="font-mono w-[50%] flex">
-		<div>Inertia:</div>
-		<div class="px-4 flex-grow self-center">
-			<Slider
-				bind:value={inertiaOverride}
-				min={1}
-				max={2000}
-				step={5}
-				onValueChange={changeInertia}
-				class="max-w-full"
-			></Slider>
+<div class="font-mono text-xs xs:text-sm md:text-base flex flex-col">
+	<div class="my-2 flex flex-col md:flex-row">
+		<div class="flex md:w-1/2">
+			<div class="self-center">Light Intensity:</div>
+			<div class="px-4 flex-grow self-center">
+				<Slider
+					bind:value={lightIntensityFactor}
+					min={0}
+					max={30}
+					step={0.5}
+					onValueChange={changeLightIntensity}
+					class="max-w-full"
+				></Slider>
+			</div>
 		</div>
-		<div class="relative w-4">
-			<Popover.Root bind:open={popoverOpen}>
-				<Popover.Trigger>
-					<Info
-						class="absolute top-1/2 -translate-y-1/2"
-						size="1rem"
-					/>
-				</Popover.Trigger>
-				<Popover.Content class="w-[50%]">
-					<p>
-						Controls the time, the model rotates after releasing a
-						mouse button. For complex models, drag the slider to the
-						left.
-					</p>
-				</Popover.Content>
-			</Popover.Root>
+		<div class="md:w-1/2 flex">
+			<div class="self-center">Inertia:</div>
+			<div class="px-4 flex-grow self-center">
+				<Slider
+					bind:value={inertiaOverride}
+					min={1}
+					max={2000}
+					step={5}
+					onValueChange={changeInertia}
+					class="max-w-full"
+				></Slider>
+			</div>
+			<div class="relative mr-1">
+				<Popover.Root bind:open={popoverOpen}>
+					<Popover.Trigger asChild let:builder>
+						<Button
+							builders={[builder]}
+							variant="ghost"
+							class="rounded-full w-4 h-8"
+						>
+							<Info
+								class="absolute top-1/2 -translate-y-1/2"
+								size="1rem"
+							/>
+						</Button>
+					</Popover.Trigger>
+					<Popover.Content class="w-[50%]">
+						<p>
+							Controls the time, the model rotates after releasing
+							a mouse button. For complex models, drag the slider
+							to the left.
+						</p>
+					</Popover.Content>
+				</Popover.Root>
+			</div>
 		</div>
 	</div>
+	<div class="font-mono">Rendering Speed: {fps} f/sec</div>
 </div>
-<div class="font-mono">Rendering Speed: {fps} f/sec</div>
 
 <style>
 </style>
