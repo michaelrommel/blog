@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 
 	import Info from "lucide-svelte/icons/info";
-	import * as Tooltip from "$lib/components/ui/tooltip";
+	import * as Popover from "$lib/components/ui/popover";
 	import { Slider } from "$lib/components/ui/slider";
 
 	import * as THREE from "three";
@@ -139,16 +139,15 @@
 		// modelsRoot.add(spotLightHelper);
 	}
 
-	function changeLightIntensity() {
-		console.log(`LightIntensity: ${lightIntensityFactor}`);
+	function changeLightIntensity(next) {
 		for (const light of camLightsRoot.children) {
-			light.intensity =
-				(light.baseIntensity * lightIntensityFactor[0]) / 10;
+			light.intensity = (light.baseIntensity * next[0]) / 10;
 			console.log(`new: ${light.intensity}`);
 		}
 		if (loaded) renderer.render(scene, camera);
 		// if (loaded) renderer.render(scene, observerCamera);
 	}
+
 	function initLights(size) {
 		const diag = Math.sqrt(
 			size.x * size.x + size.y * size.y + size.z * size.z,
@@ -571,6 +570,8 @@
 		const observer = new ResizeObserver(onResize);
 		observer.observe(canvasElement);
 	});
+
+	let popoverOpen = false;
 </script>
 
 <canvas
@@ -585,7 +586,7 @@
 			bind:value={lightIntensityFactor}
 			min={0}
 			max={30}
-			step={1}
+			step={0.5}
 			onValueChange={changeLightIntensity}
 			class="max-w-full"
 		></Slider>
@@ -603,21 +604,21 @@
 			></Slider>
 		</div>
 		<div class="relative w-4">
-			<Tooltip.Root>
-				<Tooltip.Trigger>
+			<Popover.Root bind:open={popoverOpen}>
+				<Popover.Trigger>
 					<Info
 						class="absolute top-1/2 -translate-y-1/2"
 						size="1rem"
 					/>
-				</Tooltip.Trigger>
-				<Tooltip.Content>
+				</Popover.Trigger>
+				<Popover.Content class="w-[50%]">
 					<p>
 						Controls the time, the model rotates after releasing a
 						mouse button. For complex models, drag the slider to the
 						left.
 					</p>
-				</Tooltip.Content>
-			</Tooltip.Root>
+				</Popover.Content>
+			</Popover.Root>
 		</div>
 	</div>
 </div>
