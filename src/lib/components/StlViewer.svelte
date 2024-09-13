@@ -607,29 +607,24 @@
 					class="max-w-full"
 				></Slider>
 			</div>
-			<div class="relative mr-1">
-				<Popover.Root bind:open={popoverOpen}>
-					<Popover.Trigger asChild let:builder>
-						<Button
-							builders={[builder]}
-							variant="ghost"
-							class="rounded-full w-4 h-8"
-						>
-							<Info
-								class="absolute top-1/2 -translate-y-1/2"
-								size="1rem"
-							/>
-						</Button>
-					</Popover.Trigger>
-					<Popover.Content class="w-[50%]">
-						<p>
-							Controls the time, the model rotates after releasing
-							a mouse button. For complex models, drag the slider
-							to the left.
-						</p>
-					</Popover.Content>
-				</Popover.Root>
-			</div>
+			<Popover.Root bind:open={popoverOpen}>
+				<Popover.Trigger asChild let:builder>
+					<Button
+						builders={[builder]}
+						variant="ghost"
+						class="relative mr-1 rounded-full p-0 h-[30px] w-[30px]"
+					>
+						<Info class="absolute top-1/2 -translate-y-1/2" />
+					</Button>
+				</Popover.Trigger>
+				<Popover.Content class="w-[50%]">
+					<p>
+						Controls the time, the model rotates after releasing a
+						mouse button. For complex models, drag the slider to the
+						left.
+					</p>
+				</Popover.Content>
+			</Popover.Root>
 		</div>
 	</div>
 	<div class="font-mono">Rendering Speed: {fps} f/sec</div>
