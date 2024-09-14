@@ -22,7 +22,7 @@ import {
 } from '@shikijs/transformers';
 import c from '../../../configs/gruvbox_colors.js';
 import { theme as gruvboxTheme } from '../../../configs/gruvbox_shiki.js';
-import { default as githubTheme } from 'shiki/themes/github-light.mjs';
+import githubTheme from 'shiki/themes/github-light-high-contrast.mjs';
 
 /**
  * @typedef {import('unist').Node} Node
@@ -62,6 +62,23 @@ function remarkDirectiveHandler() {
 	};
 }
 
+function changeTheme(theme) {
+	// tweak light theme only slighly
+	theme.colors['editor.background'] = c.gruvlbg0s;
+	let n = 0;
+	for (const tc of theme.tokenColors) {
+		let tcSet = tc.scope;
+		if (tcSet) {
+			if (Array.isArray(tc.scope)) {
+				tcSet = tc.scope.join(' ');
+			}
+			if (tcSet.includes('comment')) {
+				tc.settings.fontStyle = 'italic';
+			}
+		}
+	}
+}
+
 async function compile(article) {
 	const highlighter = await createHighlighterCore({
 		langs: [
@@ -80,8 +97,7 @@ async function compile(article) {
 		loadWasm: import('shiki/wasm')
 	});
 
-	// const githubTheme = await highlighter.loadTheme('github-light');
-	githubTheme.colors['editor.background'] = c.gruvlbg1;
+	changeTheme(githubTheme);
 
 	const vfile = await unified()
 		.use(remarkParse)

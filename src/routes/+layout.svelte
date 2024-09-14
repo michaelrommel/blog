@@ -11,9 +11,3 @@
 		<slot />
 	</div>
 </div>
-
-<style lang="postcss" global>
-	.mdsvx .img-right {
-		@apply max-w-2xl;
-	}
-</style>

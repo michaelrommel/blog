@@ -10,3 +10,23 @@
 		{@html data.html}
 	</div>
 </div>
+
+<style lang="postcss" global>
+	.mdsvx .img-right {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	.mdsvx .img-right > p {
+		max-width: 500px;
+	}
+
+	@media (min-width: 768px) {
+		.mdsvx .img-right {
+			float: right;
+			width: 40%;
+			margin-left: 3rem;
+		}
+	}
+</style>
