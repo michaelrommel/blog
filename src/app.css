@@ -343,6 +343,19 @@
 }
 
 @font-face {
+	font-family: 'PlayFair';
+	src: url('/PlayFair-Italic.woff2') format('woff2');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'PlayFair';
+	src: url('/PlayFair-Regular.woff2') format('woff2');
+	font-weight: normal;
+}
+
+@font-face {
 	font-family: 'Luxi Mono';
 	src: url('/LuxiMono.woff2') format('woff2');
 	font-weight: normal;

@@ -23,6 +23,10 @@ const config = {
 		// },
 		fontFamily: {
 			serif: [
+				// 'PlayFair',
+				// {
+				// 	fontFeatureSettings: '"liga"'
+				// },
 				'Novela',
 				{
 					fontFeatureSettings: '"liga", "ss01"'
