@@ -24,13 +24,7 @@ const config = {
 		fontFamily: {
 			serif: [
 				// 'PlayFair',
-				// {
-				// 	fontFeatureSettings: '"liga"'
-				// },
 				'Novela',
-				{
-					fontFeatureSettings: '"liga", "ss01"'
-				},
 				...defaultTheme.fontFamily.serif
 			],
 			sans: ['"Noto Sans"', ...defaultTheme.fontFamily.sans],
