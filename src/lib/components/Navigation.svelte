@@ -139,7 +139,7 @@
 					class="flex flex-wrap items-center text-gruvlfg dark:text-gruvdfg font-bold"
 				>
 					{#each navigation as link}
-						<div class="ml-1 p-1 md:pl-4 lg:pl-8">
+						<div class="ml-1 p-1 md:pl-4 lg:pl-8 navigation">
 							<a
 								href={link.href}
 								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"

@@ -270,6 +270,10 @@
 		}
 	}
 
+	.navigation {
+		font-variation-settings: "wdth" 110, "opsz" 50, "wght" 600, "GRAD" -50;
+	}
+
 }
 
 @layer components {
