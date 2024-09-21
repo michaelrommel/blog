@@ -139,9 +139,9 @@
 		@apply bg-background text-foreground;
 		@apply font-serif;
 		font-variant: common-ligatures;
-		/* font-variation-settings: */
-		/* 	'wght' 300, */
-		/* 	'wdth' 90; */
+		font-variation-settings:
+			'wght' 400,
+			'wdth' 100;
 	}
 
 	html.dark .shiki,
@@ -259,9 +259,10 @@
 
 	.prose {
 		h1 {
-			font-family: 'Novela Display';
+			/* font-family: 'Novela Display'; */
 			/* letter-spacing: 0.02em; */
 			font-weight: 400;
+			font-variation-settings: "wdth" 100, "opsz" 50, "wght" 500, "GRAD" -50;
 		}
 
 		h2 {
@@ -312,56 +313,18 @@
 }
 
 @font-face {
-	font-family: 'Novela';
-	src: url('/novela-regular-webfont.woff2') format('woff2');
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Novela';
-	src: url('/novela-bold-webfont.woff2') format('woff2');
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: 'Novela';
-	src: url('/novela-regularitalic-webfont.woff2') format('woff2');
-	font-weight: normal;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: 'Novela';
-	src: url('/novela-bolditalic-webfont.woff2') format('woff2');
-	font-weight: bold;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: 'Novela Display';
-	src: url('/novela-displayregular-webfont.woff2') format('woff2');
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Novela Display';
-	src: url('/novela-displayitalic-webfont.woff2') format('woff2');
-	font-weight: normal;
-	font-style: italic;
+	font-family: 'RobotoSerif';
+	src: url('/RobotoSerif-Regular.woff2') format('woff2');
+	font-weight: 100 900;
+	font-stretch: 50% 150%;
 }
 
 @font-face {
 	font-family: 'PlayFair';
 	src: url('/PlayFair-Italic.woff2') format('woff2');
-	font-weight: normal;
+	font-weight: 100 900;
+	font-stretch: 50% 150%;
 	font-style: italic;
-
-}
-
-@font-face {
-	font-family: 'PlayFair';
-	src: url('/PlayFair-Regular.woff2') format('woff2');
-	font-weight: normal;
 }
 
 @font-face {

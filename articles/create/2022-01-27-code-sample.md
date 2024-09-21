@@ -12,7 +12,7 @@ published: true
 
 # Here is a code sample
 
-This introduction sentences do not make any sense, they are just for testing ligatures.
+These introduction sentences do not make any sense, they are just for testing ligatures.
 
 > Those are just affectionate pearls of flawless, infinite wisdom strung together offhand
 like surfboards drawn in a raffle.
