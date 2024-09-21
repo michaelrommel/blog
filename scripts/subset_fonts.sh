@@ -10,7 +10,8 @@
 # pip3 install fontTools brotli
 
 # FAMILY="VictorMono-Regular VictorMono-Bold VictorMono-Italic VictorMono-BoldItalic"
-FAMILY="RobotoSerif-VariableFont_sliced RobotoSerif-Italic-VariableFont_sliced"
+# FAMILY="RobotoSerif-VariableFont_sliced RobotoSerif-Italic-VariableFont_sliced"
+FAMILY="RobotoMono-VariableFont"
 
 for FONT in ${FAMILY}; do
   echo Processing ../resources/fonts/${FONT}.woff2

@@ -23,13 +23,8 @@ const config = {
 		// },
 		fontFamily: {
 			serif: ['RobotoSerif', ...defaultTheme.fontFamily.serif],
-			sans: ['"Noto Sans"', ...defaultTheme.fontFamily.sans],
-			mono: [
-				'"Luxi Mono"',
-				'"Courier Prime"',
-				'"Noto Sans Mono"',
-				...defaultTheme.fontFamily.mono
-			]
+			sans: [...defaultTheme.fontFamily.sans],
+			mono: ['LuxiMono', 'RobotoMono', ...defaultTheme.fontFamily.mono]
 		},
 		extend: {
 			screens: {
