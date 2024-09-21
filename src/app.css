@@ -320,8 +320,8 @@
 }
 
 @font-face {
-	font-family: 'PlayFair';
-	src: url('/PlayFair-Italic.woff2') format('woff2');
+	font-family: 'RobotoSerif';
+	src: url('/RobotoSerif-Italic.woff2') format('woff2');
 	font-weight: 100 900;
 	font-stretch: 50% 150%;
 	font-style: italic;
