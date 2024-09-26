@@ -273,7 +273,6 @@
 	.navigation {
 		font-variation-settings: "wdth" 110, "opsz" 50, "wght" 600, "GRAD" -50;
 	}
-
 }
 
 @layer components {
@@ -286,20 +285,20 @@
 		stop-color: theme('colors.gruvlfg');
 		stop-opacity: 1;
 	}
-
 }
 
 @font-face {
 	font-family: 'Victor Mono';
 	src: url('/static/VictorMono-Regular.woff2') format('woff2');
 	font-weight: normal;
-	/* unicode-range: U+20,U+21,U+24,U+26-30,U+32,U+39-3B,U+3D,U+3E,U+41,U+43-46,U+49,U+4B,U+4D-50,U+52,U+53,U+55,U+5A-5E,U+60-7B,U+7D; */
+	font-display: swap;
 }
 
 @font-face {
 	font-family: 'Victor Mono';
 	src: url('/static/VictorMono-Bold.woff2') format('woff2');
 	font-weight: bold;
+	font-display: swap;
 }
 
 @font-face {
@@ -307,6 +306,7 @@
 	src: url('/static/VictorMono-Italic.woff2') format('woff2');
 	font-weight: normal;
 	font-style: italic;
+	font-display: swap;
 }
 
 @font-face {
@@ -314,6 +314,7 @@
 	src: url('/static/VictorMono-BoldItalic.woff2') format('woff2');
 	font-weight: bold;
 	font-style: italic;
+	font-display: swap;
 }
 
 @font-face {
@@ -321,6 +322,7 @@
 	src: url('/static/RobotoSerif-Regular.woff2') format('woff2');
 	font-weight: 100 900;
 	font-stretch: 50% 150%;
+	font-display: swap;
 }
 
 @font-face {
@@ -329,16 +331,19 @@
 	font-weight: 100 900;
 	font-stretch: 50% 150%;
 	font-style: italic;
+	font-display: swap;
 }
 
 @font-face {
 	font-family: 'RobotoMono';
 	src: url('/static/RobotoMono-Regular.woff2') format('woff2');
 	font-weight: 100 700;
+	font-display: swap;
 }
 
 @font-face {
 	font-family: 'LuxiMono';
 	src: url('/static/LuxiMono.woff2') format('woff2');
 	font-weight: 100 700;
+	font-display: swap;
 }
