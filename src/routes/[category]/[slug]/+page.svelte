@@ -7,26 +7,7 @@
 	<div
 		class="mdsvx prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert"
 	>
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html data.html}
 	</div>
 </div>
-
-<style lang="postcss" global>
-	.mdsvx .img-right {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-	}
-
-	.mdsvx .img-right > p {
-		max-width: 500px;
-	}
-
-	@media (min-width: 768px) {
-		.mdsvx .img-right {
-			float: right;
-			width: 40%;
-			margin-left: 3rem;
-		}
-	}
-</style>

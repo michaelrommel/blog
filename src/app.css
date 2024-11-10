@@ -158,6 +158,10 @@
 		display: flex;
 	}
 
+	/* svg g[class*=Axis] text { */
+	/* 	font-size: 1rem */
+	/* } */
+
 	pre[class*="shiki"]>code {
 		font-family: "Victor Mono", Consolas, Monaco, "Andale Mono", monospace;
 		/* font-style: normal;  */
@@ -221,6 +225,24 @@
 		border-radius: 0.3em;
 	}
 
+	.mdsvx .img-right {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	.mdsvx .img-right>p {
+		max-width: 500px;
+	}
+
+	@media (min-width: 768px) {
+		.mdsvx .img-right {
+			float: right;
+			width: 40%;
+			margin-left: 3rem;
+		}
+	}
+
 	.fb-xs {
 		font-size: 14px;
 	}
@@ -263,9 +285,6 @@
 			/* letter-spacing: 0.02em; */
 			font-weight: 400;
 			font-variation-settings: "wdth" 100, "opsz" 50, "wght" 500, "GRAD" -50;
-		}
-
-		h2 {
 			/* font-variant: lining-nums; */
 		}
 	}
