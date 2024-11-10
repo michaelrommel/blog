@@ -38,6 +38,7 @@
 		"dat.gui": "^0.7.9",
 		"fast-glob": "^3.3.2",
 		"hastscript": "^9.0.0",
+		"ioredis": "^5.4.1",
 		"layerchart": "^0.58.4",
 		"lucide-svelte": "^0.441.0",
 		"mode-watcher": "^0.4.1",
