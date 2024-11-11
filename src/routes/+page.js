@@ -1,5 +1,6 @@
-/** @type {import('./$types').PageLoad} */
-export async function load({ url, params, fetch }) {
+import { error } from '@sveltejs/kit';
+
+export async function load({ _url, _params, fetch }) {
 	let cardDataList = null;
 	cardDataList = await fetch('/api/articles').then((res) => res.json());
 	// console.log(`root index pathname: ${JSON.stringify(url.pathname, null, 2)}`);
@@ -7,10 +8,9 @@ export async function load({ url, params, fetch }) {
 	// console.log(`root index articles: ${JSON.stringify(cardDataList, null, 2)}`);
 
 	if (!cardDataList) {
-		return {
-			status: 404,
-			error: new Error('Article list could not be found')
-		};
+		error(404, {
+			message: 'Article list could not be retrieved'
+		});
 	}
 
 	return {

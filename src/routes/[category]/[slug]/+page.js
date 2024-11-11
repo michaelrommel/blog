@@ -1,3 +1,4 @@
+import { error } from '@sveltejs/kit';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
@@ -150,17 +151,15 @@ export async function load({ params, fetch }) {
 	).then((res) => res.json());
 
 	if (!articles) {
-		return {
-			status: 404,
-			error: new Error('Article could not be found')
-		};
+		error(404, {
+			message: 'Article could not be found'
+		});
 	}
 
 	if (articles.length > 1) {
-		return {
-			status: 404,
-			error: new Error('Multiple articles with that slug found!')
-		};
+		error(404, {
+			message: 'Multiple articles with that slug found!'
+		});
 	}
 
 	const parsedArticle = await compile(articles[0].md);
