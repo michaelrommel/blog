@@ -178,6 +178,8 @@ export async function GET({ url, params }) {
 		perJail.push(jailhacks);
 	}
 
+	r.disconnect();
+
 	// for (const cc of countrylist) {
 	// 	console.log(`f2b:${cc}`);
 	// 	let no_of_hackers = await r.scard(`f2b:${cc}`);
