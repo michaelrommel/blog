@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 
-export async function load({ _url, _params, fetch }) {
+export async function load({ fetch }) {
 	let cardDataList = null;
 	cardDataList = await fetch('/api/articles').then((res) => res.json());
 	// console.log(`root index pathname: ${JSON.stringify(url.pathname, null, 2)}`);

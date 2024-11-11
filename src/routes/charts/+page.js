@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 
-export async function load({ _url, _params, fetch }) {
+export async function load({ fetch }) {
 	let hacksData = null;
 	hacksData = await fetch('/api/hackers').then((res) => res.json());
 	if (!hacksData) {

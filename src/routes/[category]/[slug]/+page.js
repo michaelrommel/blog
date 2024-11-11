@@ -66,7 +66,6 @@ function remarkDirectiveHandler() {
 function changeTheme(theme) {
 	// tweak light theme only slighly
 	theme.colors['editor.background'] = c.gruvlbg0s;
-	let n = 0;
 	for (const tc of theme.tokenColors) {
 		let tcSet = tc.scope;
 		if (tcSet) {

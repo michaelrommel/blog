@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 
-export async function load({ _url, params, fetch }) {
+export async function load({ params, fetch }) {
 	let cardDataList = null;
 	cardDataList = await fetch(`/api/articles?category=${params.category}`).then(
 		(res) => res.json()
