@@ -154,61 +154,30 @@ export async function GET({ url, params }) {
 		d.setDate(d.getDate() - Math.abs(n));
 		return d;
 	};
-	const countrySet = new Set();
-	const jailSet = new Set();
 	for (let n = 7; n >= 0; n--) {
 		const day = past(n);
 		let shortDate = format(day, 'yyyy-MM-dd');
 		let fullDate = day.toISOString();
-		console.log(day);
 		let countryhacks = { day: fullDate };
 		let jailhacks = { day: fullDate };
 		let total = await r.scard(`f2b:${shortDate}`);
 		if (total > 100) {
 			// let's skip all the individual requests
-			countrySet.add(total.toString());
 			countryhacks[total.toString()] = 10;
-			jailSet.add(total.toString());
 			jailhacks[total.toString()] = 10;
 		} else {
 			let bans = await r.smembers(`f2b:${shortDate}`);
-			console.log(`day: ${shortDate}, bans: ${JSON.stringify(bans)}`);
+			// console.log(`day: ${shortDate}, bans: ${JSON.stringify(bans)}`);
 			for (const banid of bans) {
 				const ban = await r.hgetall(`f2b:${banid}`);
-				console.log(`ban: ${JSON.stringify(ban)}, cc: ${ban.country}`);
-				countrySet.add(ban.country);
-				if (countryhacks[ban.country] !== undefined) {
-					countryhacks[ban.country] += 1;
-				} else {
-					countryhacks[ban.country] = 1;
-				}
-				jailSet.add(ban.jail);
-				if (jailhacks[ban.jail] !== undefined) {
-					jailhacks[ban.jail] += 1;
-				} else {
-					jailhacks[ban.jail] = 1;
-				}
+				countryhacks[ban.country] = (countryhacks[ban.country] ?? 0) + 1;
+				jailhacks[ban.jail] = (jailhacks[ban.jail] ?? 0) + 1;
 			}
 		}
 		perCountry.push(countryhacks);
 		perJail.push(jailhacks);
 	}
-	for (const day of perCountry) {
-		const seenCountries = Object.keys(day);
-		countrySet.forEach((cc) => {
-			if (!seenCountries.includes(cc)) {
-				day[cc] = 0;
-			}
-		});
-	}
-	for (const day of perJail) {
-		const seenJails = Object.keys(day);
-		jailSet.forEach((j) => {
-			if (!seenJails.includes(j)) {
-				day[j] = 0;
-			}
-		});
-	}
+
 	// for (const cc of countrylist) {
 	// 	console.log(`f2b:${cc}`);
 	// 	let no_of_hackers = await r.scard(`f2b:${cc}`);
@@ -219,6 +188,7 @@ export async function GET({ url, params }) {
 	// 		hackers: no_of_hackers
 	// 	});
 	// }
+
 	return json({
 		perCountry,
 		perJail

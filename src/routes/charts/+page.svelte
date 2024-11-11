@@ -1,7 +1,6 @@
 <script>
 	import StackedBarChart from "$lib/components/StackedBarChart.svelte";
 	export let data;
-	console.log(JSON.stringify(data));
 </script>
 
 <div id="articlecontainer" class="col-span-12 md:mx-auto">

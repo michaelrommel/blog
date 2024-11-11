@@ -1,9 +1,6 @@
 <script>
 	import { BarChart } from "layerchart";
-	import { scaleTime, scaleLog } from "d3-scale";
-
-	export let stackedData;
-	export let xSelector;
+	import { scaleOrdinal, scaleTime, scaleLog } from "d3-scale";
 
 	const colourPalette = [
 		// {{{
@@ -34,18 +31,24 @@
 		"hsl(var(--gruvlemphorange))",
 		// }}}
 	];
-	const seriesData = Object.keys(stackedData[0])
-		.filter((k) => {
-			if (k != xSelector) {
-				return k;
-			}
-		})
-		.map((k, i) => {
-			return {
-				key: k,
-				color: colourPalette[i % colourPalette.length],
-			};
-		});
+
+	export let stackedData;
+	export let xSelector;
+
+	const allcountries = [
+		...new Set(
+			stackedData.flatMap((c) =>
+				Object.keys(c).filter((key) => key !== xSelector),
+			),
+		),
+	];
+
+	const colourScale = scaleOrdinal(allcountries, colourPalette);
+
+	const seriesData = allcountries.map((c) => ({
+		key: c,
+		color: colourScale(c),
+	}));
 </script>
 
 <BarChart
