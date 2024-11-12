@@ -1,36 +1,10 @@
 <script>
-	import { BarChart } from "layerchart";
-	import { scaleOrdinal, scaleTime, scaleLog } from "d3-scale";
+	import Chart from "chart.js/auto";
+	import { onMount } from "svelte";
+	import { chartcolours } from "$lib/util.js";
+	import { format } from "date-fns";
 
-	const colourPalette = [
-		// {{{
-		"hsl(var(--gruvred))",
-		"hsl(var(--gruvgreen))",
-		"hsl(var(--gruvyellow))",
-		"hsl(var(--gruvblue))",
-		"hsl(var(--gruvpurple))",
-		"hsl(var(--gruvaqua))",
-		"hsl(var(--gruvorange))",
-		"hsl(var(--gruvgray))",
-		"hsl(var(--gruvdgray))",
-		"hsl(var(--gruvdbg))",
-		"hsl(var(--gruvdfg))",
-		"hsl(var(--gruvdemphred))",
-		"hsl(var(--gruvdemphgreen))",
-		"hsl(var(--gruvdemphyellow))",
-		"hsl(var(--gruvdemphblue))",
-		"hsl(var(--gruvdemphpurple))",
-		"hsl(var(--gruvdemphaqua))",
-		"hsl(var(--gruvdemphorange))",
-		"hsl(var(--gruvlemphred))",
-		"hsl(var(--gruvlemphgreen))",
-		"hsl(var(--gruvlemphyellow))",
-		"hsl(var(--gruvlemphblue))",
-		"hsl(var(--gruvlemphpurple))",
-		"hsl(var(--gruvlemphaqua))",
-		"hsl(var(--gruvlemphorange))",
-		// }}}
-	];
+	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);
 
 	export let stackedData;
 	export let xSelector;
@@ -43,31 +17,85 @@
 		),
 	];
 
-	const colourScale = scaleOrdinal(allcountries, colourPalette);
+	const data = {
+		labels: stackedData.map((slice) =>
+			format(new Date(slice[xSelector]), "yyyy-MM-dd"),
+		),
+		datasets: [],
+	};
 
-	const seriesData = allcountries.map((c) => ({
-		key: c,
-		color: colourScale(c),
-	}));
+	allcountries.map((ccode, i) => {
+		const dataset = {
+			label: ccode,
+			data: stackedData.map((slice) => {
+				return slice[ccode] ?? 0;
+			}),
+			backgroundColor: colourMap[i % colourMap.length],
+		};
+		data.datasets.push(dataset);
+	});
+
+	const totals = stackedData.map((slice) => {
+		let subtotal = Object.keys(slice).reduce((acc, cur) => {
+			return acc + (cur !== xSelector ? slice[cur] : 0);
+		}, 0);
+		return subtotal;
+	});
+
+	console.log(JSON.stringify(data, null, 2));
+	console.log(JSON.stringify(totals, null, 2));
+
+	let chartCanvas;
+
+	onMount(async () => {
+		new Chart(chartCanvas, {
+			type: "bar",
+			data,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					x: {
+						stacked: true,
+					},
+					y: {
+						stacked: true,
+						ticks: {
+							font: {
+								size: 16,
+							},
+						},
+					},
+				},
+				elements: {
+					bar: {
+						borderRadius: 3,
+					},
+				},
+				plugins: {
+					legend: {
+						labels: {
+							boxWidth: 14,
+							borderRadius: 5,
+							useBorderRadius: true,
+							font: {
+								size: 14,
+							},
+						},
+					},
+					tooltip: {
+						callbacks: {
+							footer: function (context) {
+								return `Sum: ${totals[context[0].dataIndex]}`;
+							},
+						},
+					},
+				},
+			},
+		});
+	});
 </script>
 
-<BarChart
-	padding={{ left: 50, top: 50, right: 50, bottom: 30 }}
-	data={stackedData}
-	x={xSelector}
-	series={seriesData}
-	seriesLayout="stack"
-	props={{
-		xAxis: {
-			tickLabelProps: {
-				class: "text-sm",
-			},
-		},
-		yAxis: {
-			format: "metric",
-			tickLabelProps: {
-				class: "text-xs",
-			},
-		},
-	}}
-/>
+<div class="h-[500px]">
+	<canvas bind:this={chartCanvas}></canvas>
+</div>
