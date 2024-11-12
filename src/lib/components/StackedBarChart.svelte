@@ -42,9 +42,6 @@
 		return subtotal;
 	});
 
-	console.log(JSON.stringify(data, null, 2));
-	console.log(JSON.stringify(totals, null, 2));
-
 	let chartCanvas;
 
 	onMount(async () => {
@@ -71,6 +68,9 @@
 					bar: {
 						borderRadius: 3,
 					},
+				},
+				animation: {
+					duration: 250,
 				},
 				plugins: {
 					legend: {
