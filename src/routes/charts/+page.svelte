@@ -1,5 +1,6 @@
 <script>
 	import StackedBarChart from "$lib/components/StackedBarChart.svelte";
+	import PieChart from "$lib/components/PieChart.svelte";
 	export let data;
 </script>
 
@@ -27,6 +28,12 @@
 				stackedData={data.data.perJail}
 				xSelector={"day"}
 			/>
+		</div>
+
+		<h2>Hackers per Country</h2>
+		<p>Here is the overall distribution of banned IPs per country.</p>
+		<div class="self-center m-1 p-1">
+			<PieChart totalData={data.data.totalPerCountry} />
 		</div>
 	</div>
 </div>
