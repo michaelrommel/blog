@@ -3,10 +3,10 @@ title: 'Setup of Wireguard with WSL2'
 description: 'This is a short article how to connect a WSL2 subsystem to a development network behind a VPN server'
 thumbnailUrl: '/articles/assets/2022-01-23-wireguard-wsl/thumbnail.svg'
 thumbnailTitle: 'Schematic network diagram'
-creationDate: '2022-01-23T11:16:13+01:00'
+creationDate: '2022-02-01T11:16:13+01:00'
 authorName: 'Michael Rommel'
 authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['new', 'locked', 'consume', 'code', 'linux']
+tags: ['new', 'locked', 'create', 'code', 'linux']
 published: true
 ---
 

@@ -12,6 +12,7 @@ import remarkEmoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import supersub from 'remark-supersub';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeStringify from 'rehype-stringify';
 
@@ -105,10 +106,11 @@ async function compile(article) {
 		.use(remarkGetFm)
 		.use(remarkDirective)
 		.use(remarkDirectiveHandler)
-		.use(remarkEmoji)
+		.use(remarkEmoji, { emoticon: true })
 		.use(remarkGithub, { repository: 'https://github.com/michaelrommel/blog' })
-		.use(remarkGfm)
+		.use(remarkGfm, { singleTilde: false })
 		.use(remarkMath)
+		.use(supersub)
 		.use(remarkRehype)
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
 		.use(rehypeShikiFromHighlighter, highlighter, {

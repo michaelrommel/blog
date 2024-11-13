@@ -1,5 +1,5 @@
-const c = require('./src/configs/gruvbox_colors.js');
 const defaultTheme = require('tailwindcss/defaultTheme');
+const c = require('./src/configs/gruvbox_colors.js');
 
 const hexToRgb = (hex) => {
 	hex = hex.replace('#', '');

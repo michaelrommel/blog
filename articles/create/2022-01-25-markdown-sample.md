@@ -6,18 +6,9 @@ thumbnailTitle: 'Icon representing markdown text documents'
 creationDate: '2022-01-25T03:21:13+01:00'
 authorName: 'Michael Rommel'
 authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['new', 'locked', 'consume', 'code']
+tags: ['new', 'locked', 'create', 'code']
 published: true
 ---
-
-**Advertisement :)**
-
-- **[pica](https://nodeca.github.io/pica/demo/)** - high quality and fast image
-  resize in browser.
-- **[babelfish](https://github.com/nodeca/babelfish/)** - developer friendly
-  i18n with plurals support and easy syntax.
-
-You will like those projects!
 
 # h1 Heading 8-)
 
@@ -31,37 +22,36 @@ You will like those projects!
 
 ###### h6 Heading
 
+This document is mainly for educational purposes, to keep a reference which
+markdown syntaxes are supported by all my rendering plugins on this site.
+
+
 ## Horizontal Rules
 
 ---
+- - -
+***
+___
 
----
+## Markdown Directives
 
----
+::note[One Extension note arbitrary classes like LARGE text]{.fb-2xl}
 
-::note
-Extension note
-::
+:comment[Second Extension note of class 'comment']{.comment}
 
-## Typographic replacements
+:note[Another Extension note highlighted]{.highlight}
 
-Enable typographer option to see result.
+:::img{.img-right}
+Third Extension right aligned
+:::
 
-(c) (C) (r) (R) (tm) (TM) (p) (P) +-
+and normal text continuing to flow left of the other paragraph
+that could also be an image or icon for something to download.
 
-test.. test... test..... test?..... test!....
-
-!!!!!! ???? ,, -- ---
-
-"Smartypants, double quotes" and 'single quotes'
 
 ## Emphasis
 
 **This is bold text**
-
-**This is bold text**
-
-_This is italic text_
 
 _This is italic text_
 
@@ -105,7 +95,7 @@ Start numbering with offset:
 
 Inline `code`
 
-Indented code
+Block code "fences"
 
 ```
 // Some comments
@@ -114,11 +104,12 @@ line 2 of code
 line 3 of code
 ```
 
-Block code "fences"
 
-```
-Sample text here...
-```
+Indented code
+
+    Sample text here...
+    And another line
+
 
 Syntax highlighting
 
@@ -138,13 +129,13 @@ console.log(foo(5));
 | engine | engine to be used for processing templates. Handlebars is the default.    |
 | ext    | extension to be used for dest files.                                      |
 
-Right aligned columns
+Aligned columns
 
-| Option |                                                               Description |
-| -----: | ------------------------------------------------------------------------: |
-|   data | path to data files to supply the data that will be passed into templates. |
-| engine |    engine to be used for processing templates. Handlebars is the default. |
-|    ext |                                      extension to be used for dest files. |
+| Option |        Centered Column             |                          Description |
+|:-------|:----------------------------------:|-------------------------------------:|
+|   data | path to data files to supply the   |  that will be passed into templates. |
+| engine |   engine to be used for            |templates. Handlebars is the default. |
+|    ext |                                    | extension to be used for dest files. |
 
 ## Links
 
@@ -174,26 +165,14 @@ The killer feature of `markdown-it` is very effective support of
 
 ### [Emojies](https://github.com/markdown-it/markdown-it-emoji)
 
-> Classic markup: :wink: :crush: :cry: :tear: :laughing: :yum:
->
-> Shortcuts (emoticons): :-) :-( 8-) ;)
+Classic markup: :wink: :cry: :laughing: :yum: :innocent:
 
-see [how to change output](https://github.com/markdown-it/markdown-it-emoji#change-output) with twemoji.
+Shortcuts (emoticons): :-) :-( 8-) ;)
 
 ### [Subscript](https://github.com/markdown-it/markdown-it-sub) / [Superscript](https://github.com/markdown-it/markdown-it-sup)
 
 - 19^th^
 - H~2~O
-
-### [\<ins>](https://github.com/markdown-it/markdown-it-ins)
-
-++Inserted text++
-
-### [\<mark>](https://github.com/markdown-it/markdown-it-mark)
-
-==Marked text==
-
-### [Footnotes](https://github.com/markdown-it/markdown-it-footnote)
 
 Footnote 1 link[^first].
 
@@ -209,42 +188,3 @@ Duplicated footnote reference[^second].
 
 [^second]: Footnote text.
 
-### [Definition lists](https://github.com/markdown-it/markdown-it-deflist)
-
-Term 1
-
-: Definition 1
-with lazy continuation.
-
-Term 2 with _inline markup_
-
-: Definition 2
-
-```
-{ some code, part of Definition 2 }
-```
-
-Third paragraph of definition 2.
-
-_Compact style:_
-
-Term 1
-~ Definition 1
-
-Term 2
-~ Definition 2a
-~ Definition 2b
-
-### [Abbreviations](https://github.com/markdown-it/markdown-it-abbr)
-
-This is HTML abbreviation example.
-
-It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
-
-\*[HTML]: Hyper Text Markup Language
-
-### [Custom containers](https://github.com/markdown-it/markdown-it-container)
-
-::: warning
-_here be dragons_
-:::

@@ -289,6 +289,20 @@
 		}
 	}
 
+	.highlight {
+		@apply bg-gruvdemphorange text-gruvdbg;
+	}
+
+	th[align="center"],
+	td[align="center"] {
+		text-align: center;
+	}
+
+	th[align="right"],
+	td[align="right"] {
+		text-align: right;
+	}
+
 	.navigation {
 		font-variation-settings: "wdth" 110, "opsz" 50, "wght" 600, "GRAD" -50;
 	}
