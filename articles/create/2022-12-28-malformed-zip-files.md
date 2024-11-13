@@ -10,7 +10,7 @@ tags: ['new', 'locked', 'create', 'code']
 published: true
 ---
 
-# Windows Creates Malformed ZIP Archives
+# Malformed Windows ZIPs
 
 ## Introduction
 
@@ -23,8 +23,8 @@ official specification.
 
 The ZIP Specification is [here](https://pkwaredownloads.blob.core.windows.net/pem/APPNOTE.txt).
 
-The issues start, if you want to extract some file from an archive, do some
-processing on it and add it back to the archive. The resulting archive can
+The issues start if you want to extract some file from an archive on Linux, do
+some processing on it and add it back to the archive. The resulting archive can
 then be problematic to be processed on Windows again.
 
 ## Comparison of Archives
@@ -61,7 +61,7 @@ the following combinations:
 If we encode the whole tree into an archive and use several tools to
 inspect them, it looks like this:
 
-```console {29,40,45}
+```console
 > ls -1 *.zip |xargs -n1 zipinfo
 Archive:  Testfolder_Linux_ext4_zip.zip
 Zip file size: 662 bytes, number of entries: 3
@@ -69,44 +69,51 @@ drwxr-xr-x  3.0 unx        0 bx stor 24-Nov-13 13:41 Subdirectory/
 -rw-r--r--  3.0 unx       65 tx defN 24-Nov-13 13:41 Subdirectory/2ndLevelFile.txt
 -rw-r--r--  3.0 unx       83 tx defN 24-Nov-13 13:41 TopLevelFile.txt
 3 files, 148 bytes uncompressed, 140 bytes compressed:  5.4%
+
 Archive:  Testfolder_Linux_ntfs_zip.zip
 Zip file size: 662 bytes, number of entries: 3
 drwxr-xr-x  3.0 unx        0 bx stor 24-Nov-13 13:33 Subdirectory/
 -rw-r--r--  3.0 unx       65 tx defN 24-Nov-13 13:33 Subdirectory/2ndLevelFile.txt
 -rw-r--r--  3.0 unx       83 tx defN 24-Nov-13 13:32 TopLevelFile.txt
 3 files, 148 bytes uncompressed, 140 bytes compressed:  5.4%
+
 Archive:  Testfolder_Win11_FAT32_Explorer.zip
 Zip file size: 730 bytes, number of entries: 3
 drwxrwxrwx  2.0 unx        0 bx stor 24-Nov-13 13:33 Subdirectory/
 -rw-rw-rw-  2.0 unx       65 bX defN 24-Nov-13 13:33 Subdirectory/2ndLevelFile.txt
 -rw-rw-rw-  2.0 unx       83 bX defN 24-Nov-13 13:32 TopLevelFile.txt
 3 files, 148 bytes uncompressed, 140 bytes compressed:  5.4%
+
 Archive:  Testfolder_Win11_exFAT_Explorer.zip
 Zip file size: 730 bytes, number of entries: 3
 drwxrwxrwx  2.0 unx        0 bx stor 24-Nov-13 13:33 Subdirectory/
 -rw-rw-rw-  2.0 unx       65 bX defN 24-Nov-13 13:33 Subdirectory/2ndLevelFile.txt
 -rw-rw-rw-  2.0 unx       83 bX defN 24-Nov-13 13:32 TopLevelFile.txt
 3 files, 148 bytes uncompressed, 140 bytes compressed:  5.4%
+
 Archive:  Testfolder_Win11_ntfs_7zip.zip
 Zip file size: 616 bytes, number of entries: 3
 drwx---     6.3 fat        0 bx stor 24-Nov-13 13:33 Subdirectory/
--rw-a--     6.3 fat       65 bx stor 24-Nov-13 13:33 Subdirectory/2ndLevelFile.txt
+-rw-a--     6.3 fat       65 bx stor 24-Nov-13 13:33 Subdirectory/2ndLevelFile.txt // [!code highlight]
 -rw-a--     6.3 fat       83 bx defN 24-Nov-13 13:32 TopLevelFile.txt
 3 files, 148 bytes uncompressed, 142 bytes compressed:  4.1%
+
 Archive:  Testfolder_Win11_ntfs_Explorer.zip
 Zip file size: 730 bytes, number of entries: 3
 -rw-rw-rw-  2.0 unx       83 bX defN 24-Nov-13 13:32 TopLevelFile.txt
 drwxrwxrwx  2.0 unx        0 bx stor 24-Nov-13 13:33 Subdirectory/
 -rw-rw-rw-  2.0 unx       65 bX defN 24-Nov-13 13:33 Subdirectory/2ndLevelFile.txt
 3 files, 148 bytes uncompressed, 140 bytes compressed:  5.4%
+
 Archive:  Testfolder_Win11_ntfs_powershell.zip
 Zip file size: 404 bytes, number of entries: 2
--rw----     2.0 fat       65 b- defN 24-Nov-13 13:33 Subdirectory\2ndLevelFile.txt
+-rw----     2.0 fat       65 b- defN 24-Nov-13 13:33 Subdirectory\2ndLevelFile.txt // [!code highlight]
 -rw----     2.0 fat       83 b- defN 24-Nov-13 13:32 TopLevelFile.txt
 2 files, 148 bytes uncompressed, 140 bytes compressed:  5.4%
+
 Archive:  Testfolder_Win11_ntfs_powershellpipe.zip
 Zip file size: 404 bytes, number of entries: 2
--rw----     2.0 fat       65 b- defN 24-Nov-13 13:33 Subdirectory\2ndLevelFile.txt
+-rw----     2.0 fat       65 b- defN 24-Nov-13 13:33 Subdirectory\2ndLevelFile.txt // [!code highlight]
 -rw----     2.0 fat       83 b- defN 24-Nov-13 13:32 TopLevelFile.txt
 2 files, 148 bytes uncompressed, 140 bytes compressed:  5.4%
 >
@@ -129,10 +136,10 @@ maintainers of applications with zip files made then some changes that deal
 with the situation, sometimes completely under the hood, sometimes with a
 hint, that this archive is malformed:
 
-```console {3}
+```console
 > unzip ../Testfolder_Win11_ntfs_powershell.zip
 Archive:  ../Testfolder_Win11_ntfs_powershell.zip
-warning:  ../Testfolder_Win11_ntfs_powershell.zip appears to use backslashes as path separators
+warning:  ../Testfolder_Win11_ntfs_powershell.zip appears to use backslashes as path separators // [!code highlight]
   inflating: Subdirectory/2ndLevelFile.txt
   inflating: TopLevelFile.txt
 >  tree -a
@@ -145,8 +152,8 @@ warning:  ../Testfolder_Win11_ntfs_powershell.zip appears to use backslashes as 
 >
 ```
 
-So the unzip program on Linux has detected the wrong encoding and extracted
-the folder structure correctly.
+So the unzip program on Linux has detected the wrong encoding, compensated for
+this  and extracted the folder structure correctly.
 
 ## Programmatically alter files
 
@@ -176,8 +183,8 @@ Type "help", "copyright", "credits" or "license" for more information.
 >
 ```
 
-Oh no! What happened now? python is sticking to the specification. That's
-it. So if we have an archive with backslashes in the filenames, python just
+Oh no! What happened now? Python is sticking to the specification. That's
+it. So if we have an archive with backslashes in the filenames, Python just
 uses that. On Linux a backslash is not a forbidden character for a
 filename, so the filename gets then created with that full path and the
 intended subdirectory structure is lost.
@@ -190,6 +197,7 @@ let's create a small python script: `clean.py`
 import re
 import os
 import zipfile
+
 
 archive = zipfile.ZipFile("../Testfolder_Win11_ntfs_powershell.zip", mode="a")
 remove_name = re.compile("(Patient Name is: )(.*)")
@@ -252,8 +260,8 @@ access to the old file with sensitive information. Not exactly what we
 wanted.
 
 So let's remove the first file from the archive. Hmmmm. This is awkward.
-python's standard zip library does not have a `remove()` function. So the
-only way to do that from python is to open a new fresh zip file and copy
+Python's standard zip library does not have a `remove()` function. So the
+only way to do that from Python is to open a new fresh zip file and copy
 over each file one by one. This is not a good solution, because each time
 we copy a file, it will be decompressed and recompressed, taxing the CPU of
 a system. A good zip library would copy the untouched binary portions of
@@ -387,16 +395,16 @@ following criteria:
 1. extract all files originating from a Windows archive into the correct
    folder structure. This is not straightforward, because then the hacks
    and workarounds in the `zip/unzip` implementation has to be taken over
-   and some sort of heuristics need to be applied. Luckily Python has at
-   least a way of reading the creating system, albeit not writing this into
-   an archive.
+   and some sort of detection/switch needs to be implemented. Luckily Python
+   has at least a way of reading the creating system, albeit not writing this
+   into an archive.
 
 1. Secondly all archive files need then to be streamed out to the new file,
    having a recompression occurring.
 
 The fragment to read the OS info:
 
-```console
+```shellsession
 rommel@md2v3xkc:~/software/ZIP_Tests/Extraction$ python3
 Python 3.11.8 (main, Feb 23 2024, 14:02:40) [GCC 12.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.

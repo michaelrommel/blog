@@ -131,6 +131,7 @@ async function compile(article) {
 				'toml',
 				'yaml'
 			],
+			defaultColor: false,
 			defaultLanguage: 'text',
 			fallbackLanguage: 'text',
 			transformers: [transformerNotationDiff(), transformerNotationHighlight()]

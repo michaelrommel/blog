@@ -144,14 +144,30 @@
 			'wdth' 100;
 	}
 
+	pre.shiki {
+		padding-inline-start: 0.2rem;
+		padding-inline-end: 0.2rem;
+	}
+
+	pre.shiki,
+	.shiki,
+	.shiki span {
+		color: var(--shiki-light);
+		background-color: var(--shiki-light-bg);
+		/* Optional, if you also want font styles */
+		font-style: var(--shiki-light-font-style);
+		font-weight: var(--shiki-light-font-weight);
+		text-decoration: var(--shiki-light-text-decoration);
+	}
+
 	html.dark .shiki,
 	html.dark .shiki span {
-		color: var(--shiki-dark) !important;
-		background-color: var(--shiki-dark-bg) !important;
+		color: var(--shiki-dark);
+		background-color: var(--shiki-dark-bg);
 		/* Optional, if you also want font styles */
-		font-style: var(--shiki-dark-font-style) !important;
-		font-weight: var(--shiki-dark-font-weight) !important;
-		text-decoration: var(--shiki-dark-text-decoration) !important;
+		font-style: var(--shiki-dark-font-style);
+		font-weight: var(--shiki-dark-font-weight);
+		text-decoration: var(--shiki-dark-text-decoration);
 	}
 
 	pre[class*="shiki"] {
@@ -171,7 +187,7 @@
 		/* white-space: pre;  */
 		/* word-spacing: normal;  */
 		/* word-break: normal;  */
-		/* line-height: 1; */
+		line-height: 1.5;
 
 		-moz-tab-size: 4;
 		-o-tab-size: 4;
@@ -182,8 +198,9 @@
 		-ms-hyphens: none;
 		hyphens: none;
 
-		display: inline flex;
+		display: inline-flex;
 		flex-direction: column;
+		justify-content: flex-start;
 		flex-grow: 1;
 	}
 
@@ -191,6 +208,15 @@
 		pre[class*="shiki"]>code {
 			font-size: 0.9rem;
 		}
+	}
+
+	pre[class*="shiki"]>code>span[class*="line"] {
+		/* padding-top: 4px; */
+		/* padding-bottom: 4px; */
+		padding-inline-start: 4px;
+		padding-inline-end: 4px;
+		flex-grow: 1;
+		flex-basis: 0.9rem;
 	}
 
 	pre[class*="shiki"]::-moz-selection,
@@ -205,11 +231,13 @@
 		background-color: theme("colors.gruvdbg4");
 	}
 
-	pre[class*="shiki"]>code>span[class*="highlighted"] {
+	pre[class*="shiki"]>code>span[class*="highlighted"],
+	pre[class*="shiki"]>code>span[class*="highlighted"]>span {
 		background-color: theme("colors.gruvlbg3")
 	}
 
-	.dark pre[class*="shiki"]>code>span[class*="highlighted"] {
+	.dark pre[class*="shiki"]>code>span[class*="highlighted"],
+	.dark pre[class*="shiki"]>code>span[class*="highlighted"]>span {
 		background-color: theme("colors.gruvdbg3")
 	}
 
