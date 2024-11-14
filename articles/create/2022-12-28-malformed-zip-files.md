@@ -2,7 +2,7 @@
 title: 'Windows Malformed ZIP Archives'
 description: 'Exploration of ZIP files with invalid filesystem structures and their processing on Linux.'
 thumbnailUrl: '/articles/assets/2022-12-28-malformed-zip-files/thumbnail.jpeg'
-thumbnailTitle: 'Icon representing markdown text documents'
+thumbnailTitle: 'Snippet of an explorer window with zip files'
 creationDate: '2022-12-28T20:11:15+01:00'
 authorName: 'Michael Rommel'
 authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'

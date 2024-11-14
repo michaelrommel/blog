@@ -6,7 +6,7 @@ thumbnailTitle: 'thumbnail of an turntable pickup with geometric lines'
 creationDate: '2022-02-02T21:17:45+01:00'
 authorName: 'Michael Rommel'
 authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['new', 'locked', 'consume', 'code']
+tags: ['locked', 'create']
 published: true
 ---
 

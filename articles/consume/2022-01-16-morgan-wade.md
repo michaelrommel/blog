@@ -6,7 +6,7 @@ thumbnailTitle: 'Photo of Morgan Wade sitting on a bar stool holding a guitar'
 creationDate: '2022-01-16T23:21:13+01:00'
 authorName: 'Michael Rommel'
 authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['new', 'locked', 'consume', 'music', 'country', 'female', 'songwriter']
+tags: ['locked', 'consume', 'music', 'country', 'female', 'songwriter']
 published: true
 ---
 

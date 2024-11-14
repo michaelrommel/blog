@@ -6,7 +6,7 @@ thumbnailTitle: 'Icon representing markdown text documents'
 creationDate: '2022-01-25T03:21:13+01:00'
 authorName: 'Michael Rommel'
 authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['new', 'locked', 'create', 'code']
+tags: ['locked', 'create', 'code']
 published: true
 ---
 

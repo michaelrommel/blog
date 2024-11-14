@@ -6,7 +6,7 @@ thumbnailTitle: 'Schematic network diagram'
 creationDate: '2022-02-01T11:16:13+01:00'
 authorName: 'Michael Rommel'
 authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['new', 'locked', 'create', 'code', 'linux']
+tags: ['locked', 'create', 'code', 'linux']
 published: true
 ---
 
