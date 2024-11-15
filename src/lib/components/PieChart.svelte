@@ -2,13 +2,12 @@
 	import Chart from "chart.js/auto";
 	import { onMount } from "svelte";
 	import { chartcolours } from "$lib/util.js";
-	import { format } from "date-fns";
 
 	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);
 
-	export let totalData;
+	export let data;
 
-	const sortedData = totalData.sort((a, b) => {
+	const sortedData = data.sort((a, b) => {
 		if (a.hackers < b.hackers) {
 			return 1;
 		} else if (a.hackers > b.hackers) {
@@ -34,7 +33,7 @@
 		hackers: variousTotal,
 	});
 
-	const data = {
+	const chartData = {
 		labels: summarizedData.map((slice) => slice.country),
 		datasets: [],
 	};
@@ -47,14 +46,14 @@
 			return colourMap[i % colourMap.length];
 		}),
 	};
-	data.datasets.push(dataset);
+	chartData.datasets.push(dataset);
 
 	let chartCanvas;
 
 	onMount(async () => {
 		new Chart(chartCanvas, {
 			type: "doughnut",
-			data,
+			data: chartData,
 			options: {
 				borderWidth: 0,
 				responsive: true,

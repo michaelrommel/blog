@@ -60,7 +60,7 @@ publish here as well. I had three graphs in mind:
 The following table show the used namespaced, keys and types of those keys.
 
 | ns  | key | type   | description                                                    |
-|-----|-----|--------|----------------------------------------------------------------|
+|----:|:----|:------:|----------------------------------------------------------------|
 |f2b: | CC  | SET    | stores all hack attempts for a country code by a unique NID    |
 |f2b: | IP  | SET    | stores all hack attempts from one IP address ( multiple jails) |
 |f2b: | NID | HASH   | for one attempt, store under the nanoid, time, jail, country   |

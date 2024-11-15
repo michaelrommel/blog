@@ -15,25 +15,19 @@
 			Each IP gets blocked for 365 days.
 		</p>
 		<div class="self-center m-1 p-1">
-			<StackedBarChart
-				stackedData={data.data.perCountry}
-				xSelector={"day"}
-			/>
+			<StackedBarChart data={data.data.perCountry} xSelector={"day"} />
 		</div>
 
 		<h2>Banned IPs per Jail</h2>
 		<p>Here is the distribution of banned IPs of the last days per jail.</p>
 		<div class="self-center m-1 p-1">
-			<StackedBarChart
-				stackedData={data.data.perJail}
-				xSelector={"day"}
-			/>
+			<StackedBarChart data={data.data.perJail} xSelector={"day"} />
 		</div>
 
 		<h2>Hackers per Country</h2>
 		<p>Here is the overall distribution of banned IPs per country.</p>
 		<div class="self-center m-1 p-1">
-			<PieChart totalData={data.data.totalPerCountry} />
+			<PieChart data={data.data.totalPerCountry} />
 		</div>
 	</div>
 </div>

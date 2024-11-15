@@ -6,19 +6,19 @@
 
 	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);
 
-	export let stackedData;
+	export let data;
 	export let xSelector;
 
 	const allcountries = [
 		...new Set(
-			stackedData.flatMap((c) =>
+			data.flatMap((c) =>
 				Object.keys(c).filter((key) => key !== xSelector),
 			),
 		),
 	];
 
-	const data = {
-		labels: stackedData.map((slice) =>
+	const chartData = {
+		labels: data.map((slice) =>
 			format(new Date(slice[xSelector]), "yyyy-MM-dd"),
 		),
 		datasets: [],
@@ -27,15 +27,15 @@
 	allcountries.map((ccode, i) => {
 		const dataset = {
 			label: ccode,
-			data: stackedData.map((slice) => {
+			data: data.map((slice) => {
 				return slice[ccode] ?? 0;
 			}),
 			backgroundColor: colourMap[i % colourMap.length],
 		};
-		data.datasets.push(dataset);
+		chartData.datasets.push(dataset);
 	});
 
-	const totals = stackedData.map((slice) => {
+	const totals = data.map((slice) => {
 		let subtotal = Object.keys(slice).reduce((acc, cur) => {
 			return acc + (cur !== xSelector ? slice[cur] : 0);
 		}, 0);
@@ -47,7 +47,7 @@
 	onMount(async () => {
 		new Chart(chartCanvas, {
 			type: "bar",
-			data,
+			data: chartData,
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
