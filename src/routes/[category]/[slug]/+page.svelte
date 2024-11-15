@@ -1,14 +1,13 @@
 <script>
 	import "../../../app.css";
-	import Markdown from "$lib/components/Markdown.svelte";
+	import MarkdownCharts from "$lib/components/MarkdownComponent.svelte";
 	export let data;
-	export let markdown = data.md;
 </script>
 
 <div id="articlecontainer" class="col-span-12 md:mx-auto">
 	<div
 		class="mdsvx prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert"
 	>
-		<Markdown {markdown} />
+		<MarkdownCharts {data} />
 	</div>
 </div>

@@ -1,16 +1,18 @@
 ---
-title: 'Markdown & Svelte'
-description: 'A sample markdown text with an embedded Svelte component'
-thumbnailUrl: '/articles/assets/2022-01-25-markdown-sample/thumbnail.svg'
-thumbnailTitle: 'Icon representing markdown text documents'
-creationDate: '2024-11-14T19:48:16+01:00'
-authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['locked', 'create', 'code']
+title: "fail2ban Statistics"
+description: "Charts displaying the hack attempts on this system"
+thumbnailUrl: "/articles/assets/2024-11-14-fail2ban-charts/thumbnail.png"
+thumbnailTitle: "Icon representing markdown text documents"
+creationDate: "2024-11-14T19:48:16+01:00"
+dataSource: "api"
+dataUrl: "/hackers"
+authorName: "Michael Rommel"
+authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
+tags: ["locked", "create", "code"]
 published: true
 ---
 
-# Fail2Ban Statistics
+# fail2ban Statistics
 
 ## Banned IPs per Country
 

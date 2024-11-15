@@ -1,10 +1,10 @@
 <script>
 	import { parseMarkdown } from "$lib/markdown.js";
 	import StackedBarChart from "$lib/components/StackedBarChart.svelte";
+	import BarChart from "$lib/components/BarChart.svelte";
 	import PieChart from "$lib/components/PieChart.svelte";
 
 	export let data;
-	export let regex = "/SvelteComponent/";
 
 	const componentRegex = RegExp(
 		"(<SvelteComponent.*?></SvelteComponent>)",
@@ -19,12 +19,13 @@
 
 	export let components = {
 		StackedBarChart: StackedBarChart,
+		BarChart: BarChart,
 		PieChart: PieChart,
 	};
 
-	function searchComponents(html, data) {
+	function searchComponents(html) {
 		const parts = html.split(componentRegex);
-		console.log(parts);
+		// console.log(parts);
 		const rewrite = parts.map((p) => {
 			if (componentRegex.test(p)) {
 				// define a svelte component
@@ -69,8 +70,9 @@
 
 	async function injectComponents(data) {
 		const html = await parseMarkdown(data.markdown);
-		const fragments = searchComponents(html, data.chartdata);
-		console.log(`after search ${JSON.stringify(fragments, null, 2)}`);
+		const fragments = searchComponents(html);
+		// console.log(`after search ${JSON.stringify(fragments, null, 2)}`);
+		// console.log(`data: ${data.chartdata.inline[0]}`);
 		return fragments;
 	}
 </script>

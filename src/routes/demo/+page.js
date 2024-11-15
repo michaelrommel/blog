@@ -1,9 +1,10 @@
 import { error } from '@sveltejs/kit';
 
-export async function load({ fetch }) {
+export async function load({ params, fetch }) {
 	let articles = null;
 	articles = await fetch(
-		`/api/article?category=create&slug=2024-11-14-md-embeds-svelte`
+		`/api/article?category=${params.category}&slug=${params.slug}`
+		//`/api/article?category=create&slug=2024-11-14-md-embeds-svelte`
 	).then((res) => res.json());
 
 	if (!articles) {
