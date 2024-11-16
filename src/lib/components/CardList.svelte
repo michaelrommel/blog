@@ -2,8 +2,6 @@
 	import "../../app.css";
 	import Card from "$lib/components/Card.svelte";
 	export let data;
-	console.log(`In cardlist:`);
-	console.log(data);
 </script>
 
 <!-- <div class="col-span-12 md:mx-auto"> -->
