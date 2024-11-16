@@ -405,7 +405,7 @@ following criteria:
 The fragment to read the OS info:
 
 ```shellsession
-rommel@md2v3xkc:~/software/ZIP_Tests/Extraction$ python3
+$ python3
 Python 3.11.8 (main, Feb 23 2024, 14:02:40) [GCC 12.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import zipfile

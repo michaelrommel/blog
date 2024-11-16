@@ -17,8 +17,10 @@
 	};
 
 	export let cardData;
+	console.log("In Card");
+	console.log(cardData.creationDate);
 	const creationDate = new Date(cardData.creationDate);
-	cardData.displayDate = formatRelative(creationDate, new Date(), { locale });
+	cardData.displayDate = formatRelative(creationDate, Date.now(), { locale });
 </script>
 
 <div class="m-1 flex flex-col lg:flex-row max-w-[40ch] lg:max-w-prose">

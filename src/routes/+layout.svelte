@@ -2,11 +2,13 @@
 	import "../app.css";
 	import { ModeWatcher } from "mode-watcher";
 	import Navigation from "$lib/components/Navigation.svelte";
-	import Article from "$lib/components/Article.svelte";
 </script>
 
 <ModeWatcher />
 <Navigation />
-<Article>
-	<slot />
-</Article>
+
+<div class="overflow-auto m-3">
+	<div class="grid grid-cols-12 gap-4">
+		<slot />
+	</div>
+</div>
