@@ -2,8 +2,8 @@
 	import Chart from "chart.js/auto";
 	import { onMount } from "svelte";
 	import { chartcolours } from "$lib/util.js";
-	import { format } from "date-fns";
 	import colorLib from "@kurkle/color";
+	import { sub, format, startOfDay, differenceInDays } from "date-fns";
 
 	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);
 
@@ -30,6 +30,7 @@
 	// console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
 	let xTitle = null;
 	let displayXTitle = false;
+	let xIsDay = false;
 
 	allseries.map((seriesname, i) => {
 		const dataset = {
@@ -42,14 +43,14 @@
 						if (isNaN(x.valueOf())) {
 							x = slice[xSelector];
 						} else {
-							x =
-								(new Date(slice[xSelector]) - Date.now()) /
-								1000 /
-								3600 /
-								24;
+							x = differenceInDays(
+								startOfDay(new Date(slice[xSelector])),
+								startOfDay(Date.now()),
+							);
 							if (!xTitle) {
 								xTitle = "Days";
 								displayXTitle = true;
+								xIsDay = true;
 							}
 						}
 						return {
@@ -70,13 +71,6 @@
 	});
 
 	console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
-
-	const totals = data.map((slice) => {
-		let subtotal = Object.keys(slice).reduce((acc, cur) => {
-			return acc + (cur !== xSelector ? slice[cur] : 0);
-		}, 0);
-		return subtotal;
-	});
 
 	let chartCanvas;
 
@@ -118,8 +112,20 @@
 					},
 					tooltip: {
 						callbacks: {
-							footer: function (context) {
-								return `Sum: ${totals[context[0].dataIndex]}`;
+							title: function (context) {
+								let label = context[0].raw.x;
+								if (xIsDay) {
+									let d = sub(startOfDay(Date.now()), {
+										days: -label,
+									});
+									label = format(d, "yyyy-MM-dd");
+								}
+								return label;
+							},
+							label: function (context) {
+								let label = context.label || "";
+								label += `: ${context.raw.y}`;
+								return label;
 							},
 						},
 					},
