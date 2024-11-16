@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@kurkle/color':
+        specifier: ^0.3.2
+        version: 0.3.2
       bits-ui:
         specifier: ^0.21.16
         version: 0.21.16(svelte@4.2.19)

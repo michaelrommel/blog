@@ -42,26 +42,29 @@ export async function load({ params, fetch }) {
 						message: 'Data could not be retrieved'
 					});
 				}
+				// console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
 				break;
 			}
 			case 'inline': {
 				const dat = JSON.parse(match.groups.dataurl);
 				//console.log(`inline: ${dat}`);
 				chartData = { inline: dat };
+				// console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
 				break;
 			}
-			case 'file': {
-				try {
-					const filedata = await fs.readFile(match.groups.dataUrl, {
-						encoding: 'utf8'
-					});
-					//console.log(`file: ${filedata}`);
-					chartData = { file: filedata };
-				} catch {
+			case 'url': {
+				const url = match.groups.dataurl.replaceAll('"', '');
+				// console.log(`url: ${url}`);
+				const dataset = await fetch(`/articles/assets/${url}`).then((res) =>
+					res.json()
+				);
+				if (!dataset) {
 					error(404, {
-						message: 'Data could not be loaded'
+						message: 'Data could not be retrieved'
 					});
 				}
+				chartData = { dataset };
+				// console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
 				break;
 			}
 		}

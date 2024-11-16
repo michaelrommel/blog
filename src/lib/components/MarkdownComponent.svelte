@@ -3,6 +3,8 @@
 	import StackedBarChart from "$lib/components/StackedBarChart.svelte";
 	import BarChart from "$lib/components/BarChart.svelte";
 	import PieChart from "$lib/components/PieChart.svelte";
+	import LineChart from "$lib/components/LineChart.svelte";
+	import BubbleChart from "$lib/components/BubbleChart.svelte";
 	import StlViewer from "$lib/components/StlViewer.svelte";
 
 	export let data;
@@ -22,6 +24,8 @@
 		StackedBarChart: StackedBarChart,
 		BarChart: BarChart,
 		PieChart: PieChart,
+		LineChart: LineChart,
+		BubbleChart: BubbleChart,
 		StlViewer: StlViewer,
 	};
 
@@ -75,7 +79,7 @@
 		// console.log(`after parse ${JSON.stringify(html, null, 2)}`);
 		const fragments = searchComponents(html);
 		// console.log(`after transform ${JSON.stringify(fragments, null, 2)}`);
-		// console.log(`data: ${data.chartdata.inline[0]}`);
+		// console.log(`data: ${JSON.stringify(data.chartdata, null, 4)}`);
 		return fragments;
 	}
 </script>

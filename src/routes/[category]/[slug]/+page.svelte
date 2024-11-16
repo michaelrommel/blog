@@ -14,7 +14,7 @@
 		<div class="basis-5/12 content-center">
 			<hr class="border-gruvblue" />
 		</div>
-		<div class="px-8 text-gruvyellow">~ ~ ~</div>
+		<div class="px-6 text-gruvyellow">~~~</div>
 		<div class="basis-5/12 content-center">
 			<hr class="border-gruvblue" />
 		</div>
