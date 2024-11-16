@@ -3,6 +3,7 @@
 	import StackedBarChart from "$lib/components/StackedBarChart.svelte";
 	import BarChart from "$lib/components/BarChart.svelte";
 	import PieChart from "$lib/components/PieChart.svelte";
+	import StlViewer from "$lib/components/StlViewer.svelte";
 
 	export let data;
 
@@ -21,6 +22,7 @@
 		StackedBarChart: StackedBarChart,
 		BarChart: BarChart,
 		PieChart: PieChart,
+		StlViewer: StlViewer,
 	};
 
 	function searchComponents(html) {
@@ -70,8 +72,9 @@
 
 	async function injectComponents(data) {
 		const html = await parseMarkdown(data.markdown);
+		// console.log(`after parse ${JSON.stringify(html, null, 2)}`);
 		const fragments = searchComponents(html);
-		// console.log(`after search ${JSON.stringify(fragments, null, 2)}`);
+		// console.log(`after transform ${JSON.stringify(fragments, null, 2)}`);
 		// console.log(`data: ${data.chartdata.inline[0]}`);
 		return fragments;
 	}
@@ -81,12 +84,18 @@
 	{#each splitted as part}
 		{@const match = typeof part === "object"}
 		{#if match}
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			<svelte:component
-				this={components[part.componentname]}
-				data={data.chartdata[part.data]}
-				{...part.props}
-			></svelte:component>
+			{#if data}
+				<svelte:component
+					this={components[part.componentname]}
+					data={data.chartdata[part.data]}
+					{...part.props}
+				></svelte:component>
+			{:else}
+				<svelte:component
+					this={components[part.componentname]}
+					{...part.props}
+				></svelte:component>
+			{/if}
 		{:else}
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html part}

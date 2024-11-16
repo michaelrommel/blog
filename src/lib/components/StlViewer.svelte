@@ -16,9 +16,13 @@
 	export let file;
 	export let dpr;
 	export let inertia;
-	let inertiaOverride = [inertia];
+
+	if (typeof inertia == "string") {
+		inertia = Number(inertia);
+	}
 	let lightIntensityFactor = [10];
 	let fps;
+	let inertiaOverride = [inertia];
 
 	// we need those variables in different functions and do not always have
 	// the ability to supplu those as parameters
@@ -143,19 +147,20 @@
 	function changeLightIntensity(next) {
 		for (const light of camLightsRoot.children) {
 			light.intensity = (light.baseIntensity * next[0]) / 10;
-			console.log(`new: ${light.intensity}`);
+			// console.log(`new: ${light.intensity}`);
 		}
 		if (loaded) renderer.render(scene, camera);
 		// if (loaded) renderer.render(scene, observerCamera);
 	}
 
-	function initLights(size) {
-		const diag = Math.sqrt(
-			size.x * size.x + size.y * size.y + size.z * size.z,
-		);
-		const norm = 180 + 1.5 * diag;
-		console.log(`Diagonal dimension: ${diag}`);
-		console.log(`Calculated distance: ${norm}`);
+	function initLights() {
+		// function initLights(size) {
+		// const diag = Math.sqrt(
+		// 	size.x * size.x + size.y * size.y + size.z * size.z,
+		// );
+		// const norm = 180 + 1.5 * diag;
+		// console.log(`Diagonal dimension: ${diag}`);
+		// console.log(`Calculated distance: ${norm}`);
 
 		// const roomgeometry = new THREE.BoxGeometry();
 		// roomgeometry.deleteAttribute("uv");
@@ -203,7 +208,7 @@
 	}
 
 	function resetScene(size) {
-		console.log(`Size is: ${size.x} ${size.y} ${size.z}`);
+		// console.log(`Size is: ${size.x} ${size.y} ${size.z}`);
 		initLights(size);
 
 		const p = new THREE.Spherical(
@@ -212,7 +217,7 @@
 			(Math.PI / 180) * 30,
 		);
 		const pos = new THREE.Vector3().setFromSpherical(p);
-		console.log(pos);
+		// console.log(pos);
 
 		// observerCamera.position.set(0, 1000, 0);
 		// observerCamera.lookAt(0, 0, 0);
@@ -271,14 +276,14 @@
 		const bluematerial = loadMaterial();
 
 		new STLLoader().load(
-			`articles/assets/${file}`,
+			`/articles/assets/${file}`,
 			(geometry) => {
 				// geometry.rotateX(THREE.MathUtils.degToRad(-90));
 				const mesh = new THREE.Mesh(geometry, bluematerial);
 				// mesh.geometry.computeVertexNormals(true);
 				mesh.geometry.center();
 				zUpRoot.add(mesh);
-				console.log("Added a geometry");
+				// console.log("Added a geometry");
 				loaded = true;
 			},
 			(progressEvent) => {
@@ -295,7 +300,7 @@
 	function loadGltf() {
 		const templatematerial = loadMaterial();
 		const loader = new GLTFLoader();
-		loader.setPath("articles/assets/");
+		loader.setPath("/articles/assets/");
 		loader.load(
 			`${file}`,
 			async (gltf) => {
@@ -362,8 +367,8 @@
 
 		let vector = new THREE.Vector3(0, 0, -1);
 		vector.applyQuaternion(camera.quaternion);
-		console.log(`Camera looks at:`);
-		console.log(vector);
+		// console.log(`Camera looks at:`);
+		// console.log(vector);
 
 		// vector = new THREE.Vector3(0, 0, -1);
 		// vector.applyQuaternion(observerCamera.quaternion);
@@ -619,9 +624,9 @@
 				</Popover.Trigger>
 				<Popover.Content class="w-[50%]">
 					<p>
-						Controls the time, the model rotates after releasing a
-						mouse button. For complex models, drag the slider to the
-						left.
+						Controls the time, the model continues to rotate after
+						releasing the mouse button. For complex models, drag the
+						slider to the left.
 					</p>
 				</Popover.Content>
 			</Popover.Root>

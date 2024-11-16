@@ -8,7 +8,7 @@ dataSource: "api"
 dataUrl: "/hackers"
 authorName: "Michael Rommel"
 authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
-tags: ["locked", "create", "code"]
+tags: ["new", "locked", "create", "code"]
 published: true
 ---
 
@@ -35,3 +35,4 @@ Here is the overall distribution of banned IPs per country.
 
 ::svelte[]{ componentname="PieChart" data="totalPerCountry"}
 
+I hope you like those charts and they inspire you to make your own.

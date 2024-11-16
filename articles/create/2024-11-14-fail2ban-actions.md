@@ -152,7 +152,7 @@ language has very efficient programming patterns and leads to concise code.
 The whole fail2ban code was 186 lines.
 
 The result of this endeavour can be found here: [fail2ban Hacker
-Statistics](/charts/)
+Statistics](/create/2024-11-14-fail2ban-charts)
 
 Maybe this gives you some ideas for your own fail2ban configurations. Have
 fun!

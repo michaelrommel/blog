@@ -29,7 +29,6 @@ export async function load({ params, fetch }) {
 
 	let chartData = null;
 
-	console.log(md);
 	const matches = md.matchAll(frontmatterData);
 	for (const match of matches) {
 		const key = match.groups.datasource.replaceAll('"', '');
