@@ -2,7 +2,7 @@
 	/** @type {import('./$types').PageData} */
 	import "../../app.css";
 	import StlViewer from "$lib/components/StlViewer.svelte";
-	export let data;
+	let { data } = $props();
 </script>
 
 <div class="col-span-12">

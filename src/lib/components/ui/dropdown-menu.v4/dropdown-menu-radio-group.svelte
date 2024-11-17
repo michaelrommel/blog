@@ -1,8 +1,8 @@
 <script>
 	import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
-	export let value = undefined;
+	let { value = undefined, ...rest } = $props();
 </script>
 
-<DropdownMenuPrimitive.RadioGroup {...$$restProps} bind:value>
+<DropdownMenuPrimitive.RadioGroup {...rest} bind:value>
 	<slot />
 </DropdownMenuPrimitive.RadioGroup>

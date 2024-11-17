@@ -16,12 +16,9 @@
 		formatRelative: (token) => formatRelativeLocale[token],
 	};
 
-	export let cardData;
-	let creationDate;
-	$: creationDate = formatRelative(
-		new Date(cardData.creationDate),
-		Date.now(),
-		{ locale },
+	let { cardData } = $props();
+	let creationDate = $derived(
+		formatRelative(new Date(cardData.creationDate), Date.now(), { locale }),
 	);
 </script>
 
@@ -33,7 +30,7 @@
 			class="mx-4 w-40 h-40 xs:w-52 xs:h-52 flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
 			style="background-image: url({cardData.thumbnailUrl});"
 			title={cardData.thumbnailTitle}
-		/>
+		></div>
 	</div>
 	<div
 		class="border-r border-b border-l border-gruvlfg dark:border-gruvdfg lg:border-l-0 lg:border-t bg-gruvlbg dark:bg-gruvdbg rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"

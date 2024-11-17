@@ -13,16 +13,14 @@
 
 	// this letx us access props passed in as key/value pairs to the
 	// StlViewer component from a page that embeds it.
-	export let file;
-	export let dpr;
-	export let inertia;
+	let { file, dpr, inertia } = $props();
 
 	if (typeof inertia == "string") {
 		inertia = Number(inertia);
 	}
-	let lightIntensityFactor = [10];
-	let fps;
-	let inertiaOverride = [inertia];
+	let lightIntensityFactor = $state([10]);
+	let fps = $state();
+	let inertiaOverride = $state([inertia]);
 
 	// we need those variables in different functions and do not always have
 	// the ability to supplu those as parameters
@@ -577,7 +575,7 @@
 		observer.observe(canvasElement);
 	});
 
-	let popoverOpen = false;
+	let popoverOpen = $state(false);
 </script>
 
 <canvas
@@ -613,9 +611,8 @@
 				></Slider>
 			</div>
 			<Popover.Root bind:open={popoverOpen}>
-				<Popover.Trigger asChild let:builder>
+				<Popover.Trigger>
 					<Button
-						builders={[builder]}
 						variant="ghost"
 						class="relative mr-1 rounded-full p-0 h-[30px] w-[30px]"
 					>

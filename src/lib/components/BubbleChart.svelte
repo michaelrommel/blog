@@ -7,8 +7,7 @@
 
 	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);
 
-	export let data;
-	export let xSelector;
+	let { data, xSelector } = $props();
 
 	export function transparentize(value, opacity) {
 		var alpha = opacity === undefined ? 0.5 : 1 - opacity;

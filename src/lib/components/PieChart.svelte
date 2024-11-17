@@ -5,7 +5,7 @@
 
 	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);
 
-	export let data;
+	let { data } = $props();
 
 	const sortedData = data.sort((a, b) => {
 		if (a.hackers < b.hackers) {

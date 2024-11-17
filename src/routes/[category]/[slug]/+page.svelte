@@ -1,7 +1,7 @@
 <script>
 	import "../../../app.css";
 	import Markdown from "$lib/components/MarkdownComponent.svelte";
-	export let data;
+	let { data } = $props();
 </script>
 
 <article id="articlecontainer" class="col-span-12 md:mx-auto">

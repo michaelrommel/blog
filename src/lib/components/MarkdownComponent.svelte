@@ -7,7 +7,7 @@
 	import BubbleChart from "$lib/components/BubbleChart.svelte";
 	import StlViewer from "$lib/components/StlViewer.svelte";
 
-	export let data;
+	let { data } = $props();
 
 	const componentRegex = RegExp(
 		"(<SvelteComponent.*?></SvelteComponent>)",
@@ -20,7 +20,7 @@
 		"g",
 	);
 
-	export let components = {
+	const components = {
 		StackedBarChart: StackedBarChart,
 		BarChart: BarChart,
 		PieChart: PieChart,
@@ -88,17 +88,11 @@
 	{#each splitted as part}
 		{@const match = typeof part === "object"}
 		{#if match}
-			{#if data}
-				<svelte:component
-					this={components[part.componentname]}
-					data={data.chartdata[part.data]}
-					{...part.props}
-				></svelte:component>
+			{@const Thing = components[part.componentname]}
+			{#if part.data}
+				<Thing data={data.chartdata[part.data]} {...part.props} />
 			{:else}
-				<svelte:component
-					this={components[part.componentname]}
-					{...part.props}
-				></svelte:component>
+				<Thing data={data.chartdata[part.data]} {...part.props} />
 			{/if}
 		{:else}
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->

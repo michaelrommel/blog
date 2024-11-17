@@ -1,7 +1,7 @@
 <script>
 	import "../../app.css";
 	import Card from "$lib/components/Card.svelte";
-	export let data;
+	let { data } = $props();
 </script>
 
 <!-- <div class="col-span-12 md:mx-auto"> -->

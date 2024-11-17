@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
 	export async function load({ session }) {
 		return {
 			props: {
@@ -36,11 +36,6 @@
 		},
 	];
 
-	async function handleSignOut() {
-		await fetch("/api/sign-out");
-		goto("/");
-	}
-
 	async function gotoSignIn() {
 		popoverOpen = false;
 		goto("/login");
@@ -55,7 +50,7 @@
 		{ value: "fb-2xl", label: "xxl" },
 	];
 
-	let selectedFontBaseSize = fontBaseSizes[2];
+	let selectedFontBaseSize = $state(fontBaseSizes[2]);
 
 	function changeSize(classname) {
 		let allFontBaseSizeValues = fontBaseSizes.map((s) => s.value);
@@ -91,8 +86,8 @@
 		stepFontSize(1);
 	}
 
-	let popoverOpen = false;
-	let menuTarget = null;
+	let popoverOpen = $state(false);
+	let menuTarget = $state(null);
 
 	function toggleAndClose() {
 		popoverOpen = false;
@@ -153,12 +148,8 @@
 			<div class="py-2 xs:py-4 flex items-center justify-end">
 				<div class="md:hidden" id="menu">
 					<Popover.Root bind:open={popoverOpen}>
-						<Popover.Trigger asChild let:builder>
-							<Button
-								builders={[builder]}
-								variant="ghost"
-								class="rounded px-2 py-1"
-							>
+						<Popover.Trigger>
+							<Button variant="ghost" class="rounded px-2 py-1">
 								<Menu size="1.25rem" />
 							</Button>
 						</Popover.Trigger>
@@ -167,7 +158,7 @@
 						>
 							<div class="flex-item">
 								<Button
-									on:click={toggleAndClose}
+									onclick={toggleAndClose}
 									variant="outline"
 									size="icon"
 									class="px-2"
@@ -183,7 +174,7 @@
 							<div class="flex-item">
 								<div class="flex items-center">
 									<Button
-										on:click={decreaseFontSize}
+										onclick={decreaseFontSize}
 										variant="outline"
 										size="icon"
 										class="mx-1"
@@ -191,7 +182,7 @@
 										<ArrowDown strokeWidth="1.7" />
 									</Button>
 									<Button
-										on:click={increaseFontSize}
+										onclick={increaseFontSize}
 										variant="outline"
 										size="icon"
 										class="mx-1"
@@ -201,7 +192,7 @@
 								</div>
 							</div>
 							<div class="flex-item">
-								<Button variant="outline" on:click={gotoSignIn}>
+								<Button variant="outline" onclick={gotoSignIn}>
 									<User
 										class="mr-2 size-5 text-foreground-alt"
 									/>
@@ -213,7 +204,7 @@
 				</div>
 				<div class="hidden md:flex items-center">
 					<Button
-						on:click={toggleMode}
+						onclick={toggleMode}
 						variant="outline"
 						size="icon"
 						class="px-2"
@@ -226,7 +217,7 @@
 						/>
 					</Button>
 					<Button
-						on:click={decreaseFontSize}
+						onclick={decreaseFontSize}
 						variant="outline"
 						size="icon"
 						class="px-1 ml-2 mr-1"
@@ -234,14 +225,14 @@
 						<ArrowDown strokeWidth="1.7" />
 					</Button>
 					<Button
-						on:click={increaseFontSize}
+						onclick={increaseFontSize}
 						variant="outline"
 						size="icon"
 						class="px-1 mr-2"
 					>
 						<ArrowUp strokeWidth="1.7" />
 					</Button>
-					<Button href="/login" variant="outline" on:click={null}
+					<Button href="/login" variant="outline" onclick={null}
 						>Sign in</Button
 					>
 				</div>

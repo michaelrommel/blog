@@ -1,7 +1,7 @@
 <script>
 	// import "../../app.css";
 	import CardList from "$lib/components/CardList.svelte";
-	export let data;
+	let { data } = $props();
 </script>
 
 <CardList {data} />

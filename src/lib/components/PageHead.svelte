@@ -1,15 +1,14 @@
 <script>
-  export let title;
-  export let description;
+	let { title, description } = $props();
 
-  const siteTitle = 'Michael Rommel';
-  const formattedTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+	const siteTitle = "Michael Rommel";
+	const formattedTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 </script>
 
 <svelte:head>
-  <title>{formattedTitle}</title>
+	<title>{formattedTitle}</title>
 
-  <meta property="og:site_name" content={siteTitle} />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
+	<meta property="og:site_name" content={siteTitle} />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
 </svelte:head>

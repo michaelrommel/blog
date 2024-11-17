@@ -6,8 +6,7 @@
 
 	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);
 
-	export let data;
-	export let xSelector;
+	let { data, xSelector } = $props();
 
 	const allseries = [
 		...new Set(
