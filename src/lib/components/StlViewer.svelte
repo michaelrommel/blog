@@ -619,7 +619,7 @@
 						<Info class="absolute top-1/2 -translate-y-1/2" />
 					</Button>
 				</Popover.Trigger>
-				<Popover.Content class="w-[50%]">
+				<Popover.Content>
 					<p>
 						Controls the time, the model continues to rotate after
 						releasing the mouse button. For complex models, drag the
