@@ -158,18 +158,31 @@ With a reference later in the document defining the URL location:
 
 [id]: https://octodex.github.com/images/dojocat.jpg 'The Dojocat'
 
-## Plugins
+## ToDo Lists
 
-The killer feature of `markdown-it` is very effective support of
-[syntax plugins](https://www.npmjs.org/browse/keyword/markdown-it-plugin).
+* [ ] Buy some milk
+* [X] Write blog article
+* [ ] Create photos
+* [ ] Stop starting, start finishing
 
-### [Emojies](https://github.com/markdown-it/markdown-it-emoji)
+## Definition Lists (not supported as of now)
+
+First Term
+: This is the definition of the first term.
+
+Second Term
+: This is one definition of the second term.
+: This is another definition of the second term.
+
+A suitable plugin might be: https://github.com/wataru-chocola/remark-definition-list
+
+## [Emojies](https://github.com/markdown-it/markdown-it-emoji)
 
 Classic markup: :wink: :cry: :laughing: :yum: :innocent:
 
-Shortcuts (emoticons): :-) :-( 8-) ;)
+Shortcuts (emoticons): :-) :-( 8-) ;) ((these have been deactivated, as they break hyperlinks and there is no setting for that, would need to fork the package.
 
-### [Subscript](https://github.com/markdown-it/markdown-it-sub) / [Superscript](https://github.com/markdown-it/markdown-it-sup)
+## [Subscript](https://github.com/markdown-it/markdown-it-sub) / [Superscript](https://github.com/markdown-it/markdown-it-sup)
 
 - 19^th^
 - H~2~O

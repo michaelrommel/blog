@@ -27,7 +27,7 @@ import githubTheme from 'shiki/themes/github-light-high-contrast.mjs';
 
 function remarkGetFm() {
 	// this gets the frontmatter in YAML into data.matter
-	return function (tree, file) {
+	return function(tree, file) {
 		matter(file);
 	};
 }
@@ -107,7 +107,7 @@ async function compile(article) {
 		.use(remarkGetFm)
 		.use(remarkDirective)
 		.use(remarkDirectiveHandler)
-		.use(remarkEmoji, { emoticon: true })
+		.use(remarkEmoji, { emoticon: false })
 		.use(remarkGithub, {
 			repository: 'https://github.com/michaelrommel/blog'
 		})

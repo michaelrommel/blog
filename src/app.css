@@ -253,6 +253,19 @@
 		border-radius: 0.3em;
 	}
 
+	ul[class*="contains-task-list"] {
+		padding-inline-start: 6px;
+	}
+
+	li[class*="task-list-item"] {
+		list-style-type: none;
+	}
+
+	li[class*="task-list-item"]>input[type="checkbox"] {
+		margin-right: 9px;
+		transform: scale(1.4);
+	}
+
 	.mdsvx .img-right {
 		display: flex;
 		flex-direction: row;
