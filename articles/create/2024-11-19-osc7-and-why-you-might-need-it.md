@@ -11,6 +11,8 @@ published: true
 ---
 # OSC7 And Why You Might Need It
 
+## Contents
+
 ## Motivation
 
 You may have found yourself in the situation where you started tmux and are

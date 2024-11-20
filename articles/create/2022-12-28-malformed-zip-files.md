@@ -12,6 +12,8 @@ published: true
 
 # Malformed Windows ZIPs
 
+## Contents
+
 ## Introduction
 
 I recently have encountered issues when dealing with ZIP archives that were

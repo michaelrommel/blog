@@ -328,6 +328,20 @@
 			font-variation-settings: "wdth" 100, "opsz" 50, "wght" 500, "GRAD" -50;
 			/* font-variant: lining-nums; */
 		}
+
+		h2 {
+			@apply scroll-mt-28;
+		}
+	}
+
+	.prose h2 {
+		@apply scroll-mt-24;
+	}
+
+	@media (min-width: 768px) {
+		.prose h2 {
+			@apply scroll-mt-28;
+		}
 	}
 
 	.highlight {
