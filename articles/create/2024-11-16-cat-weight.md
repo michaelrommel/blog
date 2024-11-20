@@ -2,7 +2,7 @@
 title: "My cats are getting bigger..."
 description: "After a year, my cats are adults now - and gaining (too much) weight..."
 thumbnailUrl: "/articles/assets/2024-11-16-cat-weight/thumbnail.png"
-thumbnailTitle: "Icon showing a line chart"
+thumbnailTitle: "Icon showing a bubble chart"
 creationDate: 2024-11-16T13:46:15+01:00
 dataSource: "url"
 dataUrl: "cat_weight.json" 
@@ -22,7 +22,7 @@ several hours later directly into the garbage.
 Still - although I am not giving a lot of snacks - they continue to grow
 and gain weight and at the very least Nicky is approaching a critical mass.
 
-This is a line chart that shows the difference.
+This is a bubble chart that shows the difference.
 
 ::svelte[]{ componentname="BubbleChart" data="dataset" xSelector="date"}
 

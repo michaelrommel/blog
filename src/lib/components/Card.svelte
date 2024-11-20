@@ -27,7 +27,7 @@
 		class="min-h-max lg:h-auto lg:w-64 flex bg-gruvlbg dark:bg-gruvdbg lg:flex-col justify-center border-l border-t border-r lg:border-r-0 border-gruvlfg dark:border-gruvdfg lg:border-b rounded-t lg:rounded-t-none lg:rounded-l"
 	>
 		<div
-			class="mx-4 w-40 h-40 xs:w-52 xs:h-52 flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
+			class="m-3 w-40 h-40 xs:w-52 xs:h-52 flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
 			style="background-image: url({cardData.thumbnailUrl});"
 			title={cardData.thumbnailTitle}
 		></div>

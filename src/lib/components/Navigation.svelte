@@ -148,10 +148,12 @@
 			<div class="py-2 xs:py-4 flex items-center justify-end">
 				<div class="md:hidden" id="menu">
 					<Popover.Root bind:open={popoverOpen}>
-						<Popover.Trigger>
-							<Button variant="ghost" class="rounded px-2 py-1">
+						<Popover.Trigger
+							class="ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
+						>
+							<div class="p-2">
 								<Menu size="1.25rem" />
-							</Button>
+							</div>
 						</Popover.Trigger>
 						<Popover.Content
 							class="flex flex-col w-fit items-end gap-y-2"
