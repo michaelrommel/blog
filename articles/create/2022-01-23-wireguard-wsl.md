@@ -5,7 +5,7 @@ thumbnailUrl: '/articles/assets/2022-01-23-wireguard-wsl/thumbnail.svg'
 thumbnailTitle: 'Schematic network diagram'
 creationDate: '2022-02-01T11:16:13+01:00'
 authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
+authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
 tags: ['locked', 'create', 'code', 'linux']
 published: true
 ---

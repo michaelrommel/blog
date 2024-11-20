@@ -5,7 +5,7 @@ thumbnailUrl: '/articles/assets/2024-11-14-fail2ban-actions/chart.png'
 thumbnailTitle: 'fail2ban logo'
 creationDate: '2024-11-14T00:19:00+01:00'
 authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
+authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
 tags: ['new', 'create', 'code']
 published: true
 ---

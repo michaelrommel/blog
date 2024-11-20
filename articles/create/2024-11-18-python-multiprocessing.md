@@ -5,7 +5,7 @@ thumbnailUrl: "/articles/assets/2024-11-18-python-multiprocessing/thumbnail.png"
 thumbnailTitle: "Icon showing ..."
 creationDate: 2024-11-18T17:25:03+01:00
 authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
+authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
 tags: ["new", "create", "code"]
 published: false
 ---

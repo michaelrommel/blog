@@ -7,7 +7,7 @@ creationDate: "2024-11-14T19:48:16+01:00"
 dataSource: "api"
 dataUrl: "/hackers"
 authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
+authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
 tags: ["new", "locked", "create", "code"]
 published: true
 ---

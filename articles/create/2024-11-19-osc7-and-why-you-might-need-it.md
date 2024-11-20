@@ -5,7 +5,7 @@ thumbnailUrl: "/articles/assets/2024-11-19-osc7-and-why-you-might-need-it/thumbn
 thumbnailTitle: "Icon showing a terminal with split panes"
 creationDate: 2024-11-19T18:13:02+01:00
 authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
+authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
 tags: ["new", "create", "code"]
 published: true
 ---

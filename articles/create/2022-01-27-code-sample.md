@@ -5,7 +5,7 @@ thumbnailUrl: '/articles/assets/2022-01-27-code-sample/thumbnail.png'
 thumbnailTitle: 'Icon showing a code snippet'
 creationDate: '2022-01-27T13:10:45+01:00'
 authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
+authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
 tags: ['locked', 'create', 'code']
 published: true
 ---

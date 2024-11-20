@@ -79,7 +79,7 @@
 		</div>
 		<div class="flex items-center">
 			<img
-				class="w-15 h-15 rounded-full mr-4"
+				class="w-[40px] h-[40px] rounded-full mr-4"
 				src={cardData.authorAvatarUrl}
 				alt="Avatar of {cardData.authorName}"
 			/>

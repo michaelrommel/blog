@@ -7,7 +7,7 @@ creationDate: 2024-11-16T13:46:15+01:00
 dataSource: "url"
 dataUrl: "cat_weight.json" 
 authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=40&v=4"
+authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
 tags: ["new", "create", "cat"]
 published: true
 ---

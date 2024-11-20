@@ -5,7 +5,7 @@ thumbnailUrl: '/articles/assets/2022-12-28-malformed-zip-files/thumbnail.jpeg'
 thumbnailTitle: 'Snippet of an explorer window with zip files'
 creationDate: '2022-12-28T20:11:15+01:00'
 authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
+authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
 tags: ['new', 'locked', 'create', 'code']
 published: true
 ---
