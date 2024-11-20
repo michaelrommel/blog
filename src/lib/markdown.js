@@ -10,11 +10,13 @@ import remarkGithub from 'remark-github';
 import remarkEmoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+import remarkToc from 'remark-toc';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import supersub from 'remark-supersub';
+import rehypeSlug from 'rehype-slug';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeStringify from 'rehype-stringify';
-
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
 import { createHighlighterCore } from 'shiki/core';
 import {
@@ -27,7 +29,7 @@ import githubTheme from 'shiki/themes/github-light-high-contrast.mjs';
 
 function remarkGetFm() {
 	// this gets the frontmatter in YAML into data.matter
-	return function(tree, file) {
+	return function (tree, file) {
 		matter(file);
 	};
 }
@@ -81,6 +83,14 @@ function changeTheme(theme) {
 	}
 }
 
+function remarkDebug() {
+	return (tree) => {
+		visit(tree, (node) => {
+			console.log(node);
+		});
+	};
+}
+
 async function compile(article) {
 	const highlighter = await createHighlighterCore({
 		langs: [
@@ -113,9 +123,40 @@ async function compile(article) {
 		})
 		.use(remarkGfm, { singleTilde: false })
 		.use(remarkMath)
+		.use(remarkToc, { maxDepth: 2, tight: true, prefix: 'user-content-' })
 		.use(supersub)
 		.use(remarkRehype)
+		.use(rehypeSlug)
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
+		// .use(remarkDebug)
+		.use(rehypeSanitize, {
+			...defaultSchema,
+			attributes: {
+				...defaultSchema.attributes,
+				// The `language-*` regex is allowed by default.
+				div: [
+					...(defaultSchema.attributes.div || []),
+					[
+						'className',
+						/^language-./,
+						'math-inline',
+						'math-display',
+						'grid-left-right',
+						'img-right'
+					]
+				],
+				span: [...(defaultSchema.attributes.span || []), ['className', 'line']],
+				SvelteComponent: [
+					'componentname',
+					'data',
+					'xSelector',
+					'file',
+					'dpr',
+					'inertia'
+				]
+			},
+			tagNames: [...defaultSchema.tagNames, 'SvelteComponent']
+		})
 		.use(rehypeShikiFromHighlighter, highlighter, {
 			themes: {
 				dark: gruvboxTheme,
@@ -143,6 +184,7 @@ async function compile(article) {
 		.use(rehypeStringify)
 		.process(article);
 	highlighter.dispose();
+	// console.log(vfile);
 	return vfile;
 }
 
