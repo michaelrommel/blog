@@ -142,7 +142,7 @@ async function compile(article) {
 		.use(remarkRehype)
 		.use(rehypeSlug)
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
-		.use(remarkDebug)
+		// .use(remarkDebug)
 		.use(rehypeSanitize, {
 			...defaultSchema,
 			attributes: {
@@ -198,7 +198,7 @@ async function compile(article) {
 			transformers: [transformerNotationDiff(), transformerNotationHighlight()]
 		})
 		.use(rehypeMathjax)
-		.use(rehypeDebug)
+		// .use(rehypeDebug)
 		.use(rehypeStringify)
 		.process(article);
 	highlighter.dispose();

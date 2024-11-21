@@ -19,7 +19,7 @@ is telling stories about refused food and pickyness etc. I experience the
 same. Many times, I end up putting the food from the can into the bowl and
 several hours later directly into the garbage.
 
-Still --- although I am not giving a lot of snacks --- they continue to grow
+Still -- although I am not giving a lot of snacks -- they continue to grow
 and gain weight and at the very least Nicky is approaching a critical mass.
 
 This is a bubble chart that shows the difference.
@@ -33,9 +33,10 @@ Although Ricky is _always_ the first at the food bowls, she stops when she
 is full and almost never complains that she's hungry. She is also more
 agile and over the course of the day seems to be always up and about.
 
-Nicky is lazier and often sleeps in my vicinity. She seems to eat ---
-especially the kibble --- until the bowl is empty.
+Nicky is lazier and often sleeps in my vicinity. She seems to eat --
+especially the kibble -- until the bowl is empty.
 
 I am now reducing the availability of food during the day and fill up the
 bowls now only on mealtimes 2--3 times a day. Keep your fingers crossed for
 me, that this works out...
+
