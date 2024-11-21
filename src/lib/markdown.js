@@ -9,6 +9,7 @@ import { h } from 'hastscript';
 import remarkGithub from 'remark-github';
 import remarkEmoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
+import remarkSmartypants from 'remark-smartypants';
 import remarkMath from 'remark-math';
 import remarkToc from 'remark-toc';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -91,6 +92,14 @@ function remarkDebug() {
 	};
 }
 
+function rehypeDebug() {
+	return (tree) => {
+		visit(tree, (node) => {
+			console.log(node);
+		});
+	};
+}
+
 async function compile(article) {
 	const highlighter = await createHighlighterCore({
 		langs: [
@@ -122,13 +131,18 @@ async function compile(article) {
 			repository: 'https://github.com/michaelrommel/blog'
 		})
 		.use(remarkGfm, { singleTilde: false })
-		.use(remarkMath)
+		.use(remarkMath, { singleDollarTextMath: false })
 		.use(remarkToc, { maxDepth: 2, tight: true, prefix: 'user-content-' })
 		.use(supersub)
+		.use(remarkSmartypants, {
+			backticks: false,
+			dashes: 'oldschool',
+			ellipses: 'unspaced'
+		})
 		.use(remarkRehype)
 		.use(rehypeSlug)
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
-		// .use(remarkDebug)
+		.use(remarkDebug)
 		.use(rehypeSanitize, {
 			...defaultSchema,
 			attributes: {
@@ -145,7 +159,10 @@ async function compile(article) {
 						'img-right'
 					]
 				],
-				span: [...(defaultSchema.attributes.span || []), ['className', 'line']],
+				span: [
+					...(defaultSchema.attributes.span || []),
+					['className', 'line', 'math-inline']
+				],
 				SvelteComponent: [
 					'componentname',
 					'data',
@@ -181,6 +198,7 @@ async function compile(article) {
 			transformers: [transformerNotationDiff(), transformerNotationHighlight()]
 		})
 		.use(rehypeMathjax)
+		.use(rehypeDebug)
 		.use(rehypeStringify)
 		.process(article);
 	highlighter.dispose();

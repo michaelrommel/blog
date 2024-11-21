@@ -266,6 +266,10 @@
 		transform: scale(1.4);
 	}
 
+	mjx-container:not([display="true"])>svg {
+		display: inline;
+	}
+
 	.mdsvx .img-right {
 		display: flex;
 		flex-direction: row;
