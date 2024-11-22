@@ -7,7 +7,7 @@ import remarkDirective from 'remark-directive';
 import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
 import remarkGithub from 'remark-github';
-import remarkEmoji from 'remark-emoji';
+import remarkEmoji from 'remark-emo';
 import remarkGfm from 'remark-gfm';
 import remarkSmartypants from 'remark-smartypants';
 import remarkMath from 'remark-math';
@@ -126,7 +126,7 @@ async function compile(article) {
 		.use(remarkGetFm)
 		.use(remarkDirective)
 		.use(remarkDirectiveHandler)
-		.use(remarkEmoji, { emoticon: false })
+		.use(remarkEmoji, { emoticon: true })
 		.use(remarkGithub, {
 			repository: 'https://github.com/michaelrommel/blog'
 		})

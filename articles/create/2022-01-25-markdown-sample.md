@@ -178,13 +178,13 @@ Second Term
 
 A suitable plugin might be: https://github.com/wataru-chocola/remark-definition-list
 
-## [Emojies](https://github.com/markdown-it/markdown-it-emoji)
+## Emojies
 
 Classic markup: :wink: :cry: :laughing: :yum: :innocent:
 
-Shortcuts (emoticons): :-) :-( 8-) ;) ((these have been deactivated, as they break hyperlinks and there is no setting for that, would need to fork the package.
+Shortcuts (emoticons): :-) :-( 8-) ;)
 
-## [Subscript](https://github.com/markdown-it/markdown-it-sub) / [Superscript](https://github.com/markdown-it/markdown-it-sup)
+## Superscript / Subscript
 
 - 19^th^
 - H~2~O
