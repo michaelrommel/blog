@@ -1,4 +1,3 @@
-import { slugFromPath } from '$lib/util';
 import { json } from '@sveltejs/kit';
 import fg from 'fast-glob';
 import fs from 'node:fs/promises';
@@ -8,17 +7,12 @@ import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { matter } from 'vfile-matter';
 
-/**
- * @typedef {import('unist').Node} Node
- * @typedef {import('vfile').VFile} VFile
- */
 function remarkGetFm() {
 	return function (tree, file) {
 		matter(file);
 	};
 }
 
-/** @type {import('./$types').RequestHandler} */
 export async function GET({ url }) {
 	const category = url.searchParams.get('category') ?? null;
 	const slug = url.searchParams.get('slug') ?? null;

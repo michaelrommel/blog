@@ -84,13 +84,13 @@ function changeTheme(theme) {
 	}
 }
 
-function remarkDebug() {
-	return (tree) => {
-		visit(tree, (node) => {
-			console.log(node);
-		});
-	};
-}
+// function remarkDebug() {
+// 	return (tree) => {
+// 		visit(tree, (node) => {
+// 			console.log(node);
+// 		});
+// 	};
+// }
 
 // function rehypeDebug() {
 // 	return (tree) => {

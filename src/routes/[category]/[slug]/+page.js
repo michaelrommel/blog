@@ -1,5 +1,4 @@
 import { error } from '@sveltejs/kit';
-import fs from 'node:fs/promises';
 
 export async function load({ params, fetch }) {
 	let articles = null;
