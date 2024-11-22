@@ -30,7 +30,7 @@ import githubTheme from 'shiki/themes/github-light-high-contrast.mjs';
 
 function remarkGetFm() {
 	// this gets the frontmatter in YAML into data.matter
-	return function (tree, file) {
+	return function (_tree, file) {
 		matter(file);
 	};
 }
@@ -84,21 +84,21 @@ function changeTheme(theme) {
 	}
 }
 
-function remarkDebug() {
-	return (tree) => {
-		visit(tree, (node) => {
-			console.log(node);
-		});
-	};
-}
-
-function rehypeDebug() {
-	return (tree) => {
-		visit(tree, (node) => {
-			console.log(node);
-		});
-	};
-}
+// function remarkDebug() {
+// 	return (tree) => {
+// 		visit(tree, (node) => {
+// 			console.log(node);
+// 		});
+// 	};
+// }
+//
+// function rehypeDebug() {
+// 	return (tree) => {
+// 		visit(tree, (node) => {
+// 			console.log(node);
+// 		});
+// 	};
+// }
 
 async function compile(article) {
 	const highlighter = await createHighlighterCore({

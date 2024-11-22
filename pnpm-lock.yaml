@@ -55,7 +55,7 @@ importers:
         version: 2.0.1
       remark-emo:
         specifier: github:michaelrommel/remark-emo
-        version: https://codeload.github.com/michaelrommel/remark-emo/tar.gz/ae5ad1b01cec1651f788b11070a76a558b55d74a(jiti@1.21.6)
+        version: https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39(jiti@1.21.6)
       remark-frontmatter:
         specifier: ^5.0.0
         version: 5.0.0
@@ -1987,9 +1987,9 @@ packages:
   remark-directive@2.0.1:
     resolution: {integrity: sha512-oosbsUAkU/qmUE78anLaJePnPis4ihsE7Agp0T/oqTzvTea8pOiaYEtfInU/+xMOVTS9PN5AhGOiaIVe4GD8gw==}
 
-  remark-emo@https://codeload.github.com/michaelrommel/remark-emo/tar.gz/ae5ad1b01cec1651f788b11070a76a558b55d74a:
-    resolution: {tarball: https://codeload.github.com/michaelrommel/remark-emo/tar.gz/ae5ad1b01cec1651f788b11070a76a558b55d74a}
-    version: 1.0.2
+  remark-emo@https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39:
+    resolution: {tarball: https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39}
+    version: 1.0.4
 
   remark-frontmatter@5.0.0:
     resolution: {integrity: sha512-XTFYvNASMe5iPN0719nPrdItC9aU0ssC4v14mH1BCi1u0n1gAocqcujWUrByftZTbLhRtiKRyjYTSIOcr69UVQ==}
@@ -4584,12 +4584,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-emo@https://codeload.github.com/michaelrommel/remark-emo/tar.gz/ae5ad1b01cec1651f788b11070a76a558b55d74a(jiti@1.21.6):
+  remark-emo@https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39(jiti@1.21.6):
     dependencies:
-      '@types/mdast': 4.0.4
       emoticon: 4.1.0
       eslint: 9.15.0(jiti@1.21.6)
-      esm: 3.2.25
       mdast-util-find-and-replace: 3.0.1
       node-emoji: 2.1.3
       unified: 11.0.5
