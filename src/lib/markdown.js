@@ -141,10 +141,11 @@ async function compile(article) {
 		})
 		// .use(remarkDebug)
 		.use(remarkRehype)
-		.use(rehypeSlug)
+		.use(rehypeSlug, { prefix: 'user-content-' })
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
 		.use(rehypeSanitize, {
 			...defaultSchema,
+			clobberPrefix: '',
 			attributes: {
 				...defaultSchema.attributes,
 				// The `language-*` regex is allowed by default.

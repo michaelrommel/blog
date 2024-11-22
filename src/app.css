@@ -338,12 +338,15 @@
 		}
 	}
 
-	.prose h2 {
+	.prose h2,
+	.prose a[data-footnote-ref] {
 		@apply scroll-mt-24;
 	}
 
 	@media (min-width: 768px) {
-		.prose h2 {
+
+		.prose h2,
+		.prose a[data-footnote-ref] {
 			@apply scroll-mt-28;
 		}
 	}
