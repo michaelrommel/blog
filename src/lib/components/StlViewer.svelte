@@ -22,6 +22,9 @@
 	let fps = $state();
 	let inertiaOverride = $state([inertia]);
 
+	// hardcode path to the cad models directory
+	const modelpath = "/articles/assets/cad/";
+
 	// we need those variables in different functions and do not always have
 	// the ability to supplu those as parameters
 	// marker for when loading of the meshes has finished
@@ -274,7 +277,7 @@
 		const bluematerial = loadMaterial();
 
 		new STLLoader().load(
-			`/articles/assets/${file}`,
+			modelpath + file,
 			(geometry) => {
 				// geometry.rotateX(THREE.MathUtils.degToRad(-90));
 				const mesh = new THREE.Mesh(geometry, bluematerial);
@@ -298,7 +301,7 @@
 	function loadGltf() {
 		const templatematerial = loadMaterial();
 		const loader = new GLTFLoader();
-		loader.setPath("/articles/assets/");
+		loader.setPath(modelpath);
 		loader.load(
 			`${file}`,
 			async (gltf) => {
@@ -560,6 +563,7 @@
 	[camera, camLightsRoot] = initCamera();
 
 	onMount(() => {
+		file = file.replaceAll("../", "");
 		if (file.endsWith(".stl")) {
 			loadStl();
 		} else if (file.endsWith(".gltf")) {
