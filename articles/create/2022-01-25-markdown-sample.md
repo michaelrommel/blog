@@ -139,13 +139,30 @@ Aligned columns
 | engine |   engine to be used for            |templates. Handlebars is the default. |
 |    ext |                                    | extension to be used for dest files. |
 
+## Superscript / Subscript
+
+- 19^th^
+- H~2~O
+
+Footnote 1 link[^first].
+
+Footnote 2 link[^second].
+
+Duplicated footnote reference[^second].
+
+[^first]: Footnote **can have markup**
+
+    and multiple paragraphs.
+
+[^second]: Footnote text.
+
 ## Links
 
-[link text](http://dev.nodeca.com)
+[link text](http://michaelrommel.com)
 
-[link with title](http://nodeca.github.io/pica/demo/ 'title text!')
+[link with title](http://michaelrommel.com 'title text!')
 
-Autoconverted link https://github.com/nodeca/pica (enable linkify to see)
+Autoconverted link https://michaelrommel.com/create/
 
 ## Images
 
@@ -183,23 +200,4 @@ A suitable plugin might be: https://github.com/wataru-chocola/remark-definition-
 Classic markup: :wink: :cry: :laughing: :yum: :innocent:
 
 Shortcuts (emoticons): :-) :-( 8-) ;)
-
-## Superscript / Subscript
-
-- 19^th^
-- H~2~O
-
-Footnote 1 link[^first].
-
-Footnote 2 link[^second].
-
-Inline footnote^[Text of inline footnote] definition.
-
-Duplicated footnote reference[^second].
-
-[^first]: Footnote **can have markup**
-
-    and multiple paragraphs.
-
-[^second]: Footnote text.
 

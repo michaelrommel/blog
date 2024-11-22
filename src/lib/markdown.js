@@ -13,7 +13,7 @@ import remarkSmartypants from 'remark-smartypants';
 import remarkMath from 'remark-math';
 import remarkToc from 'remark-toc';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import supersub from 'remark-supersub';
+import remarkSupersub from 'remark-supersub';
 import rehypeSlug from 'rehype-slug';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeStringify from 'rehype-stringify';
@@ -84,14 +84,14 @@ function changeTheme(theme) {
 	}
 }
 
-// function remarkDebug() {
-// 	return (tree) => {
-// 		visit(tree, (node) => {
-// 			console.log(node);
-// 		});
-// 	};
-// }
-//
+function remarkDebug() {
+	return (tree) => {
+		visit(tree, (node) => {
+			console.log(node);
+		});
+	};
+}
+
 // function rehypeDebug() {
 // 	return (tree) => {
 // 		visit(tree, (node) => {
@@ -126,23 +126,23 @@ async function compile(article) {
 		.use(remarkGetFm)
 		.use(remarkDirective)
 		.use(remarkDirectiveHandler)
+		.use(remarkToc, { maxDepth: 2, tight: true, prefix: 'user-content-' })
 		.use(remarkEmoji, { emoticon: true })
 		.use(remarkGithub, {
 			repository: 'https://github.com/michaelrommel/blog'
 		})
 		.use(remarkGfm, { singleTilde: false })
 		.use(remarkMath, { singleDollarTextMath: false })
-		.use(remarkToc, { maxDepth: 2, tight: true, prefix: 'user-content-' })
-		.use(supersub)
+		.use(remarkSupersub)
 		.use(remarkSmartypants, {
 			backticks: false,
 			dashes: 'oldschool',
 			ellipses: 'unspaced'
 		})
+		// .use(remarkDebug)
 		.use(remarkRehype)
 		.use(rehypeSlug)
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
-		// .use(remarkDebug)
 		.use(rehypeSanitize, {
 			...defaultSchema,
 			attributes: {
