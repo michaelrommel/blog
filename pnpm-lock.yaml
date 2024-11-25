@@ -58,7 +58,7 @@ importers:
         version: 2.0.1
       remark-emo:
         specifier: github:michaelrommel/remark-emo
-        version: https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39(jiti@1.21.6)
+        version: git+https://git@github.com:michaelrommel/remark-emo.git#351caa6882fbd7d83278e940dc085d0fa3ad7e39(jiti@1.21.6)
       remark-frontmatter:
         specifier: ^5.0.0
         version: 5.0.0
@@ -122,13 +122,13 @@ importers:
         version: 1.23.1
       '@sveltejs/adapter-auto':
         specifier: ^3.3.1
-        version: 3.3.1(@sveltejs/kit@2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))
+        version: 3.3.1(@sveltejs/kit@2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))
       '@sveltejs/adapter-node':
         specifier: ^5.2.9
-        version: 5.2.9(@sveltejs/kit@2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))
+        version: 5.2.9(@sveltejs/kit@2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))
       '@sveltejs/kit':
-        specifier: ^2.8.1
-        version: 2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
+        specifier: ^2.8.3
+        version: 2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^4.0.1
         version: 4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
@@ -604,8 +604,8 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.4.0
 
-  '@sveltejs/kit@2.8.1':
-    resolution: {integrity: sha512-uuOfFwZ4xvnfPsiTB6a4H1ljjTUksGhWnYq5X/Y9z4x5+3uM2Md8q/YVeHL+7w+mygAwoEFdgKZ8YkUuk+VKww==}
+  '@sveltejs/kit@2.8.3':
+    resolution: {integrity: sha512-DVBVwugfzzn0SxKA+eAmKqcZ7aHZROCHxH7/pyrOi+HLtQ721eEsctGb9MkhEuqj6q/9S/OFYdn37vdxzFPdvw==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -1999,8 +1999,8 @@ packages:
   remark-directive@2.0.1:
     resolution: {integrity: sha512-oosbsUAkU/qmUE78anLaJePnPis4ihsE7Agp0T/oqTzvTea8pOiaYEtfInU/+xMOVTS9PN5AhGOiaIVe4GD8gw==}
 
-  remark-emo@https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39:
-    resolution: {tarball: https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39}
+  remark-emo@git+https://git@github.com:michaelrommel/remark-emo.git#351caa6882fbd7d83278e940dc085d0fa3ad7e39:
+    resolution: {commit: 351caa6882fbd7d83278e940dc085d0fa3ad7e39, repo: git@github.com:michaelrommel/remark-emo.git, type: git}
     version: 1.0.4
 
   remark-frontmatter@5.0.0:
@@ -2812,20 +2812,20 @@ snapshots:
 
   '@sindresorhus/is@4.6.0': {}
 
-  '@sveltejs/adapter-auto@3.3.1(@sveltejs/kit@2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))':
+  '@sveltejs/adapter-auto@3.3.1(@sveltejs/kit@2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))':
     dependencies:
-      '@sveltejs/kit': 2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
+      '@sveltejs/kit': 2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
       import-meta-resolve: 4.1.0
 
-  '@sveltejs/adapter-node@5.2.9(@sveltejs/kit@2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))':
+  '@sveltejs/adapter-node@5.2.9(@sveltejs/kit@2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))':
     dependencies:
       '@rollup/plugin-commonjs': 28.0.1(rollup@4.27.3)
       '@rollup/plugin-json': 6.1.0(rollup@4.27.3)
       '@rollup/plugin-node-resolve': 15.3.0(rollup@4.27.3)
-      '@sveltejs/kit': 2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
+      '@sveltejs/kit': 2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
       rollup: 4.27.3
 
-  '@sveltejs/kit@2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))':
+  '@sveltejs/kit@2.8.3(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 4.0.1(svelte@5.2.7)(vite@5.4.11(@types/node@22.9.0))
       '@types/cookie': 0.6.0
@@ -4607,7 +4607,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-emo@https://codeload.github.com/michaelrommel/remark-emo/tar.gz/351caa6882fbd7d83278e940dc085d0fa3ad7e39(jiti@1.21.6):
+  remark-emo@git+https://git@github.com:michaelrommel/remark-emo.git#351caa6882fbd7d83278e940dc085d0fa3ad7e39(jiti@1.21.6):
     dependencies:
       emoticon: 4.1.0
       eslint: 9.15.0(jiti@1.21.6)
