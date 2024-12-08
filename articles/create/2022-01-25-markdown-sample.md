@@ -10,7 +10,7 @@ structuredData: {
         "url": "https://michaelrommel.com/info/about",
         "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
     },
-    "dateModified": "2024-12-01T18:21:13+01:00",
+    "dateModified": "2024-10-01T18:21:13+01:00",
     "datePublished": "2022-01-25T03:21:13+01:00",
     "headline": "Markdown Sample Page",
     "abstract": "A markdown page, that shows all markdown elements supported by this blog."

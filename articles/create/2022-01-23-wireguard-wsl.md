@@ -10,7 +10,7 @@ structuredData: {
         "url": "https://michaelrommel.com/info/about",
         "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
     },
-    "dateModified": '2024-12-07T16:12:00+01:00',
+    "dateModified": '2024-08-07T16:12:00+01:00',
     "datePublished": '2022-01-23T00:08:00+01:00',
     "headline": "Setup of Wireguard with WSL2",
     "abstract": "This is a short article how to connect a WSL2 subsystem to a development network behind a VPN server"
