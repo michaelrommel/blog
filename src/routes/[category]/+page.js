@@ -12,11 +12,11 @@ export async function load({ params, fetch }) {
 	}
 	// console.log(`category index pathname: ${JSON.stringify(url.pathname, null, 2)}`);
 	// console.log(`category index category params: ${JSON.stringify(params, null, 2)}`);
-	console.log(
-		`category index articles: ${JSON.stringify(cardDataList, null, 2)}`
-	);
+	// console.log(
+	// 	`category index articles: ${JSON.stringify(cardDataList, null, 2)}`
+	// );
 
-	if (!cardDataList) {
+	if (!cardDataList || cardDataList.length === 0) {
 		error(404, {
 			message: 'Article list could not be retrieved'
 		});

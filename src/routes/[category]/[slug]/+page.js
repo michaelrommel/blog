@@ -7,8 +7,6 @@ export async function load({ params, fetch }) {
 		//`/api/article?category=create&slug=2024-11-14-md-embeds-svelte`
 	).then((res) => res.json());
 
-	console.log(`Articles are: >${articles}<`);
-
 	if (!articles || articles.length === 0) {
 		error(404, {
 			message: 'Article could not be found'
