@@ -28,3 +28,10 @@ export const chartcolours = {
 	gruvlemphaqua: 'hsl(143, 30%, 37%)',
 	gruvlemphorange: 'hsl(19, 97%, 35%)'
 };
+export const decorate = (title) => {
+	return `${title} | Michael Rommel`;
+};
+
+export const serializeStructuredData = (sd) => {
+	return `<script type="application/ld+json">${JSON.stringify(sd)}</script>`;
+};

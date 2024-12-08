@@ -8,27 +8,18 @@ import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { matter } from 'vfile-matter';
 
-/**
- * @typedef {import('unist').Node} Node
- * @typedef {import('vfile').VFile} VFile
- */
 function remarkGetFm() {
 	return function (tree, file) {
 		matter(file);
 	};
 }
 
-/** @type {import('./$types').RequestHandler} */
 export async function GET({ url, params }) {
-	const articlenames = await fg.glob(['./articles/**/*.{md,svx,svelte.md}']);
-
-	// for (const [key, value] of url.searchParams) {
-	// 	console.log(`api articles index searchParams: ${key} = ${value}`);
-	// }
+	const category = url.searchParams.get('category') ?? null;
+	const limit = Number(url.searchParams.get('limit') ?? Infinity);
+	const articlenames = await fg.glob(['./articles/**/*.md']);
 
 	const articlePromises = [];
-	const limit = Number(url.searchParams.get('limit') ?? Infinity);
-	const category = url.searchParams.get('category') ?? null;
 
 	if (Number.isNaN(limit)) {
 		return json({
@@ -64,14 +55,36 @@ export async function GET({ url, params }) {
 	}
 
 	const articles = await Promise.all(articlePromises);
+	// console.log('Articles: ', articles);
 	const publishedArticles = articles
 		.filter((article) => article.published)
 		.slice(0, limit);
 
 	publishedArticles.sort((a, b) =>
-		new Date(a.creationDate) > new Date(b.creationDate) ? -1 : 1
+		new Date(
+			a.structuredData?.dateModified
+				? a.structuredData?.dateModified
+				: a.structuredData?.dateCreated
+					? a.structuredData?.dateCreated
+					: a.structuredData?.datePublished
+						? a.structuredData?.datePublished
+						: '2022-01-01T00:00:00+01:00'
+		) >
+		new Date(
+			b.structuredData?.dateModified
+				? b.structuredData?.dateModified
+				: b.structuredData?.dateCreated
+					? b.structuredData?.dateCreated
+					: b.structuredData?.datePublished
+						? b.structuredData?.datePublished
+						: '2022-01-01T00:00:00+01:00'
+		)
+			? -1
+			: 1
 	);
 
-	// console.log(publishedArticles);
+	// console.log(
+	// 	`publishedArticles: ${JSON.stringify(publishedArticles, null, 2)}`
+	// );
 	return json(publishedArticles.slice(0, limit));
 }

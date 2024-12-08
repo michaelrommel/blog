@@ -1,12 +1,21 @@
 ---
-title: 'Turntable Trigonometry'
-description: "Having fun disecting how a turntable's math works."
-thumbnailUrl: '/articles/assets/2022-02-02-turntable-trigonometry/thumbnail.svg'
-thumbnailTitle: 'thumbnail of an turntable pickup with geometric lines'
-creationDate: '2022-02-02T21:17:45+01:00'
-authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
-tags: ['locked', 'create']
+thumbnailUrl: "/articles/assets/2022-02-02-turntable-trigonometry/thumbnail.svg"
+thumbnailTitle: "thumbnail of an turntable pickup with geometric lines"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2022-02-02T21:17:45+01:00",
+    "datePublished": "2022-02-02T21:17:45+01:00",
+    "headline": "Turntable Trigonometry",
+    "abstract": "How the length of a turntable arm determines the two radii where the pickup aligns tangentially with the groove."
+}
+tags: ["locked", "create"]
 published: true
 ---
 
@@ -18,7 +27,7 @@ published: true
 :::note{.comment}
 This formula is used to calculate the length of a turntable arm so that
 in combination with the correct matching pickup angle, the pickup will
-align tangentially at two predefined radiuses on the vinyl.
+align tangentially at two predefined radii on the vinyl.
 :::
 
 $$

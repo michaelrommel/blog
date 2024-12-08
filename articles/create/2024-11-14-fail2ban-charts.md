@@ -1,13 +1,22 @@
 ---
-title: "fail2ban Statistics"
-description: "Charts displaying the hack attempts on this system"
 thumbnailUrl: "/articles/assets/2024-11-14-fail2ban-charts/thumbnail.png"
 thumbnailTitle: "Icon representing markdown text documents"
-creationDate: "2024-11-14T19:48:16+01:00"
 dataSource: "api"
 dataUrl: "/hackers"
-authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2024-11-14T19:48:16+01:00",
+    "datePublished": "2024-11-14T19:48:16+01:00",
+    "headline": "fail2ban Statistics",
+    "abstract": "Charts displaying the hack attempts on this system"
+}
 tags: ["new", "locked", "create", "code"]
 published: true
 ---

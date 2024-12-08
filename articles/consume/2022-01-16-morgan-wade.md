@@ -1,12 +1,21 @@
 ---
-title: 'Morgan Wade'
-description: 'Last fall I discovered Morgan Wade. Here I share my favourite tracks and a link to a good, raw performance. There is also a link to a Spotify playlist I made.'
-thumbnailUrl: '/articles/assets/2022-01-16-morgan-wade/thumbnail.jpg'
-thumbnailTitle: 'Photo of Morgan Wade sitting on a bar stool holding a guitar'
-creationDate: '2022-01-16T23:21:13+01:00'
-authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=40&v=4'
-tags: ['locked', 'consume', 'music', 'country', 'female', 'songwriter']
+thumbnailUrl: "/articles/assets/2022-01-16-morgan-wade/thumbnail.jpg"
+thumbnailTitle: "Photo of Morgan Wade sitting on a bar stool holding a guitar"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2022-01-16T23:21:13+01:00",
+    "datePublished": "2022-01-16T23:21:13+01:00",
+    "headline": "Morgan Wade - Music",
+    "abstract": "I discovered Morgan Wade in fall 2021. Here I share my favourite tracks, a link to a performance and a Spotify playlist."
+}
+tags: ["locked", "consume", "music", "country", "female", "songwriter"]
 published: true
 ---
 

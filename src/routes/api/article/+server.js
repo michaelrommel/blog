@@ -51,7 +51,26 @@ export async function GET({ url }) {
 	const publishedArticles = articles.filter((article) => article.published);
 
 	publishedArticles.sort((a, b) =>
-		new Date(a.creationDate) > new Date(b.creationDate) ? -1 : 1
+		new Date(
+			a.structuredData?.dateModified
+				? a.structuredData?.dateModified
+				: a.structuredData?.dateCreated
+					? a.structuredData?.dateCreated
+					: a.structuredData?.datePublished
+						? a.structuredData?.datePublished
+						: '2022-01-01T00:00:00+01:00'
+		) >
+		new Date(
+			b.structuredData?.dateModified
+				? b.structuredData?.dateModified
+				: b.structuredData?.dateCreated
+					? b.structuredData?.dateCreated
+					: b.structuredData?.datePublished
+						? b.structuredData?.datePublished
+						: '2022-01-01T00:00:00+01:00'
+		)
+			? -1
+			: 1
 	);
 
 	// console.log(

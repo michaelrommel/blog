@@ -7,7 +7,9 @@ export async function load({ params, fetch }) {
 		//`/api/article?category=create&slug=2024-11-14-md-embeds-svelte`
 	).then((res) => res.json());
 
-	if (!articles) {
+	console.log(`Articles are: >${articles}<`);
+
+	if (!articles || articles.length === 0) {
 		error(404, {
 			message: 'Article could not be found'
 		});
@@ -20,6 +22,14 @@ export async function load({ params, fetch }) {
 	}
 
 	const md = articles[0].md;
+
+	const title = articles[0].structuredData?.headline
+		? articles[0].structuredData?.headline
+		: articles[0].title;
+
+	const description = articles[0].structuredData?.abstract
+		? articles[0].structuredData?.abstract
+		: articles[0].description;
 
 	const frontmatterData = RegExp(
 		'dataSource: (?<datasource>.+?)$.*dataUrl: (?<dataurl>.+?)$',
@@ -73,6 +83,9 @@ export async function load({ params, fetch }) {
 
 	return {
 		markdown: articles[0].md,
-		chartdata: chartData
+		chartdata: chartData,
+		title,
+		description,
+		structuredData: articles[0].structuredData
 	};
 }

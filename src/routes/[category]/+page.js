@@ -12,9 +12,9 @@ export async function load({ params, fetch }) {
 	}
 	// console.log(`category index pathname: ${JSON.stringify(url.pathname, null, 2)}`);
 	// console.log(`category index category params: ${JSON.stringify(params, null, 2)}`);
-	// console.log(
-	// 	`category index articles: ${JSON.stringify(cardDataList, null, 2)}`
-	// );
+	console.log(
+		`category index articles: ${JSON.stringify(cardDataList, null, 2)}`
+	);
 
 	if (!cardDataList) {
 		error(404, {
@@ -22,7 +22,11 @@ export async function load({ params, fetch }) {
 		});
 	}
 
+	const cdlFiltered = cardDataList.filter((c) => c.articleCategory !== 'info');
+
 	return {
-		cards: cardDataList
+		cards: cdlFiltered,
+		title: `Article List ${params.category ? params.category.toUpperCase() : ''}`,
+		description: `Articles ${params.category ? 'in category ' + params.category.toUpperCase() : ''}`
 	};
 }

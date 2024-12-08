@@ -1,12 +1,21 @@
 ---
-title: 'Windows Malformed ZIP Archives'
-description: 'Exploration of ZIP files with invalid filesystem structures and their processing on Linux.'
-thumbnailUrl: '/articles/assets/2022-12-28-malformed-zip-files/thumbnail.jpeg'
-thumbnailTitle: 'Snippet of an explorer window with zip files'
-creationDate: '2022-12-28T20:11:15+01:00'
-authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
-tags: ['new', 'locked', 'create', 'code']
+thumbnailUrl: "/articles/assets/2022-12-28-malformed-zip-files/thumbnail.jpeg"
+thumbnailTitle: "Snippet of an explorer window with zip files"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2024-11-21T20:11:15+01:00",
+    "datePublished": "2022-12-28T20:11:15+01:00",
+    "headline": "Malformed ZIP Archives created on Windows",
+    "abstract": "Exploration of ZIP files with invalid filesystem structures and their processing on Linux."
+}
+tags: ["new", "locked", "create", "code"]
 published: true
 ---
 

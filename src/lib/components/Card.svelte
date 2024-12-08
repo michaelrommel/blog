@@ -17,8 +17,30 @@
 	};
 
 	let { cardData } = $props();
-	let creationDate = $derived(
-		formatRelative(new Date(cardData.creationDate), Date.now(), { locale }),
+	let cardDate = $derived(
+		formatRelative(
+			new Date(
+				cardData.structuredData?.dateModified
+					? cardData.structuredData?.dateModified
+					: cardData.structuredData?.dateCreated
+						? cardData.structuredData?.dateCreated
+						: cardData.structuredData?.datePublished
+							? cardData.structuredData?.datePublished
+							: "2022-01-01T00:00:00+01:00",
+			),
+			Date.now(),
+			{ locale },
+		),
+	);
+	let cardAuthor = $derived(
+		cardData.structuredData?.author
+			? cardData.structuredData?.author
+			: cardData.author
+				? cardData.author
+				: {
+						name: "Michael Rommel",
+						image: "https://avatars.githubusercontent.com/u/919935?s=100&v=4",
+					},
 	);
 </script>
 
@@ -39,12 +61,16 @@
 			<div
 				class="text-gruvlemphblue dark:text-gruvblue font-bold text-sm xs:text-base md:text-xl mb-2"
 			>
-				{cardData.title}
+				{cardData.structuredData?.headline
+					? cardData.structuredData?.headline
+					: cardData.title}
 			</div>
 			<p
 				class="text-gruvlfg dark:text-gruvdfg text-xs xs:text-sm md:text-base mb-2"
 			>
-				{cardData.description}
+				{cardData.structuredData?.abstract
+					? cardData.structuredData?.abstract
+					: cardData.description}
 			</p>
 			<div
 				class="text-xs text-gruvlpurple dark:text-gruvpurple flex flex-wrap items-center"
@@ -80,17 +106,17 @@
 		<div class="flex items-center">
 			<img
 				class="w-[40px] h-[40px] rounded-full mr-4"
-				src={cardData.authorAvatarUrl}
-				alt="Avatar of {cardData.authorName}"
+				src={cardAuthor.image}
+				alt="Avatar of {cardAuthor.name}"
 			/>
 			<div class="mt-1 text-xs">
 				<p
 					class="mb-0 font-bold text-gruvlfg2 dark:text-gruvgray leading-none"
 				>
-					{cardData.authorName}
+					{cardAuthor.name}
 				</p>
 				<p class="mb-0 text-gruvlfg3 dark:text-gruvgray">
-					{creationDate}
+					{cardDate}
 				</p>
 			</div>
 		</div>

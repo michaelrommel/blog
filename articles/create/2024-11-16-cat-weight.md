@@ -1,13 +1,22 @@
 ---
-title: "My Cats Are Getting Bigger..."
-description: "After a year, my cats are adults now - and gaining (too much) weight..."
 thumbnailUrl: "/articles/assets/2024-11-16-cat-weight/thumbnail.png"
 thumbnailTitle: "Icon showing a bubble chart"
-creationDate: 2024-11-16T13:46:15+01:00
 dataSource: "url"
 dataUrl: "cat_weight.json" 
-authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2024-11-16T13:46:15+01:00",
+    "datePublished": "2024-11-16T13:46:15+01:00",
+    "headline": "My Cats Are Getting Bigger...",
+    "abstract": "After a year, my cats are adults now - and gaining (too much) weight..."
+}
 tags: ["new", "create", "cat"]
 published: true
 ---

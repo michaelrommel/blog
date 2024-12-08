@@ -20,7 +20,7 @@ export async function GET({ fetch, setHeaders }) {
 		// <loc>https://www.example.com/foo.html</loc>
 		// <lastmod>2022-06-04</lastmod>
 		//  </url>
-		sitemap += `<url>\n 	<loc>https://michaelrommel.com/${article.articleCategory}/${article.slug}</loc>\n 	<lastmod>${article.modificationDate ? article.modificationdate : article.creationDate}</lastmod>\n</url>\n`;
+		sitemap += `<url>\n 	<loc>https://michaelrommel.com/${article.articleCategory}/${article.slug}</loc>\n 	<lastmod>${article.dateModified ? article.dateModified : article.dateCreated}</lastmod>\n</url>\n`;
 	}
 	sitemap += '</urlset>';
 

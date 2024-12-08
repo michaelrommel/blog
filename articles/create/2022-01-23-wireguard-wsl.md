@@ -1,12 +1,21 @@
 ---
-title: 'Setup of Wireguard with WSL2'
-description: 'This is a short article how to connect a WSL2 subsystem to a development network behind a VPN server'
-thumbnailUrl: '/articles/assets/2022-01-23-wireguard-wsl/thumbnail.svg'
-thumbnailTitle: 'Schematic network diagram'
-creationDate: '2022-02-01T11:16:13+01:00'
-authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
-tags: ['locked', 'create', 'code', 'linux']
+thumbnailUrl: "/articles/assets/2022-01-23-wireguard-wsl/thumbnail.svg"
+thumbnailTitle: "Schematic network diagram"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": '2024-12-07T16:12:00+01:00',
+    "datePublished": '2022-01-23T00:08:00+01:00',
+    "headline": "Setup of Wireguard with WSL2",
+    "abstract": "This is a short article how to connect a WSL2 subsystem to a development network behind a VPN server"
+}
+tags: ["locked", "create", "code", "linux"]
 published: true
 ---
 
@@ -26,7 +35,7 @@ This is an example networking setup, where there is a home office user connected
 to a remote network via a VPN. Inside this network is a separated development
 network with a gateway host firewalling it off from the rest of the network.
 
-The challenge is to securely bridge those networks that it is possible to
+The challenge is to securely bridge those networks, so that it is possible to
 connect from inside the WSL2 container on the user's computer to individual
 hosts inside the development network directly, i.e. by connecting to the
 `192.168.10.0/24` addresses.
@@ -35,7 +44,7 @@ hosts inside the development network directly, i.e. by connecting to the
 
 ## WSL2 Setup
 
-Per default the WSL2 installation has a random IP address and network
+By default the WSL2 installation has a random IP address and network
 assigned every time the computer restarts or the WSL is
 shutdown/terminated and restarts. This does not allow us to use a static
 IP configuration, which is needed to setup the remote routing table and

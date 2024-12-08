@@ -126,7 +126,12 @@ async function compile(article) {
 		.use(remarkGetFm)
 		.use(remarkDirective)
 		.use(remarkDirectiveHandler)
-		.use(remarkToc, { maxDepth: 2, tight: true, prefix: 'user-content-' })
+		.use(remarkToc, {
+			heading: '(table[ -]of[ -])?contents?|toc|Inhalt',
+			maxDepth: 2,
+			tight: true,
+			prefix: 'user-content-'
+		})
 		.use(remarkEmoji, { emoticon: true })
 		.use(remarkGithub, {
 			repository: 'https://github.com/michaelrommel/blog'

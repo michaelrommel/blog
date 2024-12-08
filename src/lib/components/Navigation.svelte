@@ -1,11 +1,4 @@
 <script module>
-	export async function load({ session }) {
-		return {
-			props: {
-				user: session.user || "",
-			},
-		};
-	}
 </script>
 
 <script>

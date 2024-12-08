@@ -1,12 +1,21 @@
 ---
-title: 'Markdown Sample'
-description: 'A sample markdown text with many attributes/tags etc.'
-thumbnailUrl: '/articles/assets/2022-01-25-markdown-sample/thumbnail.svg'
-thumbnailTitle: 'Icon representing markdown text documents'
-creationDate: '2022-01-25T03:21:13+01:00'
-authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
-tags: ['locked', 'create', 'code']
+thumbnailUrl: "/articles/assets/2022-01-25-markdown-sample/thumbnail.svg"
+thumbnailTitle: "Icon representing markdown text documents"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2024-12-01T18:21:13+01:00",
+    "datePublished": "2022-01-25T03:21:13+01:00",
+    "headline": "Markdown Sample Page",
+    "abstract": "A markdown page, that shows all markdown elements supported by this blog."
+}
+tags: ["locked", "create", "code"]
 published: true
 ---
 
@@ -155,6 +164,14 @@ Duplicated footnote reference[^second].
     and multiple paragraphs.
 
 [^second]: Footnote text.
+
+## Mathematical Formulas
+
+With MathJax this blog also supports the display of mathematical formulas, like:
+
+$$
+x_{1,2} = \frac{-b \pm \sqrt{b^2 -4ac}}{2a}
+$$
 
 ## Links
 

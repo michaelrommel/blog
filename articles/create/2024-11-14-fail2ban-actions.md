@@ -1,12 +1,21 @@
 ---
-title: 'fail2ban Actions in Python'
-description: 'Implementing a custom action storing IP addresses of hacking attempts in keydb'
-thumbnailUrl: '/articles/assets/2024-11-14-fail2ban-actions/chart.png'
-thumbnailTitle: 'fail2ban logo'
-creationDate: '2024-11-14T00:19:00+01:00'
-authorName: 'Michael Rommel'
-authorAvatarUrl: 'https://avatars.githubusercontent.com/u/919935?s=100&v=4'
-tags: ['new', 'create', 'code']
+thumbnailUrl: "/articles/assets/2024-11-14-fail2ban-actions/chart.png"
+thumbnailTitle: "fail2ban logo"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2024-11-14T00:19:00+01:00",
+    "datePublished": "2024-11-14T00:19:00+01:00",
+    "headline": "fail2ban Actions in Python",
+    "abstract": "Implementing a custom action storing IP addresses of hacking attempts in keydb"
+}
+tags: ["new", "create", "code"]
 published: true
 ---
 

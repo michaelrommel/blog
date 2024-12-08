@@ -12,7 +12,7 @@ export async function load({ params, fetch }) {
 	}
 	// console.log(`root index pathname: ${JSON.stringify(url.pathname, null, 2)}`);
 	// console.log(`root index category params: ${JSON.stringify(params, null, 2)}`);
-	// console.log(`root index articles: ${JSON.stringify(cardDataList, null, 2)}`);
+	console.log(`root index articles: ${JSON.stringify(cardDataList, null, 2)}`);
 
 	if (!cardDataList) {
 		error(404, {
@@ -20,7 +20,11 @@ export async function load({ params, fetch }) {
 		});
 	}
 
+	const cdlFiltered = cardDataList.filter((c) => c.articleCategory !== 'info');
+
 	return {
-		cards: cardDataList
+		cards: cdlFiltered,
+		title: `Overall Article List`,
+		description: `Articles in all categories`
 	};
 }

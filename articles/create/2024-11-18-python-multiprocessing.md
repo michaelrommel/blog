@@ -1,11 +1,20 @@
 ---
-title: "Python Multiprocessing"
-description: "I recently wrote some demo code snippets in python, showcasing some multiprocessing features."
 thumbnailUrl: "/articles/assets/2024-11-18-python-multiprocessing/thumbnail.png"
 thumbnailTitle: "Icon showing ..."
-creationDate: 2024-11-18T17:25:03+01:00
-authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2024-11-18T17:25:03+01:00",
+    "datePublished": "2024-11-18T17:25:03+01:00",
+    "headline": "Python Multiprocessing",
+    "abstract": "I recently wrote some demo code snippets in python, showcasing some multiprocessing features."
+}
 tags: ["new", "create", "code"]
 published: false
 ---

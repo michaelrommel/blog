@@ -1,14 +1,24 @@
 ---
-title: "OSC7 And Why You Might Need It"
-description: "A short description of why and how you can use OSC7 to make your terminal life easier."
 thumbnailUrl: "/articles/assets/2024-11-19-osc7-and-why-you-might-need-it/thumbnail.png"
 thumbnailTitle: "Icon showing a terminal with split panes"
-creationDate: 2024-11-19T18:13:02+01:00
-authorName: "Michael Rommel"
-authorAvatarUrl: "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+structuredData: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    author: { 
+        "@type": "Person", 
+        "name": "Michael Rommel",
+        "url": "https://michaelrommel.com/info/about",
+        "image": "https://avatars.githubusercontent.com/u/919935?s=100&v=4"
+    },
+    "dateModified": "2024-11-19T18:13:02+01:00",
+    "datePublished": "2024-11-19T18:13:02+01:00",
+    "headline": "OSC7 And Why You Might Need It",
+    "abstract": "A short description of why and how you can use OSC7 to make your terminal life easier."
+}
 tags: ["new", "create", "code"]
 published: true
 ---
+
 # OSC7 And Why You Might Need It
 
 ## Contents
