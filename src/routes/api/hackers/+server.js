@@ -1,4 +1,4 @@
-import { Redis } from 'ioredis';
+import { db } from '$lib/server/keydb';
 import { json } from '@sveltejs/kit';
 import { format } from 'date-fns';
 
@@ -218,12 +218,10 @@ async function getWeekData(r) {
 }
 
 export async function GET() {
-	const r = new Redis('192.168.30.1');
+	const [perCountry, perJail] = await getWeekData(db);
+	const totalPerCountry = await getTotalPerCountry(db);
 
-	const [perCountry, perJail] = await getWeekData(r);
-	const totalPerCountry = await getTotalPerCountry(r);
-
-	r.disconnect();
+	db.disconnect();
 
 	return json({
 		perCountry,

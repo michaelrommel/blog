@@ -8,15 +8,18 @@
 	import ArrowDown from "lucide-svelte/icons/a-arrow-down";
 	import ArrowUp from "lucide-svelte/icons/a-arrow-up";
 	import User from "lucide-svelte/icons/user-round";
+	import Logout from "lucide-svelte/icons/log-out";
 
 	import { toggleMode } from "mode-watcher";
 
 	import { Button } from "$lib/components/ui/button";
 	import * as Popover from "$lib/components/ui/popover";
 	import Logo from "$lib/components/Logo.svelte";
+	import * as Avatar from "$lib/components/ui/avatar";
 
 	import { onMount } from "svelte";
 	import { goto } from "$app/navigation";
+	import { enhance } from "$app/forms";
 
 	const navigation = [
 		{
@@ -29,9 +32,21 @@
 		},
 	];
 
-	async function gotoSignIn() {
+	let { data } = $props();
+	// console.log(
+	// 	`in Navigation.svelte data is ${JSON.stringify(data, null, 4)}`,
+	// );
+
+	async function gotoLogin() {
 		popoverOpen = false;
 		goto("/login");
+	}
+
+	function closePopupAndSubmit() {
+		setTimeout(() => {
+			popoverOpen = false;
+		}, 250);
+		logoutForm.requestSubmit();
 	}
 
 	const fontBaseSizes = [
@@ -81,6 +96,7 @@
 
 	let popoverOpen = $state(false);
 	let menuTarget = $state(null);
+	let logoutForm = $state(null);
 
 	function toggleAndClose() {
 		popoverOpen = false;
@@ -187,12 +203,42 @@
 								</div>
 							</div>
 							<div class="flex-item">
-								<Button variant="outline" onclick={gotoSignIn}>
-									<User
-										class="mr-2 size-5 text-foreground-alt"
-									/>
-									Sign in
-								</Button>
+								{#if data?.user?.name}
+									<div class="flex items-center">
+										<Avatar.Root>
+											<Avatar.Image
+												src={data?.user?.image}
+												title={data?.user?.name}
+											/>
+											<Avatar.Fallback>
+												<User />
+											</Avatar.Fallback>
+										</Avatar.Root>
+										<form
+											bind:this={logoutForm}
+											method="post"
+											action="/login?/logout"
+											onsubmit={closePopupAndSubmit}
+											use:enhance
+										>
+											<Button
+												type="submit"
+												variant="outline"
+												size="icon"
+												class="px-1 mx-2"
+											>
+												<Logout />
+											</Button>
+										</form>
+									</div>
+								{:else}
+									<Button
+										variant="outline"
+										onclick={gotoLogin}
+									>
+										Sign in
+									</Button>
+								{/if}
 							</div>
 						</Popover.Content>
 					</Popover.Root>
@@ -227,9 +273,31 @@
 					>
 						<ArrowUp strokeWidth="1.7" />
 					</Button>
-					<Button href="/login" variant="outline" onclick={null}
-						>Sign in</Button
-					>
+					{#if data?.user?.name}
+						<Avatar.Root>
+							<Avatar.Image
+								src={data?.user?.image}
+								title={data?.user?.name}
+							/>
+							<Avatar.Fallback>
+								<User />
+							</Avatar.Fallback>
+						</Avatar.Root>
+						<form method="post" action="/login?/logout" use:enhance>
+							<Button
+								type="submit"
+								variant="outline"
+								size="icon"
+								class="px-1 mx-2"
+							>
+								<Logout />
+							</Button>
+						</form>
+					{:else}
+						<Button variant="outline" onclick={gotoLogin}>
+							Sign in
+						</Button>
+					{/if}
 				</div>
 			</div>
 		</div>

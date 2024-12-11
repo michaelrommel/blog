@@ -1,8 +1,10 @@
 import { error } from '@sveltejs/kit';
 
-export async function load({ params, fetch }) {
+export async function load({ params, fetch, data }) {
 	// console.log(`root index category params: ${JSON.stringify(params, null, 2)}`);
 	let cardDataList = null;
+	let user = null;
+
 	if (params.category) {
 		cardDataList = await fetch(
 			`/api/articles?category=${params.category}`
@@ -22,9 +24,14 @@ export async function load({ params, fetch }) {
 
 	const cdlFiltered = cardDataList.filter((c) => c.articleCategory !== 'info');
 
+	if (data.user !== undefined && data.user !== null) {
+		user = data.user;
+	}
+
 	return {
 		cards: cdlFiltered,
 		title: `Overall Article List`,
-		description: `Articles in all categories`
+		description: `Articles in all categories`,
+		user
 	};
 }
