@@ -1,6 +1,6 @@
 import { google } from '$lib/server/oauth';
 import { ObjectParser } from '@pilcrowjs/object-parser';
-import { createUser, getUserFromGoogleId } from '$lib/server/user';
+import { createUser, getUserFromProviderId } from '$lib/server/user';
 import {
 	createSession,
 	generateSessionToken,
@@ -44,10 +44,10 @@ export async function GET(event) {
 
 	const googleId = claimsParser.getString('sub');
 	const name = claimsParser.getString('name');
-	const picture = claimsParser.getString('picture');
+	const image = claimsParser.getString('picture');
 	const email = claimsParser.getString('email');
 
-	const existingUser = await getUserFromGoogleId(googleId);
+	const existingUser = await getUserFromProviderId('google', googleId);
 	if (existingUser !== null) {
 		const sessionToken = generateSessionToken();
 		const session = createSession(sessionToken, existingUser.id);
@@ -60,7 +60,7 @@ export async function GET(event) {
 		});
 	}
 
-	const user = await createUser(googleId, email, name, picture);
+	const user = await createUser('google', googleId, email, name, image);
 	const sessionToken = generateSessionToken();
 	const session = createSession(sessionToken, user.id);
 	setSessionTokenCookie(event, sessionToken, session.expiresAt);

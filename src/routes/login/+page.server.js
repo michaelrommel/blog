@@ -8,7 +8,10 @@ export async function load(event) {
 	if (event.locals.session !== null && event.locals.user !== null) {
 		return redirect(302, '/');
 	}
-	return {};
+	return {
+		title: 'Log in',
+		description: 'Authenticate to this blog via different providers'
+	};
 }
 
 export const actions = {
