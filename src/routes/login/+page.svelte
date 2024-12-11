@@ -1,9 +1,9 @@
 <script>
 	import Github from "virtual:icons/cib/github";
 	import Google from "virtual:icons/cib/google";
-	import Windows from "virtual:icons/cib/windows";
-	import Instagram from "virtual:icons/cib/instagram";
-	import Spotify from "virtual:icons/cib/spotify";
+	// import Windows from "virtual:icons/cib/windows";
+	// import Instagram from "virtual:icons/cib/instagram";
+	// import Spotify from "virtual:icons/cib/spotify";
 </script>
 
 <article id="articlecontainer" class="col-span-12 md:mx-auto">
@@ -33,42 +33,6 @@
 						Login with Google
 					</span>
 					<span class="flex-none"><Google class="inline mr-3" /></span
-					>
-				</a>
-				<a
-					class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
-					href="/login/microsoft"
-					alt="Login with Microsoft"
-				>
-					<span class="grow px-3 align-middle">
-						Login with Microsoft
-					</span>
-					<span class="flex-none"
-						><Windows class="inline mr-3" /></span
-					>
-				</a>
-				<a
-					class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
-					href="/login/instagram"
-					alt="Login with Instagram"
-				>
-					<span class="grow px-3 align-middle">
-						Login with Instagram
-					</span>
-					<span class="flex-none"
-						><Instagram class="inline mr-3" /></span
-					>
-				</a>
-				<a
-					class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
-					href="/login/spotify"
-					alt="Login with Spotify"
-				>
-					<span class="grow px-3 align-middle">
-						Login with Spotify
-					</span>
-					<span class="flex-none"
-						><Spotify class="inline mr-3" /></span
 					>
 				</a>
 			</div>
@@ -107,3 +71,40 @@
 		</div>
 	</div>
 </article>
+
+<!-- <a -->
+<!-- 	class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row" -->
+<!-- 	href="/login/microsoft" -->
+<!-- 	alt="Login with Microsoft" -->
+<!-- > -->
+<!-- 	<span class="grow px-3 align-middle"> -->
+<!-- 		Login with Microsoft -->
+<!-- 	</span> -->
+<!-- 	<span class="flex-none" -->
+<!-- 		><Windows class="inline mr-3" /></span -->
+<!-- 	> -->
+<!-- </a> -->
+<!-- <a -->
+<!-- 	class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row" -->
+<!-- 	href="/login/instagram" -->
+<!-- 	alt="Login with Instagram" -->
+<!-- > -->
+<!-- 	<span class="grow px-3 align-middle"> -->
+<!-- 		Login with Instagram -->
+<!-- 	</span> -->
+<!-- 	<span class="flex-none" -->
+<!-- 		><Instagram class="inline mr-3" /></span -->
+<!-- 	> -->
+<!-- </a> -->
+<!-- <a -->
+<!-- 	class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row" -->
+<!-- 	href="/login/spotify" -->
+<!-- 	alt="Login with Spotify" -->
+<!-- > -->
+<!-- 	<span class="grow px-3 align-middle"> -->
+<!-- 		Login with Spotify -->
+<!-- 	</span> -->
+<!-- 	<span class="flex-none" -->
+<!-- 		><Spotify class="inline mr-3" /></span -->
+<!-- 	> -->
+<!-- </a> -->
