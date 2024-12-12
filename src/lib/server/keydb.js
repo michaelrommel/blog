@@ -11,9 +11,13 @@ db.on('error', function (e) {
 	console.log(`KV store error: ${e.message}`);
 });
 
-db.on('end', function (e) {
-	console.log(`KV store end: ${e.message}`);
-	reconnect();
+// db.on('end', function () {
+// 	console.log(`KV store end`);
+// 	reconnect();
+// });
+
+process.on('sveltekit:shutdown', async () => {
+	await db.quit();
 });
 
 export { db, reconnect };
