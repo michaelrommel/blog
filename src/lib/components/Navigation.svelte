@@ -203,7 +203,7 @@
 								</div>
 							</div>
 							<div class="flex-item">
-								{#if data?.user?.name}
+								{#if data?.user?.id}
 									<div class="flex items-center">
 										<Avatar.Root>
 											<Avatar.Image
@@ -273,7 +273,7 @@
 					>
 						<ArrowUp strokeWidth="1.7" />
 					</Button>
-					{#if data?.user?.name}
+					{#if data?.user?.id}
 						<Avatar.Root>
 							<Avatar.Image
 								src={data?.user?.image}

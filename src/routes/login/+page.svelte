@@ -1,7 +1,6 @@
 <script>
 	import Github from "virtual:icons/cib/github";
 	import Google from "virtual:icons/cib/google";
-	// import Windows from "virtual:icons/cib/windows";
 	// import Instagram from "virtual:icons/cib/instagram";
 	// import Spotify from "virtual:icons/cib/spotify";
 	let { data } = $props();
@@ -73,18 +72,6 @@
 	</div>
 </article>
 
-<!-- <a -->
-<!-- 	class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row" -->
-<!-- 	href="/login/microsoft" -->
-<!-- 	alt="Login with Microsoft" -->
-<!-- > -->
-<!-- 	<span class="grow px-3 align-middle"> -->
-<!-- 		Login with Microsoft -->
-<!-- 	</span> -->
-<!-- 	<span class="flex-none" -->
-<!-- 		><Windows class="inline mr-3" /></span -->
-<!-- 	> -->
-<!-- </a> -->
 <!-- <a -->
 <!-- 	class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row" -->
 <!-- 	href="/login/instagram" -->
