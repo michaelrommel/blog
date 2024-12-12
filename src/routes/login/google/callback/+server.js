@@ -33,7 +33,8 @@ export async function GET(event) {
 	let tokens;
 	try {
 		tokens = await google.validateAuthorizationCode(code, codeVerifier);
-	} catch {
+	} catch (e) {
+		console.log(e);
 		return new Response('Please restart the process.', {
 			status: 400
 		});

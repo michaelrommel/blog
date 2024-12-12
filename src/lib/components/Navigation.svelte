@@ -188,7 +188,7 @@
 										onclick={decreaseFontSize}
 										variant="outline"
 										size="icon"
-										class="mx-1"
+										class="mr-1"
 									>
 										<ArrowDown strokeWidth="1.7" />
 									</Button>
@@ -196,7 +196,7 @@
 										onclick={increaseFontSize}
 										variant="outline"
 										size="icon"
-										class="mx-1"
+										class="ml-1"
 									>
 										<ArrowUp strokeWidth="1.7" />
 									</Button>
@@ -204,7 +204,7 @@
 							</div>
 							<div class="flex-item">
 								{#if data?.user?.id}
-									<div class="flex items-center">
+									<div class="flex items-center justify-end">
 										<Avatar.Root>
 											<Avatar.Image
 												src={data?.user?.image}
@@ -225,7 +225,7 @@
 												type="submit"
 												variant="outline"
 												size="icon"
-												class="px-1 mx-2"
+												class="px-1 ml-2"
 											>
 												<Logout />
 											</Button>

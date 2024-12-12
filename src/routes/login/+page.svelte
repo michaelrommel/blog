@@ -2,7 +2,7 @@
 	import Github from "virtual:icons/cib/github";
 	import Google from "virtual:icons/cib/google";
 	// import Instagram from "virtual:icons/cib/instagram";
-	// import Spotify from "virtual:icons/cib/spotify";
+	import Spotify from "virtual:icons/cib/spotify";
 	let { data } = $props();
 </script>
 
@@ -33,6 +33,18 @@
 						Login with Google
 					</span>
 					<span class="flex-none"><Google class="inline mr-3" /></span
+					>
+				</a>
+				<a
+					class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
+					href="/login/spotify"
+					alt="Login with Spotify"
+				>
+					<span class="grow px-3 align-middle">
+						Login with Spotify
+					</span>
+					<span class="flex-none"
+						><Spotify class="inline mr-3" /></span
 					>
 				</a>
 			</div>
@@ -82,17 +94,5 @@
 <!-- 	</span> -->
 <!-- 	<span class="flex-none" -->
 <!-- 		><Instagram class="inline mr-3" /></span -->
-<!-- 	> -->
-<!-- </a> -->
-<!-- <a -->
-<!-- 	class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row" -->
-<!-- 	href="/login/spotify" -->
-<!-- 	alt="Login with Spotify" -->
-<!-- > -->
-<!-- 	<span class="grow px-3 align-middle"> -->
-<!-- 		Login with Spotify -->
-<!-- 	</span> -->
-<!-- 	<span class="flex-none" -->
-<!-- 		><Spotify class="inline mr-3" /></span -->
 <!-- 	> -->
 <!-- </a> -->
