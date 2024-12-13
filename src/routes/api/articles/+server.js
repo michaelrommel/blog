@@ -17,7 +17,7 @@ function remarkGetFm() {
 export async function GET({ url, params }) {
 	const category = url.searchParams.get('category') ?? null;
 	const limit = Number(url.searchParams.get('limit') ?? Infinity);
-	const articlenames = await fg.glob(['./articles/**/*.md']);
+	const articlenames = await fg.glob(['../articles/**/*.md']);
 
 	const articlePromises = [];
 
@@ -30,7 +30,7 @@ export async function GET({ url, params }) {
 	for (const path of articlenames) {
 		// console.log(`root article path: ${path}`);
 		const [articleCategory, articleName] =
-			path.match(/\.\/articles\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
+			path.match(/\.\.\/articles\/(.*)\/(.*)$/i)?.slice(1, 3) ?? null;
 		const articleSlug = slugFromPath(path);
 		if (!category || articleCategory === category) {
 			const promise = fs

@@ -16,14 +16,14 @@ function remarkGetFm() {
 export async function GET({ url }) {
 	const category = url.searchParams.get('category') ?? null;
 	const slug = url.searchParams.get('slug') ?? null;
-	const articlepaths = await fg.glob([`./articles/${category}/${[slug]}.md`]);
+	const articlepaths = await fg.glob([`../articles/${category}/${[slug]}.md`]);
 
 	const articlePromises = [];
 
 	for (const path of articlepaths) {
 		// console.log(`root article path: ${path}`);
 		const [articleName] =
-			path.match(/\.\/articles\/.*\/(.*)$/i)?.slice(1, 3) ?? null;
+			path.match(/\.\.\/articles\/.*\/(.*)$/i)?.slice(1, 3) ?? null;
 		const promise = fs
 			.readFile(path, { encoding: 'utf8' })
 			.then(async (article) => {

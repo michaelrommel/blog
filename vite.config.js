@@ -35,7 +35,7 @@ export default defineConfig({
 	],
 	server: {
 		fs: {
-			allow: ['articles/']
+			allow: ['../articles/', 'resources/']
 		}
 	}
 });

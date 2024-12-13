@@ -13,7 +13,7 @@ if (
 	import.meta.env.MODE === 'development' ||
 	import.meta.env.MODE === 'staging'
 ) {
-	CB_BASE = 'http://localhost:5173';
+	CB_BASE = 'http://localhost:8080';
 } else {
 	CB_BASE = 'https://michaelrommel.com';
 }
