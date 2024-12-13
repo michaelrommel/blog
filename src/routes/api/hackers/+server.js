@@ -221,8 +221,6 @@ export async function GET() {
 	const [perCountry, perJail] = await getWeekData(db);
 	const totalPerCountry = await getTotalPerCountry(db);
 
-	db.disconnect();
-
 	return json({
 		perCountry,
 		perJail,

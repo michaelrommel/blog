@@ -11,13 +11,16 @@ db.on('error', function (e) {
 	console.log(`KV store error: ${e.message}`);
 });
 
-// db.on('end', function () {
-// 	console.log(`KV store end`);
-// 	reconnect();
-// });
+db.on('end', function () {
+	console.log(`KV store end`);
+	// reconnect();
+});
 
-process.on('sveltekit:shutdown', async () => {
+process.on('sveltekit:shutdown', async (reason) => {
+	console.log(`sveltekit shutdown: ${reason}`);
+	// if (reason === 'SIGTERM' || reason === 'SIGINT') {
 	await db.quit();
+	// }
 });
 
 export { db, reconnect };
