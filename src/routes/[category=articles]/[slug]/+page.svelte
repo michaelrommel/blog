@@ -14,7 +14,7 @@
 		<div class="basis-5/12 flex-grow content-center">
 			<hr class="border-gruvblue" />
 		</div>
-		<div class="px-6 text-gruvyellow">~~~</div>
+		<div class="px-6 text-gruvpurple dark:text-gruvyellow">~~~</div>
 		<div class="basis-5/12 flex-grow content-center">
 			<hr class="border-gruvblue" />
 		</div>

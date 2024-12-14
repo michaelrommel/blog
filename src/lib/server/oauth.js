@@ -35,3 +35,20 @@ export const spotify = new Spotify(
 	SPOTIFY_CLIENT_SECRET,
 	`${CB_BASE}/login/spotify/callback`
 );
+
+export function deleteOauthCookies(event, provider) {
+	event.cookies.set(`${provider}_oauth_state`, '', {
+		httpOnly: true,
+		secure: import.meta.env.PROD,
+		sameSite: 'lax',
+		maxAge: 0,
+		path: '/'
+	});
+	event.cookies.set(`${provider}_code_verifier`, '', {
+		httpOnly: true,
+		secure: import.meta.env.PROD,
+		sameSite: 'lax',
+		maxAge: 0,
+		path: '/'
+	});
+}

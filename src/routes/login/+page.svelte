@@ -14,38 +14,46 @@
 		<div class="flex justify-center">
 			<div class="flex flex-col justify-center w-fit">
 				<a
-					class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
+					class="bg-gruvlbg1 dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
 					href="/login/github"
 					alt="Login with Github"
 				>
 					<span class="grow px-3 align-middle">
 						Login with Github
 					</span>
-					<span class="flex-none"><Github class="inline mr-3" /></span
-					>
+					<span class="flex-none">
+						<Github
+							class="inline mr-3 text-gruvlfg3 dark:text-gruvdfg"
+						/>
+					</span>
 				</a>
 				<a
-					class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
+					class="bg-gruvlbg1 dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
 					href="/login/google"
 					alt="Login with Google"
 				>
 					<span class="grow px-3 align-middle">
 						Login with Google
 					</span>
-					<span class="flex-none"><Google class="inline mr-3" /></span
-					>
+					<span class="flex-none">
+						<Google
+							class="inline mr-3 text-gruvlfg3 dark:text-gruvdfg"
+						/>
+					</span>
 				</a>
 				<a
-					class="dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
+					class="bg-gruvlbg1 dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
 					href="/login/spotify"
 					alt="Login with Spotify"
 				>
 					<span class="grow px-3 align-middle">
 						Login with Spotify
 					</span>
-					<span class="flex-none"
-						><Spotify class="inline mr-3" /></span
-					>
+					<span class="flex-none">
+						<Spotify
+							class="inline mr-3 text-gruvlfg3 dark:text-gruvdfg"
+						/>
+					</span>
 				</a>
 			</div>
 		</div>
@@ -77,7 +85,7 @@
 		<div class="basis-5/12 flex-grow content-center">
 			<hr class="border-gruvblue" />
 		</div>
-		<div class="px-6 text-gruvyellow">~~~</div>
+		<div class="px-6 text-gruvpurple dark:text-gruvyellow">~~~</div>
 		<div class="basis-5/12 flex-grow content-center">
 			<hr class="border-gruvblue" />
 		</div>

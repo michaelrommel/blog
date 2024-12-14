@@ -21,6 +21,22 @@ export async function createUser(provider, providerid, email, name, image) {
 	return user;
 }
 
+export async function updateUser(id, provider, providerid, email, name, image) {
+	const user = {
+		id,
+		providerid,
+		name,
+		email,
+		image
+	};
+	try {
+		await db.hset(`blog:user:${provider}:${providerid}`, user);
+	} catch {
+		throw new Error('KV store write error');
+	}
+	return user;
+}
+
 export async function getUserFromProviderId(provider, providerid) {
 	const user = await db.hgetall(`blog:user:${provider}:${providerid}`);
 	if (Object.keys(user).length === 0) {

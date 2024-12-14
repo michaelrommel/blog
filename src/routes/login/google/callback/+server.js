@@ -1,6 +1,10 @@
-import { google } from '$lib/server/oauth';
+import { google, deleteOauthCookies } from '$lib/server/oauth';
 import { ObjectParser } from '@pilcrowjs/object-parser';
-import { createUser, getUserFromProviderId } from '$lib/server/user';
+import {
+	createUser,
+	updateUser,
+	getUserFromProviderId
+} from '$lib/server/user';
 import {
 	createSession,
 	generateSessionToken,
@@ -18,13 +22,10 @@ export async function GET(event) {
 		storedState === null ||
 		codeVerifier === null ||
 		code === null ||
-		state === null
+		state === null ||
+		storedState !== state
 	) {
-		return new Response('Please restart the process.', {
-			status: 400
-		});
-	}
-	if (storedState !== state) {
+		deleteOauthCookies(event, 'google');
 		return new Response('Please restart the process.', {
 			status: 400
 		});
@@ -34,6 +35,7 @@ export async function GET(event) {
 	try {
 		tokens = await google.validateAuthorizationCode(code, codeVerifier);
 	} catch (e) {
+		deleteOauthCookies(event, 'google');
 		console.log(e);
 		return new Response('Please restart the process.', {
 			status: 400
@@ -43,28 +45,24 @@ export async function GET(event) {
 	const claims = decodeIdToken(tokens.idToken());
 	const claimsParser = new ObjectParser(claims);
 
-	const googleId = claimsParser.getString('sub');
+	const providerId = claimsParser.getString('sub');
 	const name = claimsParser.getString('name');
 	const image = claimsParser.getString('picture');
 	const email = claimsParser.getString('email');
 
-	const existingUser = await getUserFromProviderId('google', googleId);
-	if (existingUser !== null) {
-		const sessionToken = generateSessionToken();
-		const session = createSession(sessionToken, existingUser.id);
-		setSessionTokenCookie(event, sessionToken, session.expiresAt);
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: '/'
-			}
-		});
+	let user = null;
+	user = await getUserFromProviderId('google', providerId);
+	if (user !== null) {
+		user = await updateUser(user.id, 'google', providerId, email, name, image);
+	} else {
+		user = await createUser('google', providerId, email, name, image);
 	}
 
-	const user = await createUser('google', googleId, email, name, image);
 	const sessionToken = generateSessionToken();
 	const session = createSession(sessionToken, user.id);
 	setSessionTokenCookie(event, sessionToken, session.expiresAt);
+	deleteOauthCookies(event, 'google');
+
 	return new Response(null, {
 		status: 302,
 		headers: {

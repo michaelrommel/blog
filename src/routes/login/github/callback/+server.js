@@ -1,5 +1,9 @@
-import { github } from '$lib/server/oauth';
-import { createUser, getUserFromProviderId } from '$lib/server/user';
+import { github, deleteOauthCookies } from '$lib/server/oauth';
+import {
+	createUser,
+	updateUser,
+	getUserFromProviderId
+} from '$lib/server/user';
 import {
 	createSession,
 	generateSessionToken,
@@ -11,12 +15,13 @@ export async function GET(event) {
 	const code = event.url.searchParams.get('code');
 	const state = event.url.searchParams.get('state');
 
-	if (storedState === null || code === null || state === null) {
-		return new Response('Please restart the process.', {
-			status: 400
-		});
-	}
-	if (storedState !== state) {
+	if (
+		storedState === null ||
+		code === null ||
+		state === null ||
+		storedState !== state
+	) {
+		deleteOauthCookies(event, 'github');
 		return new Response('Please restart the process.', {
 			status: 400
 		});
@@ -25,7 +30,9 @@ export async function GET(event) {
 	let tokens;
 	try {
 		tokens = await github.validateAuthorizationCode(code);
-	} catch {
+	} catch (e) {
+		deleteOauthCookies(event, 'github');
+		console.log(e);
 		return new Response('Please restart the process.', {
 			status: 400
 		});
@@ -38,7 +45,6 @@ export async function GET(event) {
 		}
 	});
 	const ghuser = await response.json();
-	// console.log(`Github user is ${JSON.stringify(ghuser, null, 4)}`);
 
 	response = await fetch('https://api.github.com/user/emails', {
 		headers: {
@@ -46,30 +52,24 @@ export async function GET(event) {
 		}
 	});
 	const ghemails = await response.json();
-	// console.log(`Github user emails is ${JSON.stringify(ghemails, null, 4)}`);
 
-	const githubId = ghuser.id;
+	const providerId = ghuser.id;
 	const email = ghemails.filter((e) => e.primary === true)[0]['email'];
 	const name = ghuser.name;
 	const image = ghuser.avatar_url;
 
-	const existingUser = await getUserFromProviderId('github', githubId);
-	if (existingUser !== null) {
-		const sessionToken = generateSessionToken();
-		const session = createSession(sessionToken, existingUser.id);
-		setSessionTokenCookie(event, sessionToken, session.expiresAt);
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: '/'
-			}
-		});
+	let user = null;
+	user = await getUserFromProviderId('github', providerId);
+	if (user !== null) {
+		user = await updateUser(user.id, 'github', providerId, email, name, image);
+	} else {
+		user = await createUser('github', providerId, email, name, image);
 	}
 
-	const user = await createUser('github', githubId, email, name, image);
 	const sessionToken = generateSessionToken();
 	const session = createSession(sessionToken, user.id);
 	setSessionTokenCookie(event, sessionToken, session.expiresAt);
+	deleteOauthCookies(event, 'github');
 
 	return new Response(null, {
 		status: 302,
