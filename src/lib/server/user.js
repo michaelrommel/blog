@@ -7,6 +7,7 @@ export async function createUser(provider, providerid, email, name, image) {
 	const id = nanoid();
 	const user = {
 		id,
+		provider,
 		providerid,
 		name,
 		email,
@@ -24,6 +25,7 @@ export async function createUser(provider, providerid, email, name, image) {
 export async function updateUser(id, provider, providerid, email, name, image) {
 	const user = {
 		id,
+		provider,
 		providerid,
 		name,
 		email,

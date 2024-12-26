@@ -208,9 +208,15 @@
 										<Avatar.Root>
 											<Avatar.Image
 												src={data?.user?.image}
-												title={data?.user?.name}
+												title={(data?.user?.provider
+													? data?.user?.provider + ":"
+													: "") + data?.user?.name}
 											/>
-											<Avatar.Fallback>
+											<Avatar.Fallback
+												title={(data?.user?.provider
+													? data?.user?.provider + ":"
+													: "") + data?.user?.name}
+											>
 												<User />
 											</Avatar.Fallback>
 										</Avatar.Root>
@@ -277,9 +283,15 @@
 						<Avatar.Root>
 							<Avatar.Image
 								src={data?.user?.image}
-								title={data?.user?.name}
+								title={(data?.user?.provider
+									? data?.user?.provider + ":"
+									: "") + data?.user?.name}
 							/>
-							<Avatar.Fallback>
+							<Avatar.Fallback
+								title={(data?.user?.provider
+									? data?.user?.provider + ":"
+									: "") + data?.user?.name}
+							>
 								<User />
 							</Avatar.Fallback>
 						</Avatar.Root>
