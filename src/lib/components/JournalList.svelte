@@ -9,7 +9,6 @@
 			entries[entry.articleYear] = entries[entry.articleYear] ?? [];
 			entries[entry.articleYear].push(entry);
 		}
-		console.log(entries);
 		return entries;
 	}
 
@@ -46,6 +45,10 @@
 					criteria.
 				</div>
 			{/each}
+		</div>
+	{:else}
+		<div class="m-1 p-1 text-center">
+			There are no journal entries that match your selection criteria.
 		</div>
 	{/each}
 </div>
