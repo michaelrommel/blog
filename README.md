@@ -1,3 +1,3 @@
 ## Personal Home Page
 
-This will be deployed eventually to https://michaelrommel.com
+This has been deployed at https://michaelrommel.com
