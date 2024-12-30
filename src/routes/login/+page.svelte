@@ -3,7 +3,6 @@
 	import Google from "virtual:icons/cib/google";
 	// import Instagram from "virtual:icons/cib/instagram";
 	import Spotify from "virtual:icons/cib/spotify";
-	let { data } = $props();
 </script>
 
 <article id="articlecontainer" class="col-span-12 md:mx-auto">

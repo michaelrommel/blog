@@ -31,7 +31,8 @@ const config = {
 		},
 		extend: {
 			screens: {
-				xs: '375px'
+				xs: '375px',
+				xl: '1260px'
 			},
 			typography: {
 				gruvbox: {

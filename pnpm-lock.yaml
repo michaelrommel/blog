@@ -132,6 +132,9 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
     devDependencies:
+      '@iconify-json/bi':
+        specifier: ^1.2.2
+        version: 1.2.2
       '@poppanator/sveltekit-svg':
         specifier: 5.0.0
         version: 5.0.0(rollup@4.28.1)(svelte@5.16.0)(svgo@3.3.2)(vite@6.0.6(@types/node@22.9.0)(jiti@1.21.6)(yaml@2.6.1))
@@ -457,6 +460,9 @@ packages:
   '@humanwhocodes/retry@0.4.1':
     resolution: {integrity: sha512-c7hNEllBlenFTHBky65mhq8WD2kbN9Q6gk0bTk8lSBvc554jpXSkST1iePudpt7+A/AQvuHs9EMqjHDXMY1lrA==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/bi@1.2.2':
+    resolution: {integrity: sha512-f/Wm+RTdBosw3cI/gmg5uSFmdumkw2thUk4qVFS56jTerdal6wqWnWAbRTSJJ/vhH9/y16pRKnvE8F2+M23dzw==}
 
   '@iconify-json/cib@1.2.2':
     resolution: {integrity: sha512-WevYDdIm0x3I3YZyoIgdSu4uurbzs2b2gsMLUj8/EMKMoPIx6GF+t0VcaCgFY4a0rIdUY18MYP6m9XgcOhOtFg==}
@@ -2977,6 +2983,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.1': {}
+
+  '@iconify-json/bi@1.2.2':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/cib@1.2.2':
     dependencies:

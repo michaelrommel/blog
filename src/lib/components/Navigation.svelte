@@ -9,6 +9,7 @@
 	import ArrowUp from "lucide-svelte/icons/a-arrow-up";
 	import User from "lucide-svelte/icons/user-round";
 	import Logout from "lucide-svelte/icons/log-out";
+	import Journal from "virtual:icons/bi/journal-bookmark-fill";
 
 	import { toggleMode } from "mode-watcher";
 
@@ -21,6 +22,11 @@
 	import { goto } from "$app/navigation";
 	import { enhance } from "$app/forms";
 
+	let { data } = $props();
+	// console.log(
+	// 	`in Navigation.svelte data is ${JSON.stringify(data, null, 4)}`,
+	// );
+
 	const navigation = [
 		{
 			href: "/create",
@@ -31,11 +37,6 @@
 			name: "Consume",
 		},
 	];
-
-	let { data } = $props();
-	// console.log(
-	// 	`in Navigation.svelte data is ${JSON.stringify(data, null, 4)}`,
-	// );
 
 	async function gotoLogin() {
 		popoverOpen = false;
@@ -50,17 +51,22 @@
 	}
 
 	const fontBaseSizes = [
-		{ value: "fb-xs", label: "xs" },
-		{ value: "fb-sm", label: "sm" },
-		{ value: "fb-base", label: "m" },
-		{ value: "fb-lg", label: "lg" },
-		{ value: "fb-xl", label: "xl" },
-		{ value: "fb-2xl", label: "xxl" },
+		{ value: "fb-xs", label: "xs", menu: "xs:hidden", buttons: "xs:flex" },
+		{ value: "fb-sm", label: "sm", menu: "sm:hidden", buttons: "sm:flex" },
+		{ value: "fb-base", label: "m", menu: "md:hidden", buttons: "md:flex" },
+		{ value: "fb-lg", label: "lg", menu: "lg:hidden", buttons: "lg:flex" },
+		{ value: "fb-xl", label: "xl", menu: "lg:hidden", buttons: "lg:flex" },
+		{
+			value: "fb-2xl",
+			label: "xxl",
+			menu: "xl:hidden",
+			buttons: "xl:flex",
+		},
 	];
 
 	let selectedFontBaseSize = $state(fontBaseSizes[2]);
 
-	function changeSize(classname) {
+	function changeSize(classname, index) {
 		let allFontBaseSizeValues = fontBaseSizes.map((s) => s.value);
 		let currentClasses = document.documentElement.className
 			.split(" ")
@@ -69,9 +75,10 @@
 			});
 		currentClasses.push(classname);
 		document.documentElement.className = currentClasses.join(" ");
-		selectedFontBaseSize = fontBaseSizes.filter(
-			(s) => s.value == classname,
-		)[0];
+		selectedFontBaseSize = fontBaseSizes[index];
+		// selectedFontBaseSize = fontBaseSizes.filter(
+		// 	(s) => s.value == classname,
+		// )[0];
 	}
 
 	function stepFontSize(offset) {
@@ -84,7 +91,7 @@
 			newIndex = fontBaseSizes.length - 1;
 		const newSize = values[newIndex];
 		console.log(`Changing to: ${newSize}`);
-		changeSize(newSize);
+		changeSize(newSize, newIndex);
 	}
 
 	function decreaseFontSize() {
@@ -143,7 +150,7 @@
 					class="flex flex-wrap items-center text-gruvlfg dark:text-gruvdfg font-bold"
 				>
 					{#each navigation as link}
-						<div class="ml-1 p-1 md:pl-4 lg:pl-8 navigation">
+						<div class="ml-1 md:p-1 md:pl-4 lg:pl-4 navigation">
 							<a
 								href={link.href}
 								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
@@ -152,10 +159,20 @@
 							</a>
 						</div>
 					{/each}
+					{#if data?.user?.id}
+						<div class="ml-1 md:p-1 md:pl-4 lg:pl-4 navigation">
+							<a
+								href="/journal"
+								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
+							>
+								<Journal class="inline mb-1" />
+							</a>
+						</div>
+					{/if}
 				</div>
 			</div>
 			<div class="py-2 xs:py-4 flex items-center justify-end">
-				<div class="md:hidden" id="menu">
+				<div class={selectedFontBaseSize.menu} id="menu">
 					<Popover.Root bind:open={popoverOpen}>
 						<Popover.Trigger
 							class="ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
@@ -249,7 +266,7 @@
 						</Popover.Content>
 					</Popover.Root>
 				</div>
-				<div class="hidden md:flex items-center">
+				<div class="hidden {selectedFontBaseSize.buttons} items-center">
 					<Button
 						onclick={toggleMode}
 						variant="outline"
