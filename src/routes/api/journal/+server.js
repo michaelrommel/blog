@@ -14,8 +14,8 @@ function remarkGetFm() {
 	};
 }
 
-export async function GET({ url }) {
-	// console.log(url);
+export async function GET({ url, locals }) {
+	// console.log('Locals is', locals);
 	const year = url.searchParams.get('year') ?? null;
 	const slug = url.searchParams.get('slug') ?? null;
 	const limit = Number(url.searchParams.get('limit') ?? Infinity);
@@ -62,7 +62,13 @@ export async function GET({ url }) {
 	const articles = await Promise.all(articlePromises);
 	// console.log('Articles: ', articles);
 	const publishedArticles = articles
-		.filter((article) => article.published)
+		.filter((article) => {
+			let res = article.published;
+			if (article.tags.includes('private')) {
+				res = res && locals.user.isfriend;
+			}
+			return res;
+		})
 		.slice(0, limit);
 
 	publishedArticles.sort((a, b) =>

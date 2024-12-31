@@ -44,7 +44,7 @@
 			{cardDate}
 		</p>
 		<p
-			class="text-gruvlemphblue dark:text-gruvblue font-bold text-sm xs:text-base md:text-xl mb-1"
+			class="text-gruvlemphblue dark:text-gruvblue font-semibold text-sm xs:text-base md:text-xl mb-1"
 		>
 			{cardData.structuredData?.headline
 				? cardData.structuredData?.headline
@@ -60,15 +60,29 @@
 					>
 						{tag}
 					</span>
+				{:else if tag === "private"}
+					<span
+						class="inline-flex mb-1 mr-2 items-center bg-gruvlemphred dark:bg-gruvlemphred rounded-full px-3 py-0 font-semibold text-gruvdfg dark:text-gruvdfg"
+					>
+						<svg
+							class="fill-current w-3 h-3 mr-1"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							><path
+								d="M12 16q2.55-2.3 3.275-3.238T16 10.9q0-.9-.65-1.55T13.8 8.7q-.525 0-1.013.212T12 9.5q-.3-.375-.775-.587T10.2 8.7q-.9 0-1.55.65T8 10.9q0 .475.125.875t.55.938t1.212 1.312T12 16m0 6q-3.475-.875-5.738-3.988T4 11.1V5l8-3l8 3v6.1q0 3.8-2.262 6.913T12 22"
+							/>
+						</svg>
+						{tag}
+					</span>
 				{:else}
 					<span
-						class="inline-flex mb-1 mr-2 items-center border border-gruvlemphpurple dark:border-gruvpurple rounded-full px-3 py-0 font-semibold"
+						class="inline-flex mb-1 mr-2 items-center border border-gruvlemphpurple dark:border-gruvpurple rounded-full px-2 py-0 font-semibold"
 					>
 						{#if tag === "locked"}
 							<svg
 								class="fill-current w-3 h-3 mr-1"
 								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
+								viewBox="0 0 24 24"
 							>
 								<path
 									d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z"

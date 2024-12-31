@@ -69,3 +69,7 @@ export async function getUserFromId(id) {
 	const user = await getUserFromProviderId(provider, providerid);
 	return user;
 }
+
+export async function userIsFriend(id) {
+	return (await db.sismember('blog:friends', id)) === 1;
+}

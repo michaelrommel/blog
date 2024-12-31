@@ -59,7 +59,7 @@
 	>
 		<div class="mb-3">
 			<div
-				class="text-gruvlemphblue dark:text-gruvblue font-bold text-sm xs:text-base md:text-xl mb-2"
+				class="text-gruvlemphblue dark:text-gruvblue font-semibold text-sm xs:text-base md:text-xl mb-2"
 			>
 				{cardData.structuredData?.headline
 					? cardData.structuredData?.headline
@@ -73,7 +73,7 @@
 					: cardData.description}
 			</p>
 			<div
-				class="text-xs text-gruvlpurple dark:text-gruvpurple flex flex-wrap items-center"
+				class="text-xs text-gruvlemphpurple dark:text-gruvdemphpurple flex flex-wrap items-center"
 			>
 				{#each cardData.tags as tag}
 					{#if tag === "new"}
@@ -84,13 +84,13 @@
 						</span>
 					{:else}
 						<span
-							class="inline-flex mb-2 mr-2 items-center border border-gruvlemphpurple dark:border-gruvlemphpurple rounded-full px-3 py-0 font-semibold text-gruvlemphpurple dark:gruvpurple"
+							class="inline-flex mb-2 mr-2 items-center border border-gruvlemphpurple dark:border-gruvpurple rounded-full px-3 py-0 font-semibold"
 						>
 							{#if tag === "locked"}
 								<svg
 									class="fill-current w-3 h-3 mr-1"
 									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 20 20"
+									viewBox="0 0 24 24"
 								>
 									<path
 										d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z"
