@@ -35,6 +35,7 @@ export async function updateUser(id, provider, providerid, email, name, image) {
 	};
 	try {
 		await db.hset(`blog:user:${provider}:${providerid}`, user);
+		user.isfriend = (await db.sismember('blog:friends', id)) === 1;
 		userCache[`blog:user:${provider}:${providerid}`] = user;
 	} catch {
 		throw new Error('KV store write error');
