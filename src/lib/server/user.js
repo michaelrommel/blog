@@ -42,13 +42,14 @@ export async function updateUser(id, provider, providerid, email, name, image) {
 	return user;
 }
 
-export async function getUserFromProviderId(provider, providerid) {
+export async function getUserFromProviderId(provider, providerid, id) {
 	let user = userCache[`blog:user:${provider}:${providerid}`] ?? null;
 	if (!user) {
 		user = await db.hgetall(`blog:user:${provider}:${providerid}`);
 		if (Object.keys(user).length === 0) {
 			return null;
 		}
+		user.isfriend = (await db.sismember('blog:friends', id)) === 1;
 		userCache[`blog:user:${provider}:${providerid}`] = user;
 		// } else {
 		// 	console.log('Found user in cache');
@@ -66,10 +67,6 @@ export async function getUserFromId(id) {
 		userCache[`blog:user:${id}`] = `${fullProviderId}`;
 	}
 	const [provider, providerid] = fullProviderId.split(':');
-	const user = await getUserFromProviderId(provider, providerid);
+	const user = await getUserFromProviderId(provider, providerid, id);
 	return user;
-}
-
-export async function userIsFriend(id) {
-	return (await db.sismember('blog:friends', id)) === 1;
 }

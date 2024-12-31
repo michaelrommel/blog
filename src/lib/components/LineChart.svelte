@@ -23,7 +23,7 @@
 		datasets: [],
 	};
 
-	console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
+	// console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
 
 	allseries.map((seriesname, i) => {
 		const dataset = {

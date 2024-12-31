@@ -84,13 +84,13 @@
 	function stepFontSize(offset) {
 		const values = fontBaseSizes.map((s) => s.value);
 		const index = values.indexOf(selectedFontBaseSize.value);
-		console.log(`Current Fontsize Index: ${index}`);
+		// console.log(`Current Fontsize Index: ${index}`);
 		let newIndex = index + offset;
 		if (newIndex < 0) newIndex = 0;
 		if (newIndex > fontBaseSizes.length - 1)
 			newIndex = fontBaseSizes.length - 1;
 		const newSize = values[newIndex];
-		console.log(`Changing to: ${newSize}`);
+		// console.log(`Changing to: ${newSize}`);
 		changeSize(newSize, newIndex);
 	}
 

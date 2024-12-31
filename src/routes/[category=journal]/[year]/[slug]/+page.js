@@ -1,12 +1,12 @@
 import { error } from '@sveltejs/kit';
 
 export async function load({ params, fetch }) {
-	console.log(params);
+	// console.log(params);
 	let articles = null;
 	articles = await fetch(
 		`/api/journalentry?year=${params.year}&slug=${params.slug}`
 	).then((res) => res.json());
-	console.log(articles);
+	// console.log(articles);
 
 	if (!articles || articles.length === 0) {
 		error(404, {

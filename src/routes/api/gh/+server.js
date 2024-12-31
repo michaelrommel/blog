@@ -20,11 +20,11 @@ async function verifySignature(secret, header, payload) {
 		['sign', 'verify']
 	);
 
-	console.log(key);
+	// console.log(key);
 
 	let sigBytes = hexToBytes(sigHex);
 
-	console.log(sigBytes);
+	// console.log(sigBytes);
 
 	let dataBytes = encoder.encode(payload);
 	let equal = await crypto.subtle.verify(
@@ -34,7 +34,7 @@ async function verifySignature(secret, header, payload) {
 		dataBytes
 	);
 
-	console.log(equal);
+	// console.log(equal);
 
 	return equal;
 }

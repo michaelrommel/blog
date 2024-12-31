@@ -69,7 +69,7 @@
 		chartData.datasets.push(dataset);
 	});
 
-	console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
+	// console.log(`chartData: ${JSON.stringify(chartData, null, 4)}`);
 
 	let chartCanvas;
 
