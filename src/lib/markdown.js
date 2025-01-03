@@ -12,13 +12,13 @@ import remarkEmoji from 'remark-emo';
 import remarkGfm from 'remark-gfm';
 import remarkSmartypants from 'remark-smartypants';
 import remarkMath from 'remark-math';
-import remarkToc from 'remark-toc';
+// import remarkToc from 'remark-toc';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import remarkSupersub from 'remark-supersub';
 import rehypeSlug from 'rehype-slug';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeStringify from 'rehype-stringify';
-import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+// import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeToc from '@jsdevtools/rehype-toc';
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
 import { createHighlighterCore } from 'shiki/core';
@@ -37,33 +37,34 @@ function remarkGetFm() {
 	};
 }
 
-function rehypeWrapMain() {
-	// this function inserts a new 'main' element directly underneath 'root'
-	// so that the toc generation can add the 'nav' in a sepoarate element
-	return function (tree) {
-		let newtree = {};
-		visit(tree, (node) => {
-			if (node.type === 'root') {
-				newtree = u(
-					'element',
-					h('main', {
-						class:
-							'markdown prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert'
-					}),
-					[...node.children]
-				);
-				node.children = [newtree];
-			}
-		});
-	};
-}
+// function rehypeWrapMain() {
+// 	// this function inserts a new 'main' element directly underneath 'root'
+// 	// so that the toc generation can add the 'nav' in a sepoarate element
+// 	return function (tree) {
+// 		let newtree = {};
+// 		visit(tree, (node) => {
+// 			if (node.type === 'root') {
+// 				newtree = u(
+// 					'element',
+// 					h('main', {
+// 						class:
+// 							'markdown prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert'
+// 					}),
+// 					[...node.children]
+// 				);
+// 				node.children = [newtree];
+// 			}
+// 		});
+// 	};
+// }
 
 function rehypePrependToc(tree) {
 	// this function inserts a new heading element before the gathered ordered list
-	let newtree = {};
+	// and also checks for an otherwise empty toc
+	let empty = false;
 	visit(tree, (node) => {
 		if (node.tagName === 'nav') {
-			newtree = u(
+			const newtree = u(
 				'element',
 				h('#tocwrapper.tocwrapper', [
 					h(
@@ -77,8 +78,45 @@ function rehypePrependToc(tree) {
 				])
 			);
 			node.children = [newtree];
+		} else if (node.tagName === 'ol') {
+			// we determine if the list is empty here
+			if (node.children.length === 0) empty = true;
 		}
 	});
+	if (empty) {
+		tree = false;
+	}
+	return tree;
+}
+
+function rehypeSplitTree(tree) {
+	// this function splits the tree at the sveltecomponents
+	const trees = { main: [], nav: [] };
+	let newtree = u('root', []);
+	for (const node of tree.children) {
+		// visit(tree, (node) => {
+		// if (node.type === 'root') {
+		// 	newtree = u('root', []);
+		if (node.tagName === 'sveltecomponent') {
+			// push current tree
+			trees.main.push(newtree);
+			node.type = 'svelte';
+			trees.main.push(node);
+			newtree = u('root', []);
+		} else if (node.tagName === 'nav') {
+			// push current tree
+			trees.main.push(newtree);
+			newtree = u('root', [node]);
+			trees.nav.push(newtree);
+			newtree = u('root', []);
+		} else {
+			newtree.children.push(node);
+		}
+	}
+	if (newtree.children.length > 0) {
+		trees.main.push(newtree);
+	}
+	return trees;
 }
 
 // This plugin is an example to turn `::note` into divs, passing arbitrary
@@ -131,23 +169,24 @@ function changeTheme(theme) {
 	}
 }
 
-function remarkDebug() {
-	return (tree) => {
-		visit(tree, (node) => {
-			console.log(node);
-		});
-	};
-}
+// function remarkDebug() {
+// 	return (tree) => {
+// 		visit(tree, (node) => {
+// 			console.log(node);
+// 		});
+// 	};
+// }
 
-function rehypeDebug() {
-	return (tree) => {
-		visit(tree, (node) => {
-			console.log(node);
-		});
-	};
-}
+// function rehypeDebug() {
+// 	return (tree) => {
+// 		console.log(tree);
+// 		visit(tree, (node) => {
+// 			console.log(node);
+// 		});
+// 	};
+// }
 
-async function compile(article) {
+async function preprocess(article) {
 	const highlighter = await createHighlighterCore({
 		langs: [
 			import('shiki/langs/js.mjs'),
@@ -167,7 +206,7 @@ async function compile(article) {
 
 	changeTheme(githubTheme);
 
-	const vfile = await unified()
+	const processor = await unified()
 		.use(remarkParse)
 		.use(remarkFrontmatter)
 		.use(remarkGetFm)
@@ -179,6 +218,7 @@ async function compile(article) {
 		// 	tight: true,
 		// 	prefix: 'user-content-'
 		// })
+		// .use(remarkDebug)
 		.use(remarkEmoji, { emoticon: true })
 		.use(remarkGithub, {
 			repository: 'https://github.com/michaelrommel/blog'
@@ -228,13 +268,7 @@ async function compile(article) {
 		// 	},
 		// 	tagNames: [...defaultSchema.tagNames, 'sveltecomponent']
 		// })
-		.use(rehypeWrapMain)
-		.use(rehypeToc, {
-			headings: ['h2'],
-			position: 'afterend',
-			customizeTOC: rehypePrependToc
-		})
-		.use(rehypeDebug)
+		// .use(rehypeWrapMain)
 		.use(rehypeShikiFromHighlighter, highlighter, {
 			themes: {
 				dark: gruvboxTheme,
@@ -259,15 +293,41 @@ async function compile(article) {
 			transformers: [transformerNotationDiff(), transformerNotationHighlight()]
 		})
 		.use(rehypeMathjax)
-		// .use(rehypeDebug)
-		.use(rehypeStringify)
-		.process(article);
+		.use(rehypeToc, {
+			headings: ['h2'],
+			position: 'beforeend',
+			// cssClasses: {
+			// 	toc: 'prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert'
+			// },
+			customizeTOC: rehypePrependToc
+		})
+		.use(rehypeStringify);
+	// .use(rehypeDebug)
+	// .process(article);
+
+	// parse articel into tree
+	const tree1 = await processor.parse(article);
+	// run all transformers on the tree
+	const tree2 = await processor.run(tree1);
+	// split the tree into different ones, not reallocating the tree objects
+	const trees = await rehypeSplitTree(tree2);
+	// const html = await processor.stringify(trees[0]);
 	highlighter.dispose();
-	// console.log(vfile);
-	return vfile;
+	return trees;
 }
 
-export async function parseMarkdown(data) {
-	const parsedArticle = await compile(data);
-	return parsedArticle.value;
+export async function preProcessMarkDown(data) {
+	const trees = await preprocess(data);
+	return trees;
 }
+
+export async function processTree(tree) {
+	const html = unified().use(rehypeStringify).stringify(tree);
+	return html;
+}
+
+// export async function parseMarkdown(data) {
+// 	const parsedArticle = await compile(data);
+// 	// return parsedArticle.value;
+// 	return parsedArticle;
+// }

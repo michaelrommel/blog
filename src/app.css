@@ -329,13 +329,46 @@
 		nav.toc {
 			display: block;
 			margin-left: 2rem;
-			flex: 0 1 20rem;
+			flex: 0 1 15rem;
 			font-size: 0.9rem;
+			line-height: 1.4;
 		}
 
 		nav.toc>#tocwrapper {
 			position: sticky;
 			top: 7rem;
+		}
+
+		nav.toc>#tocwrapper>h2 {
+			font-size: 1.25rem;
+		}
+
+		nav.toc li {
+			border-left: 2px solid;
+			padding-top: 0.25rem;
+			padding-left: 0.7rem;
+			border-color: theme("colors.gruvlbg2");
+			color: theme("colors.gruvlfg3");
+			font-variation-settings:
+				'wght' 400,
+				'wdth' 100;
+		}
+
+		.dark nav.toc li {
+			border-color: theme("colors.gruvdbg2");
+		}
+
+		nav.toc li.reading {
+			border-color: theme("colors.gruvlfg0");
+			color: theme("colors.gruvlfg0");
+			font-variation-settings:
+				'wght' 500,
+				'wdth' 100;
+		}
+
+		.dark nav.toc li.reading {
+			color: theme("colors.gruvdfg0");
+			border-color: theme("colors.gruvdfg0");
 		}
 	}
 

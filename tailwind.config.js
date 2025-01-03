@@ -30,7 +30,7 @@ const config = {
 			md: '48rem',
 			lg: '65rem',
 			xl: '100rem',
-			'2xl': '1536px'
+			'2xl': '125rem'
 		},
 		fontFamily: {
 			serif: ['RobotoSerif', ...defaultTheme.fontFamily.serif],
