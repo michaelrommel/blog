@@ -35,7 +35,7 @@
 </script>
 
 <div
-	class="m-1 flex flex-col max-w-[40ch] min-w-[40ch] md:max-w-[60ch] md:min-w-[60ch] lg:max-w-[75ch] lg:min-w-[75ch]"
+	class="m-1 flex flex-col min-w-[30ch] md:max-w-[60ch] md:min-w-[60ch] lg:max-w-[75ch] lg:min-w-[75ch]"
 >
 	<div
 		class="px-2 min-h-max lg:h-auto leading-normal bg-gruvlbg dark:bg-gruvdbg border-gruvlfg dark:border-gruvdfg border rounded"

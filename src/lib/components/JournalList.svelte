@@ -29,7 +29,7 @@
 				<hr class="border-gruvblue" />
 			</div>
 		</div>
-		<div class="flex flex-wrap justify-center items-start">
+		<div class="flex flex-wrap justify-center items-center">
 			{#each segmentedData[year] as cardData}
 				<div class="m-1 p-1">
 					<a
