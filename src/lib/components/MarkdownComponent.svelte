@@ -10,10 +10,10 @@
 	let { data } = $props();
 
 	const componentRegex = RegExp(
-		"(<SvelteComponent.*?></SvelteComponent>)",
+		"(<sveltecomponent.*?></sveltecomponent>)",
 		"g",
 	);
-	const propsRegex = RegExp("<SvelteComponent(.*?)></SvelteComponent>", "g");
+	const propsRegex = RegExp("<sveltecomponent(.*?)></sveltecomponent>", "g");
 	// componentname="StackedBarChart" stackedData="data.perCountry" xSelector="day"
 	const valueRegex = RegExp(
 		"(?<propname>[^ ]+?) ?= ?(?<propvalue>[^ ]+?)(?: |$)",

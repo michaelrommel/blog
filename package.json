@@ -37,6 +37,7 @@
 	"dependencies": {
 		"@auth/sveltekit": "^1.7.4",
 		"@iconify-json/cib": "^1.2.2",
+		"@jsdevtools/rehype-toc": "^3.0.2",
 		"@kurkle/color": "^0.3.4",
 		"@oslojs/encoding": "^1.1.0",
 		"@pilcrowjs/object-parser": "^0.0.4",
@@ -73,6 +74,7 @@
 		"three-stl-loader": "^1.0.6",
 		"to-vfile": "^8.0.0",
 		"unified": "^11.0.5",
+		"unist-builder": "^4.0.0",
 		"unist-util-visit": "^5.0.0",
 		"unplugin-icons": "^0.22.0",
 		"vfile-matter": "^5.0.0"

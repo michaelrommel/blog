@@ -21,8 +21,8 @@
 <ModeWatcher />
 <Navigation data={{ user: data.user }} />
 
-<div class="overflow-auto m-3">
-	<div class="grid grid-cols-12 gap-4">
+<div class="m-3">
+	<div class="">
 		{@render children?.()}
 	</div>
 </div>

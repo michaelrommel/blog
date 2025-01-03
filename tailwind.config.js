@@ -24,20 +24,24 @@ const config = {
 		// 	center: true,
 		// 	padding: '2rem'
 		// },
+		screens: {
+			xs: '25rem',
+			sm: '35rem',
+			md: '48rem',
+			lg: '65rem',
+			xl: '100rem',
+			'2xl': '1536px'
+		},
 		fontFamily: {
 			serif: ['RobotoSerif', ...defaultTheme.fontFamily.serif],
 			sans: [...defaultTheme.fontFamily.sans],
 			mono: ['LuxiMono', 'RobotoMono', ...defaultTheme.fontFamily.mono]
 		},
 		extend: {
-			screens: {
-				xs: '375px',
-				xl: '1260px'
-			},
 			typography: {
 				gruvbox: {
 					css: {
-						maxWidth: '75ch',
+						maxWidth: 'min(75ch, 100%)',
 						code: {
 							fontWeight: '500'
 						},

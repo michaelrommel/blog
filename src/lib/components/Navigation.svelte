@@ -128,7 +128,7 @@
 <!-- class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full" -->
 
 <header
-	class="sticky top-0 z-10 bg-gruvlbg/90 dark:bg-gruvdbg/90 backdrop-blur-sm overflow-auto"
+	class="sticky top-0 z-10 bg-gruvlbg/90 dark:bg-gruvdbg/90 backdrop-blur-sm"
 >
 	<nav class="mx-2 md:mx-4 lg:mx-8">
 		<div

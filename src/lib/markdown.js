@@ -1,4 +1,5 @@
 import { unified } from 'unified';
+import { u } from 'unist-builder';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -18,6 +19,7 @@ import rehypeSlug from 'rehype-slug';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeStringify from 'rehype-stringify';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import rehypeToc from '@jsdevtools/rehype-toc';
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
 import { createHighlighterCore } from 'shiki/core';
 import {
@@ -35,11 +37,55 @@ function remarkGetFm() {
 	};
 }
 
+function rehypeWrapMain() {
+	// this function inserts a new 'main' element directly underneath 'root'
+	// so that the toc generation can add the 'nav' in a sepoarate element
+	return function (tree) {
+		let newtree = {};
+		visit(tree, (node) => {
+			if (node.type === 'root') {
+				newtree = u(
+					'element',
+					h('main', {
+						class:
+							'markdown prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert'
+					}),
+					[...node.children]
+				);
+				node.children = [newtree];
+			}
+		});
+	};
+}
+
+function rehypePrependToc(tree) {
+	// this function inserts a new heading element before the gathered ordered list
+	let newtree = {};
+	visit(tree, (node) => {
+		if (node.tagName === 'nav') {
+			newtree = u(
+				'element',
+				h('#tocwrapper.tocwrapper', [
+					h(
+						'h2',
+						{
+							class: 'mb-2 text-gruvpurple dark:text-gruvyellow'
+						},
+						['On this page']
+					),
+					...node.children
+				])
+			);
+			node.children = [newtree];
+		}
+	});
+}
+
 // This plugin is an example to turn `::note` into divs, passing arbitrary
 // attributes.
 function remarkDirectiveHandler() {
 	// console.log('In myRemarkPlugin');
-	const directiveNames = ['note', 'svelte', 'comment', 'img', 'div'];
+	const directiveNames = ['note', 'svelte', 'comment', 'img', 'div', 'toc'];
 	return (tree) => {
 		visit(tree, (node) => {
 			// console.log(node);
@@ -54,15 +100,16 @@ function remarkDirectiveHandler() {
 				if (!directiveNames.includes(node.name)) return;
 
 				const data = node.data || (node.data = {});
-				let attributes = node.attributes || {};
+				const attributes = node.attributes || {};
 				let tagName = node.type === 'textDirective' ? 'span' : 'div';
 
 				// special treatment for svelte components
 				if (node.name === 'svelte') {
-					tagName = 'SvelteComponent';
+					tagName = 'sveltecomponent';
 				}
-				data.hName = tagName;
-				data.hProperties = h(tagName, attributes).properties;
+				const hast = h(tagName, attributes);
+				data.hName = hast.tagName;
+				data.hProperties = hast.properties;
 			}
 		});
 	};
@@ -84,21 +131,21 @@ function changeTheme(theme) {
 	}
 }
 
-// function remarkDebug() {
-// 	return (tree) => {
-// 		visit(tree, (node) => {
-// 			console.log(node);
-// 		});
-// 	};
-// }
+function remarkDebug() {
+	return (tree) => {
+		visit(tree, (node) => {
+			console.log(node);
+		});
+	};
+}
 
-// function rehypeDebug() {
-// 	return (tree) => {
-// 		visit(tree, (node) => {
-// 			console.log(node);
-// 		});
-// 	};
-// }
+function rehypeDebug() {
+	return (tree) => {
+		visit(tree, (node) => {
+			console.log(node);
+		});
+	};
+}
 
 async function compile(article) {
 	const highlighter = await createHighlighterCore({
@@ -126,12 +173,12 @@ async function compile(article) {
 		.use(remarkGetFm)
 		.use(remarkDirective)
 		.use(remarkDirectiveHandler)
-		.use(remarkToc, {
-			heading: '(table[ -]of[ -])?contents?|toc|Inhalt',
-			maxDepth: 2,
-			tight: true,
-			prefix: 'user-content-'
-		})
+		// .use(remarkToc, {
+		// 	heading: '(table[ -]of[ -])?contents?|toc|Inhalt',
+		// 	maxDepth: 2,
+		// 	tight: true,
+		// 	prefix: 'user-content-'
+		// })
 		.use(remarkEmoji, { emoticon: true })
 		.use(remarkGithub, {
 			repository: 'https://github.com/michaelrommel/blog'
@@ -148,38 +195,46 @@ async function compile(article) {
 		.use(remarkRehype)
 		.use(rehypeSlug, { prefix: 'user-content-' })
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
-		.use(rehypeSanitize, {
-			...defaultSchema,
-			clobberPrefix: '',
-			attributes: {
-				...defaultSchema.attributes,
-				// The `language-*` regex is allowed by default.
-				div: [
-					...(defaultSchema.attributes.div || []),
-					[
-						'className',
-						/^language-./,
-						'math-inline',
-						'math-display',
-						'grid-left-right',
-						'img-right'
-					]
-				],
-				span: [
-					...(defaultSchema.attributes.span || []),
-					['className', 'line', 'math-inline']
-				],
-				SvelteComponent: [
-					'componentname',
-					'data',
-					'xSelector',
-					'file',
-					'dpr',
-					'inertia'
-				]
-			},
-			tagNames: [...defaultSchema.tagNames, 'SvelteComponent']
+		// .use(rehypeSanitize, {
+		// 	...defaultSchema,
+		// 	clobberPrefix: '',
+		// 	attributes: {
+		// 		...defaultSchema.attributes,
+		// 		// The `language-*` regex is allowed by default.
+		// 		div: [
+		// 			...(defaultSchema.attributes.div || []),
+		// 			[
+		// 				'className',
+		// 				/^language-./,
+		// 				'math-inline',
+		// 				'math-display',
+		// 				'grid-left-right',
+		// 				'img-right',
+		// 				'toc'
+		// 			]
+		// 		],
+		// 		span: [
+		// 			...(defaultSchema.attributes.span || []),
+		// 			['className', 'line', 'math-inline']
+		// 		],
+		// 		sveltecomponent: [
+		// 			'componentname',
+		// 			'data',
+		// 			'xSelector',
+		// 			'file',
+		// 			'dpr',
+		// 			'inertia'
+		// 		]
+		// 	},
+		// 	tagNames: [...defaultSchema.tagNames, 'sveltecomponent']
+		// })
+		.use(rehypeWrapMain)
+		.use(rehypeToc, {
+			headings: ['h2'],
+			position: 'afterend',
+			customizeTOC: rehypePrependToc
 		})
+		.use(rehypeDebug)
 		.use(rehypeShikiFromHighlighter, highlighter, {
 			themes: {
 				dark: gruvboxTheme,
