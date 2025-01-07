@@ -160,7 +160,6 @@
 		// iterate over all intersection events to get a complete picture, where
 		// we are at right now
 		entries.forEach((entry) => {
-			console.log(entry);
 			if (entry.isIntersecting) {
 				setState(entry.target.id, "visible");
 			} else if (
@@ -184,13 +183,11 @@
 				delClass(tocIdList[i].id, "reading");
 				// remember last one
 				last = i;
-				console.log(`last = ${i}`);
 			} else if (tocIdList[i].state === "visible") {
 				// these are entries scrolled by
 				addClass(tocIdList[i].id, "reading");
 				delClass(tocIdList[i].id, "past");
 				last = null;
-				console.log("resetting last to null");
 			} else if (
 				tocIdList[i].state === "below" ||
 				tocIdList[i].state === null
@@ -203,13 +200,10 @@
 				Array.from(tocIdList[i].classes).join(" ");
 		}
 		if (last) {
-			console.log(`adding reading to above ${last}`);
 			addClass(tocIdList[last].id, "reading");
 			document.querySelector(`#toc-${tocIdList[last].id}`).className =
 				Array.from(tocIdList[last].classes).join(" ");
 		}
-
-		console.log(tocIdList);
 	}
 
 	const margins = getContext("margins");
@@ -226,7 +220,6 @@
 			const observer = new IntersectionObserver(ioCallback, ioOpts);
 
 			for (const h2id of h2IdList) {
-				console.log(h2id);
 				observer.observe(document.querySelector(`#${h2id}`));
 				populateClasses(h2id);
 			}
