@@ -132,7 +132,7 @@
 >
 	<nav class="mx-2 md:mx-4 lg:mx-8">
 		<div
-			class="w-full flex items-center justify-between text-base xs:text-lg md:text-xl lg:text-2xl"
+			class="w-full flex items-center justify-between text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl"
 		>
 			<div
 				class="grow py-2 xs:py-4 mr-2 xs:mr-4 md:mr-8 flex items-center justify-start"

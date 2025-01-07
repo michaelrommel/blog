@@ -1,7 +1,9 @@
 export const slugFromPath = (path) =>
 	path.match(/([\w-]+)\.(svelte\.md|md|svx)/i)?.[1] ?? null;
+
 export const categoryFromPath = (path) =>
 	path.match(/\.\/(.*)\/[\w-]+\.(svelte\.md|md|svx)/i)?.[1] ?? null;
+
 export const chartcolours = {
 	gruvred: 'hsl(0, 100%, 27%)',
 	gruvgreen: 'hsl(60, 71%, 35%)',
@@ -28,6 +30,7 @@ export const chartcolours = {
 	gruvlemphaqua: 'hsl(143, 30%, 37%)',
 	gruvlemphorange: 'hsl(19, 97%, 35%)'
 };
+
 export const decorate = (title) => {
 	return `${title} | Michael Rommel`;
 };
@@ -35,3 +38,14 @@ export const decorate = (title) => {
 export const serializeStructuredData = (sd) => {
 	return `<script type="application/ld+json">${JSON.stringify(sd)}</script>`;
 };
+
+export function debounce(func, timeout = 200) {
+	// export const debounce = (func, timeout = 300) => {
+	let timer;
+	return (...args) => {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			func.apply(this, args);
+		}, timeout);
+	};
+}

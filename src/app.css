@@ -350,7 +350,7 @@
 			border-color: theme("colors.gruvlbg2");
 			color: theme("colors.gruvlfg3");
 			font-variation-settings:
-				'wght' 400,
+				'wght' 300,
 				'wdth' 100;
 		}
 
@@ -368,12 +368,22 @@
 
 		.dark nav.toc li.reading {
 			color: theme("colors.gruvdfg0");
+		}
+
+		.dark nav.toc li.reading,
+		.dark nav.toc li.past {
 			border-color: theme("colors.gruvdfg0");
 		}
 	}
 
 	#flourish {
 		width: min(80%, 50rem);
+	}
+
+	@media (max-width: 65rem) {
+		main {
+			container: main / inline-size;
+		}
 	}
 
 	p {

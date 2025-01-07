@@ -81,6 +81,8 @@ function rehypePrependToc(tree) {
 		} else if (node.tagName === 'ol') {
 			// we determine if the list is empty here
 			if (node.children.length === 0) empty = true;
+		} else if (node.tagName === 'li') {
+			node.properties.id = `toc-${node.children[0].properties.href.slice(1)}`;
 		}
 	});
 	if (empty) {

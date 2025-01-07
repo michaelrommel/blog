@@ -2,6 +2,7 @@
 	import "../../../app.css";
 	import Markdown from "$lib/components/MarkdownComponent.svelte";
 	let { data } = $props();
+	// console.log(`page.svelte: ${JSON.stringify(data)}`);
 </script>
 
 <!-- <article id="articlecontainer" class="w-full md:w-fit md:mx-auto"> -->
