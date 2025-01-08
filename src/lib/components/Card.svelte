@@ -46,7 +46,7 @@
 
 <div class="m-1 flex flex-col lg:flex-row max-w-[40ch] lg:max-w-prose">
 	<div
-		class="min-h-max lg:h-auto lg:w-64 flex bg-gruvlbg dark:bg-gruvdbg lg:flex-col justify-center border-l border-t border-r lg:border-r-0 border-gruvlfg dark:border-gruvdfg lg:border-b rounded-t lg:rounded-t-none lg:rounded-l"
+		class="min-h-max lg:h-auto lg:w-64 flex bg-gruvlbg dark:bg-gruvdbg lg:flex-col justify-center border-l border-t border-r lg:border-r-0 border-gruvlfg4 dark:border-gruvdfg4 lg:border-b rounded-t lg:rounded-t-none lg:rounded-l"
 	>
 		<div
 			class="m-3 w-40 h-40 xs:w-52 xs:h-52 flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
@@ -55,7 +55,7 @@
 		></div>
 	</div>
 	<div
-		class="border-r border-b border-l border-gruvlfg dark:border-gruvdfg lg:border-l-0 lg:border-t bg-gruvlbg dark:bg-gruvdbg rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"
+		class="border-r border-b border-l border-gruvlfg4 dark:border-gruvdfg4 lg:border-l-0 lg:border-t bg-gruvlbg dark:bg-gruvdbg rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"
 	>
 		<div class="mb-3">
 			<div

@@ -13,11 +13,20 @@
 	}
 
 	let segmentedData = $derived(segment(data.cards));
+	function reverse(a, b) {
+		if (a < b) {
+			return 1;
+		} else if (a > b) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
 </script>
 
 <!-- <div class="col-span-12 md:mx-auto"> -->
 <div class="col-span-12">
-	{#each Object.keys(segmentedData) as year}
+	{#each Object.keys(segmentedData).sort(reverse) as year}
 		<div class="flex flex-row py-3 mx-16">
 			<div class="basis-5/12 flex-grow content-center">
 				<hr class="border-gruvblue" />

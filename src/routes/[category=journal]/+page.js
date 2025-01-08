@@ -16,10 +16,21 @@ export async function load({ params, fetch }) {
 		});
 	}
 
-	const jdlFiltered = journalDataList.filter(
-		(c) => c.articleCategory !== 'noyear'
-	);
-
+	const jdlFiltered = journalDataList
+		.filter((c) => c.articleCategory !== 'noyear')
+		.sort((a, b) => {
+			const x = new Date(a.structuredData.dateModified);
+			const y = new Date(b.structuredData.dateModified);
+			console.log(x, y);
+			if (x < y) {
+				return 1;
+			} else if (x > y) {
+				return -1;
+			} else {
+				return 0;
+			}
+		});
+	console.log(jdlFiltered);
 	return {
 		cards: jdlFiltered,
 		title: `List of Journal Entries ${params.year ? params.year.toUpperCase() : ''}`,
