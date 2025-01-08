@@ -9,7 +9,7 @@
 	import { debounce } from "$lib/util.js";
 	let { data, children } = $props();
 
-	let margins = $state([-100, 0, -45, 0]);
+	let margins = $state([0, 0, 0, 0]);
 	setContext("margins", {
 		get: () => margins,
 	});
@@ -23,8 +23,9 @@
 				// not fully mounted or destroyed, skip
 				continue;
 			}
-			margins[0] = -navigationElement.clientHeight;
-			margins[2] = -footerElement.clientHeight;
+			// approximate the margin set on the h2 elements
+			margins[0] = -navigationElement.clientHeight + 27;
+			margins[2] = -footerElement.clientHeight + 9;
 		}
 	}
 
