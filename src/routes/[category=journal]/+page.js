@@ -30,7 +30,7 @@ export async function load({ params, fetch }) {
 				return 0;
 			}
 		});
-	console.log(jdlFiltered);
+
 	return {
 		cards: jdlFiltered,
 		title: `List of Journal Entries ${params.year ? params.year.toUpperCase() : ''}`,

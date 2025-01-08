@@ -13,6 +13,7 @@
 	}
 
 	let segmentedData = $derived(segment(data.cards));
+
 	function reverse(a, b) {
 		if (a < b) {
 			return 1;

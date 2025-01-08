@@ -12,6 +12,13 @@
 
 	let { data } = $props();
 
+	// this pulls the heights of the navigation bar and the footer
+	// from the context set in +layout.svelte
+	const margins = getContext("margins");
+
+	// the ordered list of heading ids
+	let idList = new Map();
+
 	// const componentRegex = RegExp(
 	// 	"(<sveltecomponent.*?></sveltecomponent>)",
 	// 	"g",
@@ -61,53 +68,14 @@
 		return sc;
 	}
 
-	let h2IdList = [];
-	let tocIdList = [];
-
-	function populateClasses(id) {
-		for (const element of tocIdList) {
-			if (element.id === id) {
-				element.classes = new Set(
-					document.querySelector(`#toc-${id}`).className.split(" "),
-				);
-				break;
-			}
-		}
-	}
-
-	function addClass(id, cl) {
-		for (const element of tocIdList) {
-			if (element.id === id) {
-				element.classes.add(cl);
-				break;
-			}
-		}
-	}
-
-	function delClass(id, cl) {
-		for (const element of tocIdList) {
-			if (element.id === id) {
-				element.classes.delete(cl);
-				break;
-			}
-		}
-	}
-
-	function setState(id, state) {
-		for (const element of tocIdList) {
-			if (element.id === id) {
-				element.state = state;
-				break;
-			}
-		}
-	}
-
 	async function generateH2IdList(tree) {
+		// this generates a map with the ids in the order they
+		// appear on the page
 		visit(tree, { tagName: "a" }, function (node) {
-			h2IdList.push(node.properties.href.slice(1));
-			tocIdList.push({
-				id: node.properties.href.slice(1),
+			const id = node.properties.href.slice(1);
+			idList.set(id, {
 				state: null,
+				classes: null,
 			});
 		});
 	}
@@ -158,58 +126,63 @@
 			}
 		});
 		// iterate over all intersection events to get a complete picture, where
-		// we are at right now
+		// we are at right now. The entries are all h2 elements when the Intersection
+		// observer is instantiated, but usually only one element at a time, when the page scrolls
 		entries.forEach((entry) => {
+			const el = idList.get(entry.target.id);
 			if (entry.isIntersecting) {
-				setState(entry.target.id, "visible");
+				el.state = "visible";
 			} else if (
 				entry.boundingClientRect.bottom > entry.rootBounds.bottom
 			) {
 				// scrolling upwards, entry scrolled out the bottom
 				// need to set the previous toc entry to reading
-				setState(entry.target.id, "below");
+				el.state = "below";
 			} else if (entry.boundingClientRect.top < entry.rootBounds.top) {
 				// scrolling downwards, entry scrolled out the top
 				// keep this entry as reading
-				setState(entry.target.id, "above");
+				el.state = "above";
 			}
+			idList.set(entry.target.id, el);
 		});
 		// now detect the currently visible entries
-		let last = null;
-		for (let i = 0; i < tocIdList.length; i++) {
-			if (tocIdList[i].state === "above") {
-				// these are entries visible
-				addClass(tocIdList[i].id, "past");
-				delClass(tocIdList[i].id, "reading");
-				// remember last one
-				last = i;
-			} else if (tocIdList[i].state === "visible") {
+		let lastvisible = null;
+		idList.forEach((el, id) => {
+			if (el.state === "above") {
 				// these are entries scrolled by
-				addClass(tocIdList[i].id, "reading");
-				delClass(tocIdList[i].id, "past");
-				last = null;
-			} else if (
-				tocIdList[i].state === "below" ||
-				tocIdList[i].state === null
-			) {
+				el.classes.add("past");
+				el.classes.delete("reading");
+				// remember last visible heading
+				lastvisible = id;
+			} else if (el.state === "visible") {
+				// these are entries currently visible
+				el.classes.delete("past");
+				el.classes.add("reading");
+				// reset this, as we have a visible heading now
+				lastvisible = null;
+			} else if (el.state === "below" || el.state === null) {
 				// these are entries scrolled by
-				delClass(tocIdList[i].id, "past");
-				delClass(tocIdList[i].id, "reading");
+				el.classes.delete("past");
+				el.classes.delete("reading");
 			}
-			document.querySelector(`#toc-${tocIdList[i].id}`).className =
-				Array.from(tocIdList[i].classes).join(" ");
-		}
-		if (last) {
-			addClass(tocIdList[last].id, "reading");
-			document.querySelector(`#toc-${tocIdList[last].id}`).className =
-				Array.from(tocIdList[last].classes).join(" ");
+			// now set the classes on this DOM element
+			document.querySelector(`#toc-${id}`).className = Array.from(
+				el.classes,
+			).join(" ");
+		});
+		if (lastvisible) {
+			const el = idList.get(lastvisible);
+			el.classes.add("reading");
+			document.querySelector(`#toc-${lastvisible}`).className =
+				Array.from(el.classes).join(" ");
 		}
 	}
 
-	const margins = getContext("margins");
-
 	const createIntersectionObserver = () => {
 		$effect(() => {
+			// get the current values of the element heights
+			// note that on resize, the component is again instantiated
+			// and this function runs
 			const m = margins.get();
 			// console.log(`createIntersectionObserver: ${m}`);
 			const ioOpts = {
@@ -219,10 +192,15 @@
 
 			const observer = new IntersectionObserver(ioCallback, ioOpts);
 
-			for (const h2id of h2IdList) {
-				observer.observe(document.querySelector(`#${h2id}`));
-				populateClasses(h2id);
-			}
+			// now add each h2 element to be observed
+			idList.forEach((el, id) => {
+				observer.observe(document.querySelector(`#${id}`));
+				el.classes = new Set(
+					document.querySelector(`#toc-${id}`).className.split(" "),
+				);
+				// update the entry
+				idList.set(id, el);
+			});
 			// this is a sveltekit specific thing
 			return () => {
 				// console.log("removing IObserver");
