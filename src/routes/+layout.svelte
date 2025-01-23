@@ -49,7 +49,7 @@
 />
 
 <ModeWatcher />
-<wrapper bind:this={navigationElement} class="sticky top-0 w-full block">
+<wrapper bind:this={navigationElement} class="sticky top-0 z-10 w-full block">
 	<Navigation data={{ user: data.user }} />
 </wrapper>
 
