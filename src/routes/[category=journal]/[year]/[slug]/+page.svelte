@@ -10,7 +10,7 @@
 			<Markdown {data} />
 		</article>
 		<div id="flourish" class="flex flex-row py-3 mx-auto">
-			<div class="basis-5/12 flex-grow content-center">
+			<div class="basis-5/12 grow content-center">
 				<hr class="border-gruvblue" />
 			</div>
 			<div
@@ -18,7 +18,7 @@
 			>
 				~~~
 			</div>
-			<div class="basis-5/12 flex-grow content-center">
+			<div class="basis-5/12 grow content-center">
 				<hr class="border-gruvblue" />
 			</div>
 		</div>

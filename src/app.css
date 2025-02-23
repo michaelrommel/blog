@@ -1,133 +1,210 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@plugin "@tailwindcss/typography";
 
-@layer base {
-	:root {
+@custom-variant dark (&:where(.dark, .dark *));
 
-		/* gruvbox color definitions */
+:root {
+	/* gruvbox color definitions */
+	--gruvred: 0 100% 27%;
+	--gruvgreen: 60 71% 35%;
+	--gruvyellow: 40 73% 49%;
+	--gruvblue: 183 33% 40%;
+	--gruvpurple: 333 34% 54%;
+	--gruvaqua: 122 21% 51%;
+	--gruvorange: 24 88% 45%;
+	--gruvgray: 30 12% 51%;
+	--gruvdgray: 35 17% 59%;
+	--gruvdbg: 0 0% 15%;
+	--gruvdfg: 43 59% 81%;
+	--gruvdemphred: 6 96% 59%;
+	--gruvdemphgreen: 61 66% 44%;
+	--gruvdemphyellow: 42 95% 58%;
+	--gruvdemphblue: 157 16% 58%;
+	--gruvdemphpurple: 344 47% 68%;
+	--gruvdemphaqua: 104 35% 62%;
+	--gruvdemphorange: 27 99% 55%;
+	--gruvdbg0: 0 0% 15%;
+	--gruvdbg0h: 195 6% 12%;
+	--gruvdbghs: 20 3% 19%;
+	--gruvdbg1: 20 5% 22%;
+	--gruvdbg2: 22 7% 29%;
+	--gruvdbg3: 27 10% 36%;
+	--gruvdbg4: 28 11% 44%;
+	--gruvdfg0: 48 87% 88%;
+	--gruvdfg1: 43 59% 81%;
+	--gruvdfg2: 40 38% 73%;
+	--gruvdfg3: 39 24% 66%;
+	--gruvdfg4: 35 17% 59%;
+	--gruvlbg: 48 87% 88%;
+	--gruvlfg: 20 5% 22%;
+	--gruvlgray: 28 11% 44%;
+	--gruvlemphred: 358 100% 31%;
+	--gruvlemphgreen: 57 79% 26%;
+	--gruvlemphyellow: 37 80% 39%;
+	--gruvlemphblue: 190 89% 25%;
+	--gruvlemphpurple: 323 39% 40%;
+	--gruvlemphaqua: 143 30% 37%;
+	--gruvlemphorange: 19 97% 35%;
+	--gruvlbg0: 48 87% 88%;
+	--gruvlbg0h: 53 74% 91%;
+	--gruvlbg0s: 46 67% 84%;
+	--gruvlbg1: 43 59% 81%;
+	--gruvlbg2: 40 38% 73%;
+	--gruvlbg3: 39 24% 66%;
+	--gruvlbg4: 35 17% 59%;
+	--gruvlfg0: 0 0% 16%;
+	--gruvlfg1: 20 5% 22%;
+	--gruvlfg2: 22 7% 29%;
+	--gruvlfg3: 27 10% 36%;
+	--gruvlfg4: 28 11% 44%;
 
-		--gruvred: 0 100% 27%;
-		--gruvgreen: 60 71% 35%;
-		--gruvyellow: 40 73% 49%;
-		--gruvblue: 183 33% 40%;
-		--gruvpurple: 333 34% 54%;
-		--gruvaqua: 122 21% 51%;
-		--gruvorange: 24 88% 45%;
-		--gruvgray: 30 12% 51%;
-		--gruvdgray: 35 17% 59%;
-		--gruvdbg: 0 0% 15%;
-		--gruvdfg: 43 59% 81%;
-		--gruvdemphred: 6 96% 59%;
-		--gruvdemphgreen: 61 66% 44%;
-		--gruvdemphyellow: 42 95% 58%;
-		--gruvdemphblue: 157 16% 58%;
-		--gruvdemphpurple: 344 47% 68%;
-		--gruvdemphaqua: 104 35% 62%;
-		--gruvdemphorange: 27 99% 55%;
-		--gruvdbg0: 0 0% 15%;
-		--gruvdbg0h: 195 6% 12%;
-		--gruvdbghs: 20 3% 19%;
-		--gruvdbg1: 20 5% 22%;
-		--gruvdbg2: 22 7% 29%;
-		--gruvdbg3: 27 10% 36%;
-		--gruvdbg4: 28 11% 44%;
-		--gruvdfg0: 48 87% 88%;
-		--gruvdfg1: 43 59% 81%;
-		--gruvdfg2: 40 38% 73%;
-		--gruvdfg3: 39 24% 66%;
-		--gruvdfg4: 35 17% 59%;
-		--gruvlbg: 48 87% 88%;
-		--gruvlfg: 20 5% 22%;
-		--gruvlgray: 28 11% 44%;
-		--gruvlemphred: 358 100% 31%;
-		--gruvlemphgreen: 57 79% 26%;
-		--gruvlemphyellow: 37 80% 39%;
-		--gruvlemphblue: 190 89% 25%;
-		--gruvlemphpurple: 323 39% 40%;
-		--gruvlemphaqua: 143 30% 37%;
-		--gruvlemphorange: 19 97% 35%;
-		--gruvlbg0: 48 87% 88%;
-		--gruvlbg0h: 53 74% 91%;
-		--gruvlbg0s: 46 67% 84%;
-		--gruvlbg1: 43 59% 81%;
-		--gruvlbg2: 40 38% 73%;
-		--gruvlbg3: 39 24% 66%;
-		--gruvlbg4: 35 17% 59%;
-		--gruvlfg0: 0 0% 16%;
-		--gruvlfg1: 20 5% 22%;
-		--gruvlfg2: 22 7% 29%;
-		--gruvlfg3: 27 10% 36%;
-		--gruvlfg4: 28 11% 44%;
+	/* shadcn-svelte color definitions */
+	--background: var(--gruvlbg1);
+	--foreground: var(--gruvlfg);
+	--muted: 60 4.8% 95.9%;
+	--muted-foreground: 25 5.3% 44.7%;
+	--popover: var(--gruvlbg1);
+	--popover-foreground: var(--gruvlfg);
+	--card: 0 0% 100%;
+	--card-foreground: 20 14.3% 4.1%;
+	--border: 20 5.9% 90%;
+	--input: 20 5.9% 90%;
+	--primary: var(--gruvlfg2);
+	--primary-foreground: 60 9.1% 97.8%;
+	--secondary: var(--gruvlbg2);
+	--secondary-foreground: 24 9.8% 10%;
+	--accent: var(--gruvlbg2);
+	--accent-foreground: 24 9.8% 10%;
+	--destructive: 0 72.2% 50.6%;
+	--destructive-foreground: 60 9.1% 97.8%;
+	--ring: var(--gruvblue);
+	--radius: 0.5rem;
+}
 
-		/* shadcn-svelte color definitions */
+.dark {
+	/* shadcn-svelte color definitions for dark style */
+	--background: var(--gruvdbg1);
+	--foreground: var(--gruvdfg);
+	--muted: 12 6.5% 15.1%;
+	--muted-foreground: 24 5.4% 63.9%;
+	--popover: var(--gruvdbg1);
+	--popover-foreground: var(--gruvdfg);
+	--card: 20 14.3% 4.1%;
+	--card-foreground: 60 9.1% 97.8%;
+	--border: 12 6.5% 15.1%;
+	--input: 12 6.5% 15.1%;
+	--primary: var(--gruvdfg2);
+	--primary-foreground: 24 9.8% 10%;
+	--secondary: var(--gruvdbg2);
+	--secondary-foreground: 60 9.1% 97.8%;
+	--accent: var(--gruvdbg2);
+	--accent-foreground: 60 9.1% 97.8%;
+	--destructive: 0 62.8% 30.6%;
+	--destructive-foreground: 60 9.1% 97.8%;
+	--ring: var(--gruvyellow);
+}
 
-		--background: var(--gruvlbg1);
-		--foreground: var(--gruvlfg);
+@theme inline {
 
-		--muted: 60 4.8% 95.9%;
-		--muted-foreground: 25 5.3% 44.7%;
+	/* Colors gruvbox */
+	--color-gruvred: hsl(var(--gruvred));
+	--color-gruvgreen: hsl(var(--gruvgreen));
+	--color-gruvyellow: hsl(var(--gruvyellow));
+	--color-gruvblue: hsl(var(--gruvblue));
+	--color-gruvpurple: hsl(var(--gruvpurple));
+	--color-gruvaqua: hsl(var(--gruvaqua));
+	--color-gruvorange: hsl(var(--gruvorange));
+	--color-gruvgray: hsl(var(--gruvgray));
+	--color-gruvdgray: hsl(var(--gruvdgray));
+	--color-gruvdbg: hsl(var(--gruvdbg));
+	--color-gruvdfg: hsl(var(--gruvdfg));
+	--color-gruvdemphred: hsl(var(--gruvdemphred));
+	--color-gruvdemphgreen: hsl(var(--gruvdemphgreen));
+	--color-gruvdemphyellow: hsl(var(--gruvdemphyellow));
+	--color-gruvdemphblue: hsl(var(--gruvdemphblue));
+	--color-gruvdemphpurple: hsl(var(--gruvdemphpurple));
+	--color-gruvdemphaqua: hsl(var(--gruvdemphaqua));
+	--color-gruvdemphorange: hsl(var(--gruvdemphorange));
+	--color-gruvdbg0: hsl(var(--gruvdbg0));
+	--color-gruvdbg0h: hsl(var(--gruvdbg0h));
+	--color-gruvdbghs: hsl(var(--gruvdbghs));
+	--color-gruvdbg1: hsl(var(--gruvdbg1));
+	--color-gruvdbg2: hsl(var(--gruvdbg2));
+	--color-gruvdbg3: hsl(var(--gruvdbg3));
+	--color-gruvdbg4: hsl(var(--gruvdbg4));
+	--color-gruvdfg0: hsl(var(--gruvdfg0));
+	--color-gruvdfg1: hsl(var(--gruvdfg1));
+	--color-gruvdfg2: hsl(var(--gruvdfg2));
+	--color-gruvdfg3: hsl(var(--gruvdfg3));
+	--color-gruvdfg4: hsl(var(--gruvdfg4));
+	--color-gruvlbg: hsl(var(--gruvlbg));
+	--color-gruvlfg: hsl(var(--gruvlfg));
+	--color-gruvlgray: hsl(var(--gruvlgray));
+	--color-gruvlemphred: hsl(var(--gruvlemphred));
+	--color-gruvlemphgreen: hsl(var(--gruvlemphgreen));
+	--color-gruvlemphyellow: hsl(var(--gruvlemphyellow));
+	--color-gruvlemphblue: hsl(var(--gruvlemphblue));
+	--color-gruvlemphpurple: hsl(var(--gruvlemphpurple));
+	--color-gruvlemphaqua: hsl(var(--gruvlemphaqua));
+	--color-gruvlemphorange: hsl(var(--gruvlemphorange));
+	--color-gruvlbg0: hsl(var(--gruvlbg0));
+	--color-gruvlbg0h: hsl(var(--gruvlbg0h));
+	--color-gruvlbg0s: hsl(var(--gruvlbg0s));
+	--color-gruvlbg1: hsl(var(--gruvlbg1));
+	--color-gruvlbg2: hsl(var(--gruvlbg2));
+	--color-gruvlbg3: hsl(var(--gruvlbg3));
+	--color-gruvlbg4: hsl(var(--gruvlbg4));
+	--color-gruvlfg0: hsl(var(--gruvlfg0));
+	--color-gruvlfg1: hsl(var(--gruvlfg1));
+	--color-gruvlfg2: hsl(var(--gruvlfg2));
+	--color-gruvlfg3: hsl(var(--gruvlfg3));
+	--color-gruvlfg4: hsl(var(--gruvlfg4));
 
-		--popover: var(--gruvlbg1);
-		--popover-foreground: var(--gruvlfg);
+	/* Colors shadcn */
+	--color-border: hsl(var(--border));
+	--color-input: hsl(var(--input));
+	--color-ring: hsl(var(--ring));
+	--color-background: hsl(var(--background));
+	--color-foreground: hsl(var(--foreground));
+	--color-primary: hsl(var(--primary));
+	--color-primary-foreground: hsl(var(--primary-foreground));
+	--color-secondary: hsl(var(--secondary));
+	--color-secondary-foreground: hsl(var(--secondary-foreground));
+	--color-destructive: hsl(var(--destructive));
+	--color-destructive-foreground: hsl(var(--destructive-foreground));
+	--color-caution: var(--color-red-500);
+	--color-warning: var(--color-amber-500);
+	--color-info: var(--color-sky-500);
+	--color-muted: hsl(var(--muted));
+	--color-muted-foreground: hsl(var(--muted-foreground));
+	--color-accent: hsl(var(--accent));
+	--color-accent-foreground: hsl(var(--accent-foreground));
+	--color-popover: hsl(var(--popover));
+	--color-popover-foreground: hsl(var(--popover-foreground));
+	--color-card: hsl(var(--card));
+	--color-card-foreground: hsl(var(--card-foreground));
+	--color-sidebar: hsl(var(--sidebar-background));
+	--color-sidebar-foreground: hsl(var(--sidebar-foreground));
+	--color-sidebar-primary: hsl(var(--sidebar-primary));
+	--color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+	--color-sidebar-accent: hsl(var(--sidebar-accent));
+	--color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+	--color-sidebar-border: hsl(var(--sidebar-border));
+	--color-sidebar-ring: hsl(var(--sidebar-ring));
+}
 
-		--card: 0 0% 100%;
-		--card-foreground: 20 14.3% 4.1%;
+@theme {
+	--font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-serif: 'RobotoSerif', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	--font-mono: 'LuxiMono', 'RobotoMono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-		--border: 20 5.9% 90%;
-		--input: 20 5.9% 90%;
-
-		--primary: var(--gruvlfg2);
-		--primary-foreground: 60 9.1% 97.8%;
-
-		--secondary: var(--gruvlbg2);
-		--secondary-foreground: 24 9.8% 10%;
-
-		--accent: var(--gruvlbg2);
-		--accent-foreground: 24 9.8% 10%;
-
-		--destructive: 0 72.2% 50.6%;
-		--destructive-foreground: 60 9.1% 97.8%;
-
-		--ring: var(--gruvblue);
-
-		--radius: 0.5rem;
-
-	}
-
-	.dark {
-
-		/* shadcn-svelte color definitions for dark style */
-
-		--background: var(--gruvdbg1);
-		--foreground: var(--gruvdfg);
-
-		--muted: 12 6.5% 15.1%;
-		--muted-foreground: 24 5.4% 63.9%;
-
-		--popover: var(--gruvdbg1);
-		--popover-foreground: var(--gruvdfg);
-
-		--card: 20 14.3% 4.1%;
-		--card-foreground: 60 9.1% 97.8%;
-
-		--border: 12 6.5% 15.1%;
-		--input: 12 6.5% 15.1%;
-
-		--primary: var(--gruvdfg2);
-		--primary-foreground: 24 9.8% 10%;
-
-		--secondary: var(--gruvdbg2);
-		--secondary-foreground: 60 9.1% 97.8%;
-
-		--accent: var(--gruvdbg2);
-		--accent-foreground: 60 9.1% 97.8%;
-
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 60 9.1% 97.8%;
-
-		--ring: var(--gruvyellow);
-	}
+	--breakpoint-xs: 25rem;
+	--breakpoint-sm: 35rem;
+	--breakpoint-md: 48rem;
+	--breakpoint-lg: 65rem;
+	--breakpoint-xl: 100rem;
+	--breakpoint-2xl: 125rem;
 }
 
 @layer base {
@@ -166,7 +243,9 @@
 	.font-bold {
 		font-variation-settings: 'wght' var(--wght);
 	}
+}
 
+@layer utilities {
 	pre.shiki {
 		padding-inline-start: 0.2rem;
 		padding-inline-end: 0.2rem;
@@ -244,34 +323,34 @@
 
 	pre[class*="shiki"]::-moz-selection,
 	pre[class*="shiki"] ::-moz-selection {
-		color: theme("colors.gruvdfg0");
-		background-color: theme("colors.gruvdbg4");
+		color: var(--gruvdfg0);
+		background-color: hsl(var(--gruvdbg4));
 	}
 
 	pre[class*="shiki"]::selection,
 	pre[class*="shiki"] ::selection {
-		color: theme("colors.gruvdfg0");
-		background-color: theme("colors.gruvdbg4");
+		color: var(--gruvdfg0);
+		background-color: hsl(var(--gruvdbg4));
 	}
 
 	pre[class*="shiki"]>code>span[class*="highlighted"],
 	pre[class*="shiki"]>code>span[class*="highlighted"]>span {
-		background-color: theme("colors.gruvlbg3")
+		background-color: hsl(var(--gruvlbg3));
 	}
 
 	.dark pre[class*="shiki"]>code>span[class*="highlighted"],
 	.dark pre[class*="shiki"]>code>span[class*="highlighted"]>span {
-		background-color: theme("colors.gruvdbg3")
+		background-color: hsl(var(--gruvdbg3));
 	}
 
 	:not(pre)>code {
-		background-color: theme('colors.gruvlbg1');
+		background-color: hsl(var(--gruvlbg1));
 		padding: 0.2em;
 		border-radius: 0.3em;
 	}
 
 	.dark :not(pre)>code {
-		background-color: theme('colors.gruvdbg1');
+		background-color: hsl(var(--gruvdbg1));
 		padding: 0.2em;
 		border-radius: 0.3em;
 	}
@@ -347,32 +426,32 @@
 			border-left: 2px solid;
 			padding-top: 0.25rem;
 			padding-left: 0.7rem;
-			border-color: theme("colors.gruvlbg2");
-			color: theme("colors.gruvlfg3");
+			border-color: hsl(var(--gruvlbg2));
+			color: hsl(var(--gruvlfg3));
 			font-variation-settings:
 				'wght' 300,
 				'wdth' 100;
 		}
 
 		.dark nav.toc li {
-			border-color: theme("colors.gruvdbg2");
+			border-color: hsl(var(--gruvdbg2));
 		}
 
 		nav.toc li.reading {
-			border-color: theme("colors.gruvlfg0");
-			color: theme("colors.gruvlfg0");
+			border-color: hsl(var(--gruvlfg0));
+			color: hsl(var(--gruvlfg0));
 			font-variation-settings:
 				'wght' 500,
 				'wdth' 100;
 		}
 
 		.dark nav.toc li.reading {
-			color: theme("colors.gruvdfg0");
+			color: hsl(var(--gruvdfg0));
 		}
 
 		.dark nav.toc li.reading,
 		.dark nav.toc li.past {
-			border-color: theme("colors.gruvdfg0");
+			border-color: hsl(var(--gruvdfg0));
 		}
 	}
 
@@ -461,16 +540,14 @@
 	.navigation {
 		font-variation-settings: "wdth" 110, "opsz" 50, "wght" 600, "GRAD" -50;
 	}
-}
 
-@layer components {
-	.logodark .logostrokecolor {
-		stop-color: theme('colors.gruvdfg');
+	.dark .logo .logostrokecolor {
+		stop-color: hsl(var(--gruvdfg));
 		stop-opacity: 1;
 	}
 
 	.logo .logostrokecolor {
-		stop-color: theme('colors.gruvlfg');
+		stop-color: hsl(var(--gruflfg));
 		stop-opacity: 1;
 	}
 }

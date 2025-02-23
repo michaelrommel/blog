@@ -38,7 +38,7 @@
 	class="m-1 flex flex-col min-w-[30ch] md:max-w-[60ch] md:min-w-[60ch] lg:max-w-[75ch] lg:min-w-[75ch]"
 >
 	<div
-		class="p-2 min-h-max lg:h-auto leading-normal bg-gruvlbg dark:bg-gruvdbg border-gruvlfg4 dark:border-gruvdfg4 border rounded"
+		class="p-2 min-h-max lg:h-auto leading-normal bg-gruvlbg dark:bg-gruvdbg border-gruvlfg4 dark:border-gruvdfg4 border rounded-sm"
 	>
 		<p class="text-xs text-gruvlfg3 dark:text-gruvgray xs:text-sm">
 			{cardDate}

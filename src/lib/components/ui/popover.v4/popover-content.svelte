@@ -14,7 +14,7 @@
 	{transition}
 	{transitionConfig}
 	class={cn(
-		"bg-popover text-popover-foreground z-50 w-72 rounded-md border p-4 shadow-md outline-none",
+		"bg-popover text-popover-foreground z-50 w-72 rounded-md border border-gray-200 p-4 shadow-md outline-hidden",
 		className,
 	)}
 	{...rest}

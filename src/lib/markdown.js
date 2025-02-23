@@ -20,8 +20,9 @@ import rehypeMathjax from 'rehype-mathjax';
 import rehypeStringify from 'rehype-stringify';
 // import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeToc from '@jsdevtools/rehype-toc';
-import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
 import { createHighlighterCore } from 'shiki/core';
+import { loadWasm, createOnigurumaEngine } from 'shiki/engine/oniguruma';
+import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
 import {
 	transformerNotationDiff,
 	transformerNotationHighlight
@@ -32,7 +33,7 @@ import githubTheme from 'shiki/themes/github-light-high-contrast.mjs';
 
 function remarkGetFm() {
 	// this gets the frontmatter in YAML into data.matter
-	return function (_tree, file) {
+	return function(_tree, file) {
 		matter(file);
 	};
 }
@@ -203,7 +204,7 @@ async function preprocess(article) {
 			import('shiki/langs/toml.mjs'),
 			import('shiki/langs/yaml.mjs')
 		],
-		loadWasm: import('shiki/wasm')
+		engine: createOnigurumaEngine(() => import('shiki/wasm'))
 	});
 
 	changeTheme(githubTheme);

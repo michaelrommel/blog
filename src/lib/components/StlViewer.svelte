@@ -591,7 +591,7 @@
 	<div class="my-2 flex flex-col md:flex-row">
 		<div class="flex md:w-1/2">
 			<div class="self-center">Light Intensity:</div>
-			<div class="px-4 flex-grow self-center">
+			<div class="px-4 grow self-center">
 				<Slider
 					bind:value={lightIntensityFactor}
 					min={0}
@@ -604,7 +604,7 @@
 		</div>
 		<div class="md:w-1/2 flex">
 			<div class="self-center">Inertia:</div>
-			<div class="px-4 flex-grow self-center">
+			<div class="px-4 grow self-center">
 				<Slider
 					bind:value={inertiaOverride}
 					min={1}

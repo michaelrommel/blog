@@ -125,9 +125,9 @@
 	});
 </script>
 
-<!-- class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full" -->
+<!-- class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full" -->
 
-<header class="bg-gruvlbg/90 dark:bg-gruvdbg/90 backdrop-blur-sm">
+<header class="bg-gruvlbg/90 dark:bg-gruvdbg/90 backdrop-blur-xs">
 	<nav class="mx-2 md:mx-4 lg:mx-8">
 		<div
 			class="w-full flex items-center justify-between text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl"
@@ -137,7 +137,7 @@
 			>
 				<div>
 					<a
-						class="w-10 xs:w-12 md:w-16 block whitespace-nowrap ring-offset-background focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full"
+						class="w-10 xs:w-12 md:w-16 block whitespace-nowrap ring-offset-background focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full"
 						aria-label="home page"
 						href="/"
 					>
@@ -151,7 +151,7 @@
 						<div class="ml-1 md:p-1 md:pl-4 lg:pl-4 navigation">
 							<a
 								href={link.href}
-								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
+								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-sm"
 							>
 								{link.name}
 							</a>
@@ -161,7 +161,7 @@
 						<div class="ml-1 md:p-1 md:pl-4 lg:pl-4 navigation">
 							<a
 								href="/journal"
-								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
+								class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-sm"
 							>
 								<Journal class="inline mb-1" />
 							</a>
@@ -173,7 +173,7 @@
 				<div class={selectedFontBaseSize.menu} id="menu">
 					<Popover.Root bind:open={popoverOpen}>
 						<Popover.Trigger
-							class="ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded"
+							class="ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-sm"
 						>
 							<div class="p-2">
 								<Menu size="1.25rem" />
