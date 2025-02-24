@@ -21,7 +21,7 @@ import rehypeStringify from 'rehype-stringify';
 // import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeToc from '@jsdevtools/rehype-toc';
 import { createHighlighterCore } from 'shiki/core';
-import { loadWasm, createOnigurumaEngine } from 'shiki/engine/oniguruma';
+import { createOnigurumaEngine } from 'shiki/engine/oniguruma';
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core';
 import {
 	transformerNotationDiff,
@@ -33,7 +33,7 @@ import githubTheme from 'shiki/themes/github-light-high-contrast.mjs';
 
 function remarkGetFm() {
 	// this gets the frontmatter in YAML into data.matter
-	return function(_tree, file) {
+	return function (_tree, file) {
 		matter(file);
 	};
 }
@@ -172,22 +172,22 @@ function changeTheme(theme) {
 	}
 }
 
-// function remarkDebug() {
-// 	return (tree) => {
-// 		visit(tree, (node) => {
-// 			console.log(node);
-// 		});
-// 	};
-// }
+function remarkDebug() {
+	return (tree) => {
+		visit(tree, (node) => {
+			console.log(node);
+		});
+	};
+}
 
-// function rehypeDebug() {
-// 	return (tree) => {
-// 		console.log(tree);
-// 		visit(tree, (node) => {
-// 			console.log(node);
-// 		});
-// 	};
-// }
+function rehypeDebug() {
+	return (tree) => {
+		console.log(tree);
+		visit(tree, (node) => {
+			console.log(node);
+		});
+	};
+}
 
 async function preprocess(article) {
 	const highlighter = await createHighlighterCore({
@@ -215,13 +215,13 @@ async function preprocess(article) {
 		.use(remarkGetFm)
 		.use(remarkDirective)
 		.use(remarkDirectiveHandler)
-		// .use(remarkToc, {
-		// 	heading: '(table[ -]of[ -])?contents?|toc|Inhalt',
-		// 	maxDepth: 2,
-		// 	tight: true,
-		// 	prefix: 'user-content-'
-		// })
-		// .use(remarkDebug)
+		// // .use(remarkToc, {
+		// // 	heading: '(table[ -]of[ -])?contents?|toc|Inhalt',
+		// // 	maxDepth: 2,
+		// // 	tight: true,
+		// // 	prefix: 'user-content-'
+		// // })
+		// // .use(remarkDebug)
 		.use(remarkEmoji, { emoticon: true })
 		.use(remarkGithub, {
 			repository: 'https://github.com/michaelrommel/blog'
@@ -238,40 +238,40 @@ async function preprocess(article) {
 		.use(remarkRehype)
 		.use(rehypeSlug, { prefix: 'user-content-' })
 		.use(rehypeAutolinkHeadings, { behaviour: 'wrap' })
-		// .use(rehypeSanitize, {
-		// 	...defaultSchema,
-		// 	clobberPrefix: '',
-		// 	attributes: {
-		// 		...defaultSchema.attributes,
-		// 		// The `language-*` regex is allowed by default.
-		// 		div: [
-		// 			...(defaultSchema.attributes.div || []),
-		// 			[
-		// 				'className',
-		// 				/^language-./,
-		// 				'math-inline',
-		// 				'math-display',
-		// 				'grid-left-right',
-		// 				'img-right',
-		// 				'toc'
-		// 			]
-		// 		],
-		// 		span: [
-		// 			...(defaultSchema.attributes.span || []),
-		// 			['className', 'line', 'math-inline']
-		// 		],
-		// 		sveltecomponent: [
-		// 			'componentname',
-		// 			'data',
-		// 			'xSelector',
-		// 			'file',
-		// 			'dpr',
-		// 			'inertia'
-		// 		]
-		// 	},
-		// 	tagNames: [...defaultSchema.tagNames, 'sveltecomponent']
-		// })
-		// .use(rehypeWrapMain)
+		// // .use(rehypeSanitize, {
+		// // 	...defaultSchema,
+		// // 	clobberPrefix: '',
+		// // 	attributes: {
+		// // 		...defaultSchema.attributes,
+		// // 		// The `language-*` regex is allowed by default.
+		// // 		div: [
+		// // 			...(defaultSchema.attributes.div || []),
+		// // 			[
+		// // 				'className',
+		// // 				/^language-./,
+		// // 				'math-inline',
+		// // 				'math-display',
+		// // 				'grid-left-right',
+		// // 				'img-right',
+		// // 				'toc'
+		// // 			]
+		// // 		],
+		// // 		span: [
+		// // 			...(defaultSchema.attributes.span || []),
+		// // 			['className', 'line', 'math-inline']
+		// // 		],
+		// // 		sveltecomponent: [
+		// // 			'componentname',
+		// // 			'data',
+		// // 			'xSelector',
+		// // 			'file',
+		// // 			'dpr',
+		// // 			'inertia'
+		// // 		]
+		// // 	},
+		// // 	tagNames: [...defaultSchema.tagNames, 'sveltecomponent']
+		// // })
+		// // .use(rehypeWrapMain)
 		.use(rehypeShikiFromHighlighter, highlighter, {
 			themes: {
 				dark: gruvboxTheme,
@@ -309,7 +309,10 @@ async function preprocess(article) {
 	// .process(article);
 
 	// parse articel into tree
+	console.log('start of parsing');
 	const tree1 = await processor.parse(article);
+	console.log(tree1);
+	console.log('end of parsing');
 	// run all transformers on the tree
 	const tree2 = await processor.run(tree1);
 	// split the tree into different ones, not reallocating the tree objects
