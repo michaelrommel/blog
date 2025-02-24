@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"staging": "vite build --mode staging",
 		"preview": "vite preview",
-		"lint": "eslint ."
+		"lint": "eslint . ; pnpm biome check ./src"
 	},
 	"devDependencies": {
 		"@iconify-json/bi": "^1.2.2",
