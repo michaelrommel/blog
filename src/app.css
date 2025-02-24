@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./tailwindcss-animate.css";
 @config "../tailwind.config.js";
 @plugin "@tailwindcss/typography";
 
@@ -80,6 +81,14 @@
 	--destructive-foreground: 60 9.1% 97.8%;
 	--ring: var(--gruvblue);
 	--radius: 0.5rem;
+	--sidebar-background: 0 0% 98%;
+	--sidebar-foreground: 240 5.3% 26.1%;
+	--sidebar-primary: 232 27% 35%;
+	--sidebar-primary-foreground: 0 0% 98%;
+	--sidebar-accent: 240 4.8% 95.9%;
+	--sidebar-accent-foreground: 240 5.9% 10%;
+	--sidebar-border: 220 13% 91%;
+	--sidebar-ring: 217.2 91.2% 59.8%;
 }
 
 .dark {
@@ -103,6 +112,14 @@
 	--destructive: 0 62.8% 30.6%;
 	--destructive-foreground: 60 9.1% 97.8%;
 	--ring: var(--gruvyellow);
+	--sidebar-background: 221, 40%, 8%;
+	--sidebar-foreground: 240 4.8% 95.9%;
+	--sidebar-primary: 232 27% 35%;
+	--sidebar-primary-foreground: 0 0% 100%;
+	--sidebar-accent: 221, 40%, 13%;
+	--sidebar-accent-foreground: 240 4.8% 95.9%;
+	--sidebar-border: 240 3.7% 15.9%;
+	--sidebar-ring: 217.2 91.2% 59.8%;
 }
 
 @theme inline {
@@ -192,6 +209,52 @@
 	--color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
 	--color-sidebar-border: hsl(var(--sidebar-border));
 	--color-sidebar-ring: hsl(var(--sidebar-ring));
+
+	/* Border */
+	--radius-xl: calc(var(--radius) + 4px);
+	--radius-lg: var(--radius);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-sm: calc(var(--radius) - 4px);
+
+	/* Animations */
+	--animate-accordion-down: 0.2s ease-out accordion-down;
+	--animate-accordion-up: 0.2s ease-out accordion-up;
+	--animate-caret-blink: 1.25s ease-out infinite caret-blink;
+
+	/* Keyframes */
+	@keyframes accordion-down {
+		from: {
+			height: 0;
+		}
+
+		to: {
+			height: var(--bits-accordion-content-height);
+		}
+	}
+
+	@keyframes accordion-up {
+		from: {
+			height: var(--bits-accordion-content-height);
+		}
+
+		to: {
+			height: 0;
+		}
+	}
+
+	@keyframes caret-blink {
+
+		0%,
+		70%,
+		100% {
+			opacity: 1;
+		}
+
+		20%,
+		50% {
+			opacity: 0;
+		}
+	}
 }
 
 @theme {
