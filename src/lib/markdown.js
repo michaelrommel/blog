@@ -309,10 +309,10 @@ async function preprocess(article) {
 	// .process(article);
 
 	// parse articel into tree
-	console.log('start of parsing');
+	// console.log('start of parsing');
 	const tree1 = await processor.parse(article);
-	console.log(tree1);
-	console.log('end of parsing');
+	// console.log(tree1);
+	// console.log('end of parsing');
 	// run all transformers on the tree
 	const tree2 = await processor.run(tree1);
 	// split the tree into different ones, not reallocating the tree objects
