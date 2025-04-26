@@ -147,7 +147,7 @@
 				<div
 					class="flex flex-wrap items-center text-gruvlfg dark:text-gruvdfg font-bold"
 				>
-					{#each navigation as link}
+					{#each navigation as link (link.name)}
 						<div class="ml-1 md:p-1 md:pl-4 lg:pl-4 navigation">
 							<a
 								href={link.href}

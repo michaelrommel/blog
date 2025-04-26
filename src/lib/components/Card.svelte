@@ -75,7 +75,7 @@
 			<div
 				class="text-xs text-gruvlemphpurple dark:text-gruvdemphpurple flex flex-wrap items-center"
 			>
-				{#each cardData.tags as tag}
+				{#each cardData.tags as tag (tag)}
 					{#if tag === "new"}
 						<span
 							class="inline-flex mb-2 mr-2 items-center bg-gruvlemphgreen dark:bg-gruvdemphgreen rounded-full px-3 py-0 font-semibold text-gruvdfg dark:text-gruvlfg"

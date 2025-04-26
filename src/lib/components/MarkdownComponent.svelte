@@ -84,10 +84,12 @@
 		const trees = await preProcessMarkDown(data.markdown);
 		// console.log(trees);
 		const fragments = [];
+		let id = 0;
 		// get fragments of the main tree that were split it at svelte component into
 		// separate trees
 		for (const tree of trees.main) {
 			const frag = {
+				id,
 				position: "main",
 			};
 			if (tree.type === "svelte") {
@@ -98,15 +100,18 @@
 				frag.html = await processTree(tree);
 			}
 			fragments.push(frag);
+			id = id + 1;
 		}
 		// get the table of contents tree
 		for (const tree of trees.nav) {
 			const frag = {
+				id,
 				position: "nav",
 				type: "html",
 			};
 			frag.html = await processTree(tree);
 			fragments.push(frag);
+			id = id + 1;
 			// also walk the tree and excerpt the heading ids
 			await generateH2IdList(tree);
 		}
@@ -215,7 +220,7 @@
 		use:createIntersectionObserver
 		class="markdown prose prose-sm lg:prose-base prose-gruvbox dark:prose-invert"
 	>
-		{#each fragments as part}
+		{#each fragments as part (part.id)}
 			{@const main = part.position === "main"}
 			{#if main}
 				{@const sv = part.type === "svelte"}
@@ -239,7 +244,7 @@
 			{/if}
 		{/each}
 	</main>
-	{#each fragments as part}
+	{#each fragments as part (part.id)}
 		{@const nav = part.position === "nav"}
 		{#if nav}
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->

@@ -27,7 +27,7 @@
 
 <!-- <div class="col-span-12 md:mx-auto"> -->
 <div class="col-span-12">
-	{#each Object.keys(segmentedData).sort(reverse) as year}
+	{#each Object.keys(segmentedData).sort(reverse) as year (year)}
 		<div class="flex flex-row py-3 mx-16">
 			<div class="basis-5/12 grow content-center">
 				<hr class="border-gruvblue" />
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 		<div class="flex flex-wrap justify-center items-center">
-			{#each segmentedData[year] as cardData}
+			{#each segmentedData[year] as cardData (cardData.slug)}
 				<div class="m-1 p-1">
 					<a
 						class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-sm"
