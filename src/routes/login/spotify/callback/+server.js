@@ -12,11 +12,13 @@ import {
 
 export async function GET(event) {
 	const storedState = event.cookies.get('spotify_oauth_state') ?? null;
+	const codeVerifier = event.cookies.get('spotify_code_verifier') ?? null;
 	const code = event.url.searchParams.get('code');
 	const state = event.url.searchParams.get('state');
 
 	if (
 		storedState === null ||
+		codeVerifier === null ||
 		code === null ||
 		state === null ||
 		storedState !== state
@@ -29,7 +31,7 @@ export async function GET(event) {
 
 	let tokens;
 	try {
-		tokens = await spotify.validateAuthorizationCode(code);
+		tokens = await spotify.validateAuthorizationCode(code, codeVerifier);
 	} catch (e) {
 		deleteOauthCookies(event, 'spotify');
 		console.log(e);
