@@ -614,6 +614,30 @@
 		stop-color: hsl(var(--gruflfg));
 		stop-opacity: 1;
 	}
+
+	.shellchat>.message-group {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		@apply space-y-0.5 max-w-[75%];
+	}
+
+	.shellchat>.message-group.from-me {
+		align-items: flex-end;
+		@apply ml-auto;
+	}
+
+	.shellchat>.message-group.from-me>aside {
+		display: none;
+	}
+
+	.shellchat .chat {
+		@apply px-2.5 py-1.5 text-sm rounded-2xl max-w-full break-words bg-gruvdbg2;
+	}
+
+	.shellchat>.message-group.from-me .chat {
+		@apply bg-gruvlemphblue;
+	}
 }
 
 @font-face {

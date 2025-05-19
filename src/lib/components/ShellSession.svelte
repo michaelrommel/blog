@@ -11,7 +11,7 @@
 	import ChooseName from "./shell/ui/ChooseName.svelte";
 	import NameList from "./shell/ui/NameList.svelte";
 	import NetworkInfo from "./shell/ui/NetworkInfo.svelte";
-	import Settings from "./shell/ui/Settings.svelte";
+	import SettingsDialog from "./shell/ui/SettingsDialog.svelte";
 	import Toolbar from "./shell/ui/Toolbar.svelte";
 	import XTerm from "./shell/ui/XTerm.svelte";
 	import Avatars from "./shell/ui/Avatars.svelte";
@@ -49,9 +49,12 @@
 	let center = $state([0, 0]);
 	let zoom = $state(INITIAL_ZOOM);
 	let showChat = $state(false); // @hmr:keep
-	let settingsOpen = $state(false); // @hmr:keep
+	let showSettings = $state(false);
 	let showNetworkInfo = $state(false); // @hmr:keep
 
+	$effect(() => {
+		console.log(`SettingsOpen is ${showSettings}`);
+	});
 	onMount(() => {
 		touchZoom = new TouchZoom(fabricEl);
 		touchZoom.onMove(() => {
@@ -82,6 +85,9 @@
 		];
 	}
 
+	const chunknums = {};
+	const locks = {};
+
 	let encrypt;
 	let srocket = null;
 
@@ -89,14 +95,13 @@
 	let exitReason = $state(null);
 
 	/** Bound "write" method for each terminal. */
-	const chunknums = {};
-	const locks = {};
 	let writers = $state({});
 	let termElements = $state({});
 	let termWrappers = $state({});
 	let userId = $state(0);
 	let users = $state([]);
 	let shells = $state([]);
+
 	let subscriptions = new Set();
 
 	// May be undefined before `users` is first populated.
@@ -184,6 +189,7 @@
 						}
 					}
 				} else if (message.hear) {
+					console.log(message.hear);
 					const [uid, name, msg] = message.hear;
 					chatMessages.push({ uid, name, msg, sentAt: new Date() });
 					chatMessages = chatMessages;
@@ -256,6 +262,7 @@
 
 	$effect(() => {
 		if ($settings.name) {
+			console.log("User name changed");
 			srocket?.send({ setName: $settings.name });
 		}
 	});
@@ -393,36 +400,34 @@
 
 	// Wait a small amount of time, since blur events happen before focus events.
 	const setFocus = debounce((focused) => {
+		console.log("setFocus");
 		srocket?.send({ setFocus: focused[0] ?? null });
 	}, 20);
 </script>
 
 <!-- Wheel handler stops native macOS Chrome zooming on pinch. -->
-<main
-	class="p-8"
-	class:cursor-nwse-resize={resizing !== -1}
-	onwheel={(event) => event.preventDefault()}
->
+<!-- onwheel={(event) => event.preventDefault()} -->
+<main class="p-8" class:cursor-nwse-resize={resizing !== -1}>
 	<div class="absolute top-100px inset-x-0 flex justify-center z-10">
 		<Toolbar
 			{connected}
 			{newMessages}
 			{hasWriteAccess}
-			create={handleCreate}
-			chat={() => {
+			createTerminal={handleCreate}
+			toggleChat={() => {
 				showChat = !showChat;
 				newMessages = false;
 			}}
-			settings={() => {
-				settingsOpen = true;
+			toggleSettings={() => {
+				showSettings = true;
 			}}
-			networkInfo={() => {
+			toggleNetworkInfo={() => {
 				showNetworkInfo = !showNetworkInfo;
 			}}
 		/>
 
 		{#if showNetworkInfo}
-			<div class="absolute top-20 translate-x-[116.5px]">
+			<div class="absolute">
 				<NetworkInfo
 					status={connected
 						? "connected"
@@ -438,18 +443,18 @@
 
 	{#if showChat}
 		<div
-			class="absolute flex flex-col justify-end inset-y-4 right-4 w-80 pointer-events-none z-10"
+			class="absolute flex flex-col justify-end inset-y-14 right-4 top-28 w-80 z-10"
 		>
 			<Chat
 				{userId}
 				messages={chatMessages}
-				on:chat={(event) => srocket?.send({ chat: event.detail })}
-				on:close={() => (showChat = false)}
+				chatevent={(text) => srocket?.send({ chat: text })}
+				close={() => (showChat = false)}
 			/>
 		</div>
 	{/if}
 
-	<Settings open={settingsOpen} on:close={() => (settingsOpen = false)} />
+	<SettingsDialog bind:isopen={showSettings} />
 	<ChooseName />
 
 	<!--

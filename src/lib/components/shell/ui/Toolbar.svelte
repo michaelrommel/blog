@@ -5,10 +5,10 @@
 		connected,
 		hasWriteAccess,
 		newMessages,
-		create,
-		chat,
-		settings,
-		networkInfo,
+		createTerminal,
+		toggleChat,
+		toggleSettings,
+		toggleNetworkInfo,
 	} = $props();
 </script>
 
@@ -17,7 +17,7 @@
 		<div class="flex space-x-1">
 			<button
 				class="icon-button"
-				onclick={create}
+				onclick={createTerminal}
 				disabled={!connected || !hasWriteAccess}
 				title={!connected
 					? "Not connected"
@@ -27,13 +27,13 @@
 			>
 				<PlusCircle strokeWidth={1.5} class="p-0.5" />
 			</button>
-			<button class="icon-button" onclick={chat}>
+			<button class="icon-button" onclick={toggleChat}>
 				<MessageSquare strokeWidth={1.5} class="p-0.5" />
 				{#if newMessages}
 					<div class="activity"></div>
 				{/if}
 			</button>
-			<button class="icon-button" onclick={settings}>
+			<button class="icon-button" onclick={toggleSettings}>
 				<Settings strokeWidth={1.5} class="p-0.5" />
 			</button>
 		</div>
@@ -41,7 +41,7 @@
 		<div class="v-divider"></div>
 
 		<div class="flex space-x-1">
-			<button class="icon-button" onclick={networkInfo}>
+			<button class="icon-button" onclick={toggleNetworkInfo}>
 				<Wifi strokeWidth={1.5} class="p-0.5" />
 			</button>
 		</div>

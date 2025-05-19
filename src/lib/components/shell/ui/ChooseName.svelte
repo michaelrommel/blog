@@ -14,7 +14,7 @@
 <OverlayDialog
 	title="Welcome!"
 	description="Before you join — what should we call you?"
-	open={browser && !$settings.name}
+	isopen={browser && !$settings.name}
 >
 	<form class="flex gap-2" onsubmit={handleSubmit}>
 		<input

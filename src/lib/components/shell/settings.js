@@ -2,7 +2,7 @@ import { persisted } from 'svelte-persisted-store';
 import themes, { defaultTheme } from './ui/themes';
 import { derived } from 'svelte/store';
 
-const storedSettings = persisted('sshx-settings-store', {});
+const storedSettings = persisted('shell-settings', {});
 
 /** A persisted store for settings of the current user. */
 export const settings = derived(storedSettings, ($storedSettings) => {
@@ -29,5 +29,6 @@ export const settings = derived(storedSettings, ($storedSettings) => {
 });
 
 export function updateSettings(values) {
+	console.log(`Updating settings with ${JSON.stringify(values)}`);
 	storedSettings.update((settings) => ({ ...settings, ...values }));
 }

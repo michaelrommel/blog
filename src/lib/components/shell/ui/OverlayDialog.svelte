@@ -1,18 +1,10 @@
 <script>
 	import * as Dialog from "$lib/components/ui/dialog/index.js";
-	import { X } from "lucide-svelte";
 
-	let {
-		title,
-		description,
-		maxWidth = 768,
-		open,
-		close,
-		children,
-	} = $props();
+	let { title, description, isopen = $bindable(false), children } = $props();
 </script>
 
-<Dialog.Root {open}>
+<Dialog.Root bind:open={isopen}>
 	<Dialog.Content>
 		<Dialog.Header>
 			<div class="mb-8 text-center">
