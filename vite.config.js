@@ -36,6 +36,7 @@ export default defineConfig({
 		})
 	],
 	server: {
+		allowedHosts: ['.michaelrommel.com'],
 		fs: {
 			allow: ['../articles/', 'resources/']
 		}

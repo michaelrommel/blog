@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./tailwindcss-animate.css";
+@import "./xterm.css";
 @config "../tailwind.config.js";
 @plugin "@tailwindcss/typography";
 
@@ -640,6 +641,36 @@
 @font-face {
 	font-family: 'Victor Mono';
 	src: url('/ngstatic/VictorMono-BoldItalic.woff2') format('woff2');
+	font-weight: bold;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Victor Mono NF';
+	src: url('/ngstatic/VictorMonoNF-Regular.woff2') format('woff2');
+	font-weight: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Victor Mono NF';
+	src: url('/ngstatic/VictorMonoNF-Bold.woff2') format('woff2');
+	font-weight: bold;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Victor Mono NF';
+	src: url('/ngstatic/VictorMonoNF-Italic.woff2') format('woff2');
+	font-weight: normal;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Victor Mono NF';
+	src: url('/ngstatic/VictorMonoNF-BoldItalic.woff2') format('woff2');
 	font-weight: bold;
 	font-style: italic;
 	font-display: swap;
