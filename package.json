@@ -45,7 +45,7 @@
 		"@pilcrowjs/object-parser": "^0.0.4",
 		"@tailwindcss/vite": "^4.1.4",
 		"@tldraw/vec": "^1.9.2",
-		"@use-gesture/vanilla": "^10.3.1",
+		"@use-gesture/vanilla": "10.2.27",
 		"@xterm/addon-image": "^0.8.0",
 		"@xterm/addon-webgl": "^0.18.0",
 		"@xterm/xterm": "^5.5.0",

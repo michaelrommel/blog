@@ -48,6 +48,7 @@
 	const isMac = browser && navigator.platform.startsWith("Mac");
 
 	let {
+		setupTestEventlisteners,
 		rows,
 		cols,
 		write = $bindable(),
@@ -177,23 +178,23 @@
 
 		// Hack: We artificially disable scrolling when the terminal is not focused.
 		// ("termEl" > div.terminal.xterm > div.xterm-screen)
-		// const screenEl = termEl.querySelector(".xterm-screen");
-		// screenEl.addEventListener("wheel", handleWheelSkipXTerm);
+		const screenEl = termEl.querySelector(".xterm-screen");
+		screenEl.addEventListener("wheel", handleWheelSkipXTerm);
 
-		// const focusObserver = new MutationObserver((mutations) => {
-		// 	for (const mutation of mutations) {
-		// 		if (
-		// 			mutation.type === "attributes" &&
-		// 			mutation.attributeName === "class"
-		// 		) {
-		// 			// The "focus" class is set directly by xterm.js, but there isn't any way to listen for it.
-		// 			const target = mutation.target;
-		// 			const isFocused = target.classList.contains("focus");
-		// 			setFocused(isFocused, screenEl);
-		// 		}
-		// 	}
-		// });
-		// focusObserver.observe(term.element, { attributeFilter: ["class"] });
+		const focusObserver = new MutationObserver((mutations) => {
+			for (const mutation of mutations) {
+				if (
+					mutation.type === "attributes" &&
+					mutation.attributeName === "class"
+				) {
+					// The "focus" class is set directly by xterm.js, but there isn't any way to listen for it.
+					const target = mutation.target;
+					const isFocused = target.classList.contains("focus");
+					setFocused(isFocused, screenEl);
+				}
+			}
+		});
+		focusObserver.observe(term.element, { attributeFilter: ["class"] });
 
 		loaded = true;
 		for (const data of preloadBuffer) {
@@ -209,22 +210,29 @@
 			// dispatch("data", Buffer.from(data, "binary"));
 			dataevent(data);
 		});
+
+		setupTestEventlisteners(document);
 	});
 
 	onDestroy(() => term?.dispose());
 </script>
 
-<!-- onpointerdown={(event) => event.stopPropagation()} -->
-<!-- onmousedown={bringToFront} -->
-<!-- onmousedown={(event) => startMove(event)} -->
 <div
+	id="termcontainer"
 	class="term-container inline-block rounded-lg border border-zinc-700 opacity-90"
 	class:focused
 	style:background={theme.background}
 	role="none"
+	onmousedown={bringToFront}
+	onpointerdown={(event) => event.stopPropagation()}
 >
-	<div class="flex select-none" role="none">
-		<div class="flex-1 flex items-center px-3">
+	<div
+		id="termwindow"
+		class="flex select-none"
+		role="none"
+		onmousedown={(event) => startMove(event)}
+	>
+		<div id="termtitlebar" class="flex-1 flex items-center px-3">
 			<CircleButtons>
 				<!--
           TODO: This should be on:click, but that is not working due to the
@@ -252,6 +260,7 @@
 		<div class="flex-1"></div>
 	</div>
 	<div
+		id="termEl"
 		bind:this={termEl}
 		style:opacity={loaded ? 1.0 : 0.0}
 		onwheel={(event) => {

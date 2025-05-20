@@ -52,12 +52,45 @@
 	let showSettings = $state(false);
 	let showNetworkInfo = $state(false); // @hmr:keep
 
+	function setupTestEventlisteners(document) {
+		let termtitlebar = document.getElementById("termtitlebar");
+		let termwindow = document.getElementById("termwindow");
+		let termEl = document.getElementById("termEl");
+		let termcontainer = document.getElementById("termcontainer");
+		let termwrapper = document.getElementById("termwrapper");
+
+		function logEvents(name, event) {
+			console.log(`Element: ${name} -> ${JSON.stringify(event)}`);
+		}
+
+		termtitlebar.addEventListener("mousedown", (event) => {
+			logEvents("termtitlebar", event);
+		});
+		termwindow.addEventListener("mousedown", (event) => {
+			logEvents("termwindow", event);
+		});
+		termEl.addEventListener("mousedown", (event) => {
+			logEvents("termEl", event);
+		});
+		termcontainer.addEventListener("mousedown", (event) => {
+			logEvents("termcontainer", event);
+		});
+		termwrapper.addEventListener("mousedown", (event) => {
+			logEvents("termwrapper", event);
+		});
+		fabricEl.addEventListener("mousedown", (event) => {
+			logEvents("fabricEl", event);
+		});
+	}
+
 	$effect(() => {
 		console.log(`SettingsOpen is ${showSettings}`);
 	});
 	onMount(() => {
+		console.log(fabricEl);
 		touchZoom = new TouchZoom(fabricEl);
-		touchZoom.onMove(() => {
+		touchZoom.onMove((manual) => {
+			console.log(`touchZoom onMove ${manual}`);
 			center = touchZoom.center;
 			zoom = touchZoom.zoom;
 
@@ -111,7 +144,7 @@
 
 	let moving = $state(-1); // Terminal ID that is being dragged.
 	let movingOrigin = [0, 0]; // Coordinates of mouse at origin when drag started.
-	let movingSize = $state({ x: 0, y: 0, rows: 24, cols: 80 }); // New [x, y] position of the dragged terminal.
+	let movingSize = $state(); // New [x, y] position of the dragged terminal.
 	let movingIsDone = false; // Moving finished but hasn't been acknowledged.
 
 	let resizing = $state(-1); // Terminal ID that is being resized.
@@ -176,6 +209,8 @@
 						users = [...users, [id, update]];
 					}
 				} else if (message.shells) {
+					console.log("shells updated");
+					console.log(message.shells);
 					shells = message.shells;
 					if (movingIsDone) {
 						moving = -1;
@@ -326,7 +361,7 @@
 		// 50 milliseconds between successive terminal move updates.
 		const sendMove = throttle((message) => {
 			srocket?.send(message);
-		}, 50);
+		}, 200);
 
 		// 80 milliseconds between successive cursor updates.
 		const sendCursor = throttle((message) => {
@@ -406,9 +441,14 @@
 </script>
 
 <!-- Wheel handler stops native macOS Chrome zooming on pinch. -->
-<!-- onwheel={(event) => event.preventDefault()} -->
-<main class="p-8" class:cursor-nwse-resize={resizing !== -1}>
-	<div class="absolute top-100px inset-x-0 flex justify-center z-10">
+<main
+	class="p-8"
+	class:cursor-nwse-resize={resizing !== -1}
+	onwheel={(event) => event.preventDefault()}
+>
+	<div
+		class="absolute top-100px inset-x-0 flex justify-center pointer-events-none z-10"
+	>
 		<Toolbar
 			{connected}
 			{newMessages}
@@ -443,7 +483,7 @@
 
 	{#if showChat}
 		<div
-			class="absolute flex flex-col justify-end inset-y-14 right-4 top-28 w-80 z-10"
+			class="absolute flex flex-col justify-end inset-y-14 right-4 top-28 w-80 pointer-events-none z-10"
 		>
 			<Chat
 				{userId}
@@ -495,11 +535,13 @@
 
 	<div
 		class="absolute inset-0 overflow-hidden touch-none"
+		id="fabricEl"
 		bind:this={fabricEl}
 	>
 		{#each shells as [id, winsize] (id)}
 			{@const ws = id === moving ? movingSize : winsize}
 			<div
+				id="termwrapper"
 				class="absolute"
 				style:left={OFFSET_LEFT_CSS}
 				style:top={OFFSET_TOP_CSS}
@@ -515,6 +557,7 @@
 				bind:this={termWrappers[id]}
 			>
 				<XTerm
+					{setupTestEventlisteners}
 					rows={ws.rows}
 					cols={ws.cols}
 					bind:write={writers[id]}
@@ -549,10 +592,13 @@
 					startMove={(event) => {
 						if (!hasWriteAccess) return;
 						const [x, y] = normalizePosition(event);
-						moving = id;
-						movingOrigin = [x - ws.x, y - ws.y];
+						// the setting of movingSize has to come first, because
+						// if we set moving first, the browser re-renders so fast
+						// that there is then an error that ws is not set.
 						movingSize = ws;
+						movingOrigin = [x - ws.x, y - ws.y];
 						movingIsDone = false;
+						moving = id;
 					}}
 					focus={() => {
 						if (!hasWriteAccess) return;
@@ -599,22 +645,22 @@
 			</div>
 		{/each}
 
-		<!-- {#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)} -->
-		<!-- 	<div -->
-		<!-- 		class="absolute" -->
-		<!-- 		style:left={OFFSET_LEFT_CSS} -->
-		<!-- 		style:top={OFFSET_TOP_CSS} -->
-		<!-- 		style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS} -->
-		<!-- 		transition:fade|local={{ duration: 200 }} -->
-		<!-- 		use:slide={{ -->
-		<!-- 			x: user.cursor?.[0] ?? 0, -->
-		<!-- 			y: user.cursor?.[1] ?? 0, -->
-		<!-- 			center, -->
-		<!-- 			zoom, -->
-		<!-- 		}} -->
-		<!-- 	> -->
-		<!-- 		<LiveCursor {user} /> -->
-		<!-- 	</div> -->
-		<!-- {/each} -->
+		{#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)}
+			<div
+				class="absolute"
+				style:left={OFFSET_LEFT_CSS}
+				style:top={OFFSET_TOP_CSS}
+				style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS}
+				transition:fade|local={{ duration: 200 }}
+				use:slide={{
+					x: user.cursor?.[0] ?? 0,
+					y: user.cursor?.[1] ?? 0,
+					center,
+					zoom,
+				}}
+			>
+				<LiveCursor {user} />
+			</div>
+		{/each}
 	</div>
 </main>

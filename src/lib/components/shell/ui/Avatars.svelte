@@ -1,12 +1,11 @@
-<script lang="ts">
+<script>
 	import { fade } from "svelte/transition";
 
-	import type { WsUser } from "$lib/protocol";
 	import { nameToHue } from "./LiveCursor.svelte";
 
-	export let users: [number, WsUser][];
+	let { users } = $props();
 
-	function nameToInitials(name: string): string {
+	function nameToInitials(name) {
 		const parts = name.split(/\s/).filter((s) => s);
 		if (parts.length === 0) {
 			return "-";

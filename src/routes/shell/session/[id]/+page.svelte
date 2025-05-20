@@ -15,7 +15,7 @@
 
 <ShellSession
 	id={$page.params.id}
-	receiveName={({ detail: sessionName }) => {
+	receiveName={(sessionName) => {
 		if (sessionName) {
 			title = `${sessionName}`;
 		}
