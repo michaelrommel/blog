@@ -1,5 +1,5 @@
 import { persisted } from 'svelte-persisted-store';
-import themes, { defaultTheme } from './ui/themes';
+import themes, { defaultTheme } from './themes';
 import { derived } from 'svelte/store';
 
 const storedSettings = persisted('shell-settings', {});

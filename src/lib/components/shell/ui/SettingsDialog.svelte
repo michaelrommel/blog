@@ -1,7 +1,7 @@
 <script>
 	import { settings, updateSettings } from "$lib/components/shell/settings";
 	import OverlayDialog from "./OverlayDialog.svelte";
-	import themes from "./themes";
+	import themes from "$lib/components/shell/themes";
 
 	let { isopen = $bindable(false) } = $props();
 

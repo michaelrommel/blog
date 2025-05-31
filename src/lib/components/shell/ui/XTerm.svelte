@@ -1,6 +1,6 @@
 <!-- @component Interactive terminal rendered with xterm.js -->
 <script module>
-	import { makeToast } from "$lib/components/shell/toast";
+	// import { makeToast } from "$lib/components/shell/toast";
 
 	// Deduplicated terminal font loading.
 	// const waitForFonts = (() => {
@@ -45,7 +45,7 @@
 	import { settings } from "$lib/components/shell/settings";
 
 	/** Used to determine Cmd versus Ctrl keyboard shortcuts. */
-	const isMac = browser && navigator.platform.startsWith("Mac");
+	// const isMac = browser && navigator.platform.startsWith("Mac");
 
 	let {
 		setupTestEventlisteners,
@@ -78,29 +78,29 @@
 	let focused = $state(false);
 	let currentTitle = $state("Remote Terminal");
 
-	function handleWheelSkipXTerm(event) {
-		event.preventDefault(); // Stop native macOS Chrome zooming on pinch.
+	// function handleWheelSkipXTerm(event) {
+	// 	event.preventDefault(); // Stop native macOS Chrome zooming on pinch.
 
-		// We stop the event from propagating to the main `.xterm` terminal element,
-		// so the xterm.js's event handlers do not fire and scroll the buffer.
-		event.stopPropagation();
+	// 	// We stop the event from propagating to the main `.xterm` terminal element,
+	// 	// so the xterm.js's event handlers do not fire and scroll the buffer.
+	// 	event.stopPropagation();
 
-		// However, we still want it to propagate upward to our pan/zoom handlers,
-		// so we re-dispatch the event higher up, skipping xterm.
-		termEl?.dispatchEvent(new WheelEvent(event.type, event));
-	}
+	// 	// However, we still want it to propagate upward to our pan/zoom handlers,
+	// 	// so we re-dispatch the event higher up, skipping xterm.
+	// 	termEl?.dispatchEvent(new WheelEvent(event.type, event));
+	// }
 
-	function setFocused(isFocused, cursorLayer) {
-		if (isFocused && !focused) {
-			focused = isFocused;
-			cursorLayer.removeEventListener("wheel", handleWheelSkipXTerm);
-			focus();
-		} else if (!isFocused && focused) {
-			focused = isFocused;
-			cursorLayer.addEventListener("wheel", handleWheelSkipXTerm);
-			blur();
-		}
-	}
+	// function setFocused(isFocused, cursorLayer) {
+	// 	if (isFocused && !focused) {
+	// 		focused = isFocused;
+	// 		cursorLayer.removeEventListener("wheel", handleWheelSkipXTerm);
+	// 		focus();
+	// 	} else if (!isFocused && focused) {
+	// 		focused = isFocused;
+	// 		cursorLayer.addEventListener("wheel", handleWheelSkipXTerm);
+	// 		blur();
+	// 	}
+	// }
 
 	const preloadBuffer = [];
 
@@ -122,94 +122,94 @@
 	});
 
 	onMount(async () => {
-		const [{ Terminal }, { WebglAddon }, { ImageAddon }] =
-			await Promise.all([
-				import("@xterm/xterm"),
-				import("@xterm/addon-webgl"),
-				import("@xterm/addon-image"),
-			]);
+		// const [{ Terminal }, { WebglAddon }, { ImageAddon }] =
+		// 	await Promise.all([
+		// 		import("@xterm/xterm"),
+		// 		import("@xterm/addon-webgl"),
+		// 		import("@xterm/addon-image"),
+		// 	]);
 
-		// await waitForFonts();
+		// // await waitForFonts();
 
-		term = new Terminal({
-			allowTransparency: false,
-			cursorBlink: false,
-			cursorStyle: "block",
-			// This is the monospace font family configured in Tailwind.
-			fontFamily:
-				'"Victor Mono NF", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-			fontSize: 17,
-			fontWeight: 400,
-			fontWeightBold: 500,
-			lineHeight: 1.06,
-			scrollback: $settings.scrollback,
-			theme,
-		});
-
-		// Keyboard shortcuts for natural text editing.
-		// term.attachCustomKeyEventHandler((event) => {
-		// 	if (
-		// 		(isMac && event.metaKey && !event.ctrlKey && !event.altKey) ||
-		// 		(!isMac && !event.metaKey && event.ctrlKey && !event.altKey)
-		// 	) {
-		// 		if (event.key === "ArrowLeft") {
-		// 			dataevent(new Uint8Array([0x01]));
-		// 			return false;
-		// 		} else if (event.key === "ArrowRight") {
-		// 			dataevent(new Uint8Array([0x05]));
-		// 			return false;
-		// 		} else if (event.key === "Backspace") {
-		// 			dataevent(new Uint8Array([0x15]));
-		// 			return false;
-		// 		}
-		// 	}
-		// 	return true;
+		// term = new Terminal({
+		// 	allowTransparency: false,
+		// 	cursorBlink: false,
+		// 	cursorStyle: "block",
+		// 	// This is the monospace font family configured in Tailwind.
+		// 	fontFamily:
+		// 		'"Victor Mono NF", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+		// 	fontSize: 17,
+		// 	fontWeight: 400,
+		// 	fontWeightBold: 500,
+		// 	lineHeight: 1.06,
+		// 	scrollback: $settings.scrollback,
+		// 	theme,
 		// });
 
-		term.loadAddon(new WebglAddon());
-		term.loadAddon(new ImageAddon({ enableSizeReports: true }));
+		// // Keyboard shortcuts for natural text editing.
+		// // term.attachCustomKeyEventHandler((event) => {
+		// // 	if (
+		// // 		(isMac && event.metaKey && !event.ctrlKey && !event.altKey) ||
+		// // 		(!isMac && !event.metaKey && event.ctrlKey && !event.altKey)
+		// // 	) {
+		// // 		if (event.key === "ArrowLeft") {
+		// // 			dataevent(new Uint8Array([0x01]));
+		// // 			return false;
+		// // 		} else if (event.key === "ArrowRight") {
+		// // 			dataevent(new Uint8Array([0x05]));
+		// // 			return false;
+		// // 		} else if (event.key === "Backspace") {
+		// // 			dataevent(new Uint8Array([0x15]));
+		// // 			return false;
+		// // 		}
+		// // 	}
+		// // 	return true;
+		// // });
 
-		term.open(termEl);
+		// term.loadAddon(new WebglAddon());
+		// term.loadAddon(new ImageAddon({ enableSizeReports: true }));
 
-		term.resize(cols, rows);
-		term.onTitleChange((title) => {
-			currentTitle = title;
-		});
+		// term.open(termEl);
 
-		// Hack: We artificially disable scrolling when the terminal is not focused.
-		// ("termEl" > div.terminal.xterm > div.xterm-screen)
-		const screenEl = termEl.querySelector(".xterm-screen");
-		screenEl.addEventListener("wheel", handleWheelSkipXTerm);
+		// term.resize(cols, rows);
+		// term.onTitleChange((title) => {
+		// 	currentTitle = title;
+		// });
 
-		const focusObserver = new MutationObserver((mutations) => {
-			for (const mutation of mutations) {
-				if (
-					mutation.type === "attributes" &&
-					mutation.attributeName === "class"
-				) {
-					// The "focus" class is set directly by xterm.js, but there isn't any way to listen for it.
-					const target = mutation.target;
-					const isFocused = target.classList.contains("focus");
-					setFocused(isFocused, screenEl);
-				}
-			}
-		});
-		focusObserver.observe(term.element, { attributeFilter: ["class"] });
+		// // Hack: We artificially disable scrolling when the terminal is not focused.
+		// // ("termEl" > div.terminal.xterm > div.xterm-screen)
+		// const screenEl = termEl.querySelector(".xterm-screen");
+		// screenEl.addEventListener("wheel", handleWheelSkipXTerm);
 
-		loaded = true;
-		for (const data of preloadBuffer) {
-			term.write(data);
-		}
+		// const focusObserver = new MutationObserver((mutations) => {
+		// 	for (const mutation of mutations) {
+		// 		if (
+		// 			mutation.type === "attributes" &&
+		// 			mutation.attributeName === "class"
+		// 		) {
+		// 			// The "focus" class is set directly by xterm.js, but there isn't any way to listen for it.
+		// 			const target = mutation.target;
+		// 			const isFocused = target.classList.contains("focus");
+		// 			setFocused(isFocused, screenEl);
+		// 		}
+		// 	}
+		// });
+		// focusObserver.observe(term.element, { attributeFilter: ["class"] });
 
-		const utf8 = new TextEncoder();
-		term.onData((data) => {
-			dataevent(utf8.encode(data));
-		});
-		term.onBinary((data) => {
-			console.log("Binary Data");
-			// dispatch("data", Buffer.from(data, "binary"));
-			dataevent(data);
-		});
+		// loaded = true;
+		// for (const data of preloadBuffer) {
+		// 	term.write(data);
+		// }
+
+		// const utf8 = new TextEncoder();
+		// term.onData((data) => {
+		// 	dataevent(utf8.encode(data));
+		// });
+		// term.onBinary((data) => {
+		// 	console.log("Binary Data");
+		// 	// dispatch("data", Buffer.from(data, "binary"));
+		// 	dataevent(data);
+		// });
 
 		setupTestEventlisteners(document);
 	});
@@ -259,16 +259,7 @@
 		</div>
 		<div class="flex-1"></div>
 	</div>
-	<div
-		id="termEl"
-		bind:this={termEl}
-		style:opacity={loaded ? 1.0 : 0.0}
-		onwheel={(event) => {
-			if (focused) {
-				// Don't pan the page when scrolling while the terminal is selected.
-				// Conversely, we manually disable terminal scrolling unless it is currently selected.
-				event.stopPropagation();
-			}
-		}}
-	></div>
+	<div id="termEl" bind:this={termEl} class="w-[400px] h-[200px]">
+		This is a placeholder
+	</div>
 </div>

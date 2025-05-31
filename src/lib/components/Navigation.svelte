@@ -127,7 +127,7 @@
 
 <!-- class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full" -->
 
-<header class="bg-gruvlbg/90 dark:bg-gruvdbg/90 backdrop-blur-xs">
+<header id="header" class="bg-gruvlbg/90 dark:bg-gruvdbg/90 backdrop-blur-xs">
 	<nav class="mx-2 md:mx-4 lg:mx-8">
 		<div
 			class="w-full flex items-center justify-between text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl"

@@ -3,96 +3,106 @@
 	import { fade } from "svelte/transition";
 	import { debounce, throttle } from "lodash-es";
 
+	import FabricHandler from "./shell/FabricHandler.js";
+	import TermWindow from "./shell/TermWindow.svelte";
+
 	import { Encrypt } from "./shell/encrypt";
 	import { createLock } from "./shell/lock";
 	import { Srocket } from "./shell/srocket";
+
 	import { makeToast } from "./shell/toast";
+	import { settings } from "./shell/settings";
+
 	import Chat from "./shell/ui/Chat.svelte";
 	import ChooseName from "./shell/ui/ChooseName.svelte";
 	import NameList from "./shell/ui/NameList.svelte";
 	import NetworkInfo from "./shell/ui/NetworkInfo.svelte";
 	import SettingsDialog from "./shell/ui/SettingsDialog.svelte";
 	import Toolbar from "./shell/ui/Toolbar.svelte";
-	import XTerm from "./shell/ui/XTerm.svelte";
+	// import XTerm from "./shell/ui/XTerm.svelte";
 	import Avatars from "./shell/ui/Avatars.svelte";
 	import LiveCursor from "./shell/ui/LiveCursor.svelte";
-	import { slide } from "./shell/action/slide";
-	import { TouchZoom, INITIAL_ZOOM } from "./shell/action/touchZoom";
-	import { arrangeNewTerminal } from "./shell/arrange";
-	import { settings } from "./shell/settings";
 	import { Eye } from "lucide-svelte";
 
 	let { id, receiveName } = $props();
-
-	// The magic numbers "left" and "top" are used to approximately center the
-	// terminal at the time that it is first created.
-	const CONSTANT_OFFSET_LEFT = 378;
-	const CONSTANT_OFFSET_TOP = 240;
-
-	const OFFSET_LEFT_CSS = `calc(50vw - ${CONSTANT_OFFSET_LEFT}px)`;
-	const OFFSET_TOP_CSS = `calc(50vh - ${CONSTANT_OFFSET_TOP}px)`;
-	const OFFSET_TRANSFORM_ORIGIN_CSS = `calc(-1 * ${OFFSET_LEFT_CSS}) calc(-1 * ${OFFSET_TOP_CSS})`;
 
 	// Terminal width and height limits.
 	const TERM_MIN_ROWS = 8;
 	const TERM_MIN_COLS = 32;
 
-	function getConstantOffset() {
-		return [
-			0.5 * window.innerWidth - CONSTANT_OFFSET_LEFT,
-			0.5 * window.innerHeight - CONSTANT_OFFSET_TOP,
-		];
-	}
-
-	let fabricEl;
-	let touchZoom;
+	let fabricElement;
+	let fabricContainer;
+	let consoleElement;
+	let fabric;
+	let gridSpacing = 32;
 	let center = $state([0, 0]);
-	let zoom = $state(INITIAL_ZOOM);
+	let zoom = $state(1.0);
+
+	let terminalWindows = $state([]);
+
 	let showChat = $state(false); // @hmr:keep
-	let showSettings = $state(false);
+	let showSettings = $state(false); // @hmr:keep
 	let showNetworkInfo = $state(false); // @hmr:keep
 
-	function setupTestEventlisteners(document) {
-		let termtitlebar = document.getElementById("termtitlebar");
-		let termwindow = document.getElementById("termwindow");
-		let termEl = document.getElementById("termEl");
-		let termcontainer = document.getElementById("termcontainer");
-		let termwrapper = document.getElementById("termwrapper");
+	let delay = 250;
+	let throttled = false;
+	let calls = 0;
 
-		function logEvents(name, event) {
-			console.log(`Element: ${name} -> ${JSON.stringify(event)}`);
-		}
+	const resizeFabricContainer = () => {
+		let headerSize = document
+			.getElementById("header")
+			.getBoundingClientRect();
+		let footerSize = document
+			.getElementById("footer")
+			.getBoundingClientRect();
+		// get viewport height
+		let vh = Math.max(
+			document.documentElement.clientHeight || 0,
+			window.innerHeight || 0,
+		);
+		// get raw height
+		let height = `${vh - headerSize.height - footerSize.height}px`;
+		// account for "m-3"
+		fabricContainer.style.height = `calc(${height} - 6 * var(--spacing))`;
+	};
 
-		termtitlebar.addEventListener("mousedown", (event) => {
-			logEvents("termtitlebar", event);
-		});
-		termwindow.addEventListener("mousedown", (event) => {
-			logEvents("termwindow", event);
-		});
-		termEl.addEventListener("mousedown", (event) => {
-			logEvents("termEl", event);
-		});
-		termcontainer.addEventListener("mousedown", (event) => {
-			logEvents("termcontainer", event);
-		});
-		termwrapper.addEventListener("mousedown", (event) => {
-			logEvents("termwrapper", event);
-		});
-		fabricEl.addEventListener("mousedown", (event) => {
-			logEvents("fabricEl", event);
-		});
-	}
-
-	$effect(() => {
-		console.log(`SettingsOpen is ${showSettings}`);
-	});
 	onMount(() => {
-		console.log(fabricEl);
-		touchZoom = new TouchZoom(fabricEl);
-		touchZoom.onMove((manual) => {
-			console.log(`touchZoom onMove ${manual}`);
-			center = touchZoom.center;
-			zoom = touchZoom.zoom;
+		// window.resize event listener
+		window.addEventListener("resize", function () {
+			// only run if we're not throttled
+			if (!throttled) {
+				// actual callback action
+				resizeFabricContainer();
+				// we're throttled!
+				throttled = true;
+				// set a timeout to un-throttle
+				setTimeout(function () {
+					throttled = false;
+				}, delay);
+			}
+		});
+
+		// we observe the header because it will change on font size changes
+		const headerTarget = document.getElementById("header");
+		function menuObserveCallback(entries) {
+			let cr = null;
+			for (const entry of entries) {
+				if (entry.contentRect.height !== cr) {
+					cr = entry.contentRect.height;
+					resizeFabricContainer();
+				}
+			}
+		}
+		const headerObserver = new ResizeObserver(menuObserveCallback);
+		headerObserver.observe(headerTarget);
+
+		fabric = new FabricHandler({
+			fabricEl: fabricElement,
+			consoleEl: consoleElement,
+		});
+		fabric.onMove((state) => {
+			center = fabric.center;
+			zoom = fabric.zoom;
 
 			// Blur if the user is currently focused on a terminal.
 			//
@@ -109,15 +119,6 @@
 		});
 	});
 
-	/** Returns the mouse position in infinite grid coordinates, offset transformations and zoom. */
-	function normalizePosition(event) {
-		const [ox, oy] = getConstantOffset();
-		return [
-			Math.round(center[0] + event.pageX / zoom - ox),
-			Math.round(center[1] + event.pageY / zoom - oy),
-		];
-	}
-
 	const chunknums = {};
 	const locks = {};
 
@@ -133,7 +134,6 @@
 	let termWrappers = $state({});
 	let userId = $state(0);
 	let users = $state([]);
-	let shells = $state([]);
 
 	let subscriptions = new Set();
 
@@ -209,9 +209,28 @@
 						users = [...users, [id, update]];
 					}
 				} else if (message.shells) {
-					console.log("shells updated");
-					console.log(message.shells);
-					shells = message.shells;
+					for (const [id, size] of message.shells) {
+						let found = false;
+						for (const tw of terminalWindows) {
+							if (tw.id !== id) continue;
+							tw.x = size.x;
+							tw.y = size.y;
+							tw.rows = size.rows;
+							tw.cols = size.cols;
+							found = true;
+						}
+						if (!found)
+							[
+								terminalWindows.push({
+									id,
+									z: id,
+									x: size.x,
+									y: size.y,
+									rows: size.rows,
+									cols: size.cols,
+								}),
+							];
+					}
 					if (movingIsDone) {
 						moving = -1;
 					}
@@ -313,22 +332,22 @@
 			});
 			return;
 		}
-		if (shells.length >= 14) {
+		if (terminalWindows.length >= 14) {
 			makeToast({
 				kind: "error",
 				message: "You can only create up to 14 terminals.",
 			});
 			return;
 		}
-		const existing = shells.map(([id, winsize]) => ({
-			x: winsize.x,
-			y: winsize.y,
-			width: termWrappers[id].clientWidth,
-			height: termWrappers[id].clientHeight,
-		}));
-		const { x, y } = arrangeNewTerminal(existing);
-		srocket?.send({ create: [x, y] });
-		touchZoom.moveTo([x, y], INITIAL_ZOOM);
+		// const existing = terminalWindows.map(([id, winsize]) => ({
+		// 	x: winsize.x,
+		// 	y: winsize.y,
+		// 	width: termWrappers[id].clientWidth,
+		// 	height: termWrappers[id].clientHeight,
+		// }));
+		// const { x, y } = arrangeNewTerminal(existing);
+		srocket?.send({ create: [64, 64] });
+		// touchZoom.moveTo([x, y], INITIAL_ZOOM);
 	}
 
 	async function handleInput(id, data) {
@@ -357,310 +376,355 @@
 	// });
 
 	// Global mouse handler logic follows, attached to the window element for smoothness.
-	onMount(() => {
-		// 50 milliseconds between successive terminal move updates.
-		const sendMove = throttle((message) => {
-			srocket?.send(message);
-		}, 200);
+	// onMount(() => {
+	// 	// 50 milliseconds between successive terminal move updates.
+	// 	const sendMove = throttle((message) => {
+	// 		srocket?.send(message);
+	// 	}, 200);
 
-		// 80 milliseconds between successive cursor updates.
-		const sendCursor = throttle((message) => {
-			srocket?.send(message);
-		}, 80);
+	// 	// 80 milliseconds between successive cursor updates.
+	// 	const sendCursor = throttle((message) => {
+	// 		srocket?.send(message);
+	// 	}, 80);
 
-		function handleMouse(event) {
-			if (moving !== -1 && !movingIsDone) {
-				const [x, y] = normalizePosition(event);
-				movingSize = {
-					...movingSize,
-					x: Math.round(x - movingOrigin[0]),
-					y: Math.round(y - movingOrigin[1]),
-				};
-				sendMove({ move: [moving, movingSize] });
-			}
+	// 	function handleMouse(event) {
+	// 		if (moving !== -1 && !movingIsDone) {
+	// 			console.log("handleMouse");
+	// 			const [x, y] = normalizePosition(event);
+	// 			movingSize = {
+	// 				...movingSize,
+	// 				x: Math.round(x - movingOrigin[0]),
+	// 				y: Math.round(y - movingOrigin[1]),
+	// 			};
+	// 			// sendMove({ move: [moving, movingSize] });
+	// 		}
 
-			if (resizing !== -1) {
-				const cols = Math.max(
-					Math.floor(
-						(event.pageX - resizingOrigin[0]) / resizingCell[0],
-					),
-					TERM_MIN_COLS, // Minimum number of columns.
-				);
-				const rows = Math.max(
-					Math.floor(
-						(event.pageY - resizingOrigin[1]) / resizingCell[1],
-					),
-					TERM_MIN_ROWS, // Minimum number of rows.
-				);
-				if (rows !== resizingSize.rows || cols !== resizingSize.cols) {
-					resizingSize = { ...resizingSize, rows, cols };
-					srocket?.send({ move: [resizing, resizingSize] });
+	// if (resizing !== -1) {
+	// 	const cols = Math.max(
+	// 		Math.floor(
+	// 			(event.pageX - resizingOrigin[0]) / resizingCell[0],
+	// 		),
+	// 		TERM_MIN_COLS, // Minimum number of columns.
+	// 	);
+	// 	const rows = Math.max(
+	// 		Math.floor(
+	// 			(event.pageY - resizingOrigin[1]) / resizingCell[1],
+	// 		),
+	// 		TERM_MIN_ROWS, // Minimum number of rows.
+	// 	);
+	// 	if (rows !== resizingSize.rows || cols !== resizingSize.cols) {
+	// 		resizingSize = { ...resizingSize, rows, cols };
+	// 		srocket?.send({ move: [resizing, resizingSize] });
+	// 	}
+	// }
+
+	// sendCursor({ setCursor: normalizePosition(event) });
+	// 	}
+
+	// 	function handleMouseEnd(event) {
+	// 		if (moving !== -1) {
+	// 			console.log("handleMouseEnd");
+	// 			movingIsDone = true;
+	// 			// sendMove.cancel();
+	// 			// srocket?.send({ move: [moving, movingSize] });
+	// 		}
+
+	// 		// if (resizing !== -1) {
+	// 		// 	resizing = -1;
+	// 		// }
+
+	// 		// if (event.type === "mouseleave") {
+	// 		// 	sendCursor.cancel();
+	// 		// 	srocket?.send({ setCursor: null });
+	// 		// }
+	// 	}
+
+	// 	window.addEventListener("mousemove", handleMouse);
+	// 	window.addEventListener("mouseup", handleMouseEnd);
+	// 	// document.body.addEventListener("mouseleave", handleMouseEnd);
+	// 	return () => {
+	// 		window.removeEventListener("mousemove", handleMouse);
+	// 		window.removeEventListener("mouseup", handleMouseEnd);
+	// 		// document.body.removeEventListener("mouseleave", handleMouseEnd);
+	// 	};
+	// });
+
+	// let focused = [];
+	// $effect(() => {
+	// 	setFocus(focused);
+	// });
+
+	// // Wait a small amount of time, since blur events happen before focus events.
+	// const setFocus = debounce((focused) => {
+	// 	console.log("setFocus");
+	// 	srocket?.send({ setFocus: focused[0] ?? null });
+	// }, 20);
+
+	const focusWindow = (id) => {
+		let num_of_windows = terminalWindows.length;
+		let order = num_of_windows - 1;
+		terminalWindows = terminalWindows
+			.sort((a, b) => {
+				return a.z == b.z ? 0 : a.z > b.z ? -1 : 1;
+			})
+			.map((win) => {
+				if (win.id == id) {
+					win.z = num_of_windows;
+				} else {
+					win.z = order;
+					order = order - 1;
 				}
-			}
+				return win;
+			});
+	};
 
-			sendCursor({ setCursor: normalizePosition(event) });
-		}
-
-		function handleMouseEnd(event) {
-			if (moving !== -1) {
-				movingIsDone = true;
-				sendMove.cancel();
-				srocket?.send({ move: [moving, movingSize] });
-			}
-
-			if (resizing !== -1) {
-				resizing = -1;
-			}
-
-			if (event.type === "mouseleave") {
-				sendCursor.cancel();
-				srocket?.send({ setCursor: null });
-			}
-		}
-
-		window.addEventListener("mousemove", handleMouse);
-		window.addEventListener("mouseup", handleMouseEnd);
-		document.body.addEventListener("mouseleave", handleMouseEnd);
-		return () => {
-			window.removeEventListener("mousemove", handleMouse);
-			window.removeEventListener("mouseup", handleMouseEnd);
-			document.body.removeEventListener("mouseleave", handleMouseEnd);
-		};
-	});
-
-	let focused = [];
-	$effect(() => {
-		setFocus(focused);
-	});
-
-	// Wait a small amount of time, since blur events happen before focus events.
-	const setFocus = debounce((focused) => {
-		console.log("setFocus");
-		srocket?.send({ setFocus: focused[0] ?? null });
-	}, 20);
+	// this function is used to scroll to the top of the fabric and
+	// all the way to the left. So the users can doubletap the canvas
+	// and return to a safe spot, where they are able to use the
+	// normal device zoom functions again.
+	const scrollToEdge = () => {
+		window.scrollTo(0, fabric.fabricOffset[1]);
+	};
 </script>
 
-<!-- Wheel handler stops native macOS Chrome zooming on pinch. -->
-<main
-	class="p-8"
-	class:cursor-nwse-resize={resizing !== -1}
-	onwheel={(event) => event.preventDefault()}
+<div
+	id="fabricContainer"
+	bind:this={fabricContainer}
+	class="flex"
+	style:height="200px"
 >
-	<div
-		class="absolute top-100px inset-x-0 flex justify-center pointer-events-none z-10"
-	>
-		<Toolbar
-			{connected}
-			{newMessages}
-			{hasWriteAccess}
-			createTerminal={handleCreate}
-			toggleChat={() => {
-				showChat = !showChat;
-				newMessages = false;
-			}}
-			toggleSettings={() => {
-				showSettings = true;
-			}}
-			toggleNetworkInfo={() => {
-				showNetworkInfo = !showNetworkInfo;
-			}}
-		/>
-
-		{#if showNetworkInfo}
-			<div class="absolute">
-				<NetworkInfo
-					status={connected
-						? "connected"
-						: exitReason
-							? "no-shell"
-							: "no-server"}
-					serverLatency={integerMedian(serverLatencies)}
-					shellLatency={integerMedian(shellLatencies)}
-				/>
-			</div>
-		{/if}
-	</div>
-
-	{#if showChat}
+	<div class="w-16">pinch</div>
+	<div class="relative h-full flex-grow">
 		<div
-			class="absolute flex flex-col justify-end inset-y-14 right-4 top-28 w-80 pointer-events-none z-10"
+			class="absolute inset-0 -z-10 bg-[#212121]"
+			style:background-image="radial-gradient(#404040 {1.5 * zoom}px,
+			transparent 0), radial-gradient(#8800ff {5 * zoom}px, transparent 0)"
+			style:background-size="{gridSpacing * zoom}px {gridSpacing *
+				zoom}px, {gridSpacing * zoom}px {gridSpacing * zoom}px"
+			style:background-repeat="repeat, no-repeat"
+			style:background-position="{zoom * (center[0] - gridSpacing / 2)}px {zoom *
+				(center[1] - gridSpacing / 2)}px, {zoom *
+				(center[0] - gridSpacing / 2)}px {zoom *
+				(center[1] - gridSpacing / 2)}px"
+		></div>
+		<div
+			class="absolute top-[0px] inset-0 overflow-hidden touch-none"
+			bind:this={fabricElement}
+			ondblclick={scrollToEdge}
+			role="none"
 		>
-			<Chat
-				{userId}
-				messages={chatMessages}
-				chatevent={(text) => srocket?.send({ chat: text })}
-				close={() => (showChat = false)}
-			/>
+			{#each terminalWindows as terminalWindow, i (terminalWindow.id)}
+				<!-- {@const ws = id === moving ? movingSize : terminalWindow} -->
+				<TermWindow
+					{center}
+					{zoom}
+					bind:terminalWindow={terminalWindows[i]}
+					bind:write={writers[terminalWindow.id]}
+					{focusWindow}
+				/>
+			{/each}
 		</div>
-	{/if}
+		<div
+			class="absolute bottom-0 inset-x-0 px-2 h-24 bg-emerald-200 text-zinc-800"
+		>
+			<pre id="console" bind:this={consoleElement}></pre>
+		</div>
+	</div>
+</div>
+<!-- <main -->
+<!-- 	class="p-8" -->
+<!-- 	class:cursor-nwse-resize={resizing !== -1} -->
+<!-- 	onwheel={(event) => event.preventDefault()} -->
+<!-- > -->
+<!-- <div -->
+<!-- 	class="absolute top-100px inset-x-0 flex justify-center pointer-events-none z-10" -->
+<!-- > -->
+<!-- 	<Toolbar -->
+<!-- 		{connected} -->
+<!-- 		{newMessages} -->
+<!-- 		{hasWriteAccess} -->
+<!-- 		createTerminal={handleCreate} -->
+<!-- 		toggleChat={() => { -->
+<!-- 			showChat = !showChat; -->
+<!-- 			newMessages = false; -->
+<!-- 		}} -->
+<!-- 		toggleSettings={() => { -->
+<!-- 			showSettings = true; -->
+<!-- 		}} -->
+<!-- 		toggleNetworkInfo={() => { -->
+<!-- 			showNetworkInfo = !showNetworkInfo; -->
+<!-- 		}} -->
+<!-- 	/> -->
 
-	<SettingsDialog bind:isopen={showSettings} />
-	<ChooseName />
+<!-- 	{#if showNetworkInfo} -->
+<!-- 		<div class="absolute"> -->
+<!-- 			<NetworkInfo -->
+<!-- 				status={connected -->
+<!-- 					? "connected" -->
+<!-- 					: exitReason -->
+<!-- 						? "no-shell" -->
+<!-- 						: "no-server"} -->
+<!-- 				serverLatency={integerMedian(serverLatencies)} -->
+<!-- 				shellLatency={integerMedian(shellLatencies)} -->
+<!-- 			/> -->
+<!-- 		</div> -->
+<!-- 	{/if} -->
+<!-- </div> -->
 
-	<!--
+<!-- {#if showChat} -->
+<!-- 	<div -->
+<!-- 		class="absolute flex flex-col justify-end inset-y-14 right-4 top-28 w-80 pointer-events-none z-10" -->
+<!-- 	> -->
+<!-- 		<Chat -->
+<!-- 			{userId} -->
+<!-- 			messages={chatMessages} -->
+<!-- 			chatevent={(text) => srocket?.send({ chat: text })} -->
+<!-- 			close={() => (showChat = false)} -->
+<!-- 		/> -->
+<!-- 	</div> -->
+<!-- {/if} -->
+
+<!-- <SettingsDialog bind:isopen={showSettings} /> -->
+<!-- <ChooseName /> -->
+
+<!--
     Dotted circle background appears underneath the rest of the elements, but
     moves and zooms with the fabric of the canvas.
   -->
-	<div
-		class="absolute inset-0 -z-10"
-		style:background-image="radial-gradient(#555 {1 * zoom}px, transparent
-		0)"
-		style:background-size="{24 * zoom}px {24 * zoom}px"
-		style:background-position="{-zoom * center[0]}px {-zoom * center[1]}px"
-	></div>
 
-	<div class="py-2">
-		{#if exitReason !== null}
-			<div class="text-red-400">{exitReason}</div>
-		{:else if connected}
-			<div class="flex items-center">
-				<div class="text-green-400">You are connected!</div>
-				{#if userId && hasWriteAccess === false}
-					<div
-						class="bg-yellow-900 text-yellow-200 px-1 py-0.5 rounded ml-3 inline-flex items-center gap-1"
-					>
-						<Eye size="14" />
-						<span class="text-xs">Read-only</span>
-					</div>
-				{/if}
-			</div>
-		{:else}
-			<div class="text-yellow-400">Connecting…</div>
-		{/if}
+<!-- <div class="py-2"> -->
+<!-- 	{#if exitReason !== null} -->
+<!-- 		<div class="text-red-400">{exitReason}</div> -->
+<!-- 	{:else if connected} -->
+<!-- 		<div class="flex items-center"> -->
+<!-- 			<div class="text-green-400">You are connected!</div> -->
+<!-- 			{#if userId && hasWriteAccess === false} -->
+<!-- 				<div -->
+<!-- 					class="bg-yellow-900 text-yellow-200 px-1 py-0.5 rounded ml-3 inline-flex items-center gap-1" -->
+<!-- 				> -->
+<!-- 					<Eye size="14" /> -->
+<!-- 					<span class="text-xs">Read-only</span> -->
+<!-- 				</div> -->
+<!-- 			{/if} -->
+<!-- 		</div> -->
+<!-- 	{:else} -->
+<!-- 		<div class="text-yellow-400">Connecting…</div> -->
+<!-- 	{/if} -->
 
-		<div class="mt-4">
-			<NameList {users} />
-		</div>
-	</div>
+<!-- 	<div class="mt-4"> -->
+<!-- 		<NameList {users} /> -->
+<!-- 	</div> -->
+<!-- </div> -->
 
-	<div
-		class="absolute inset-0 overflow-hidden touch-none"
-		id="fabricEl"
-		bind:this={fabricEl}
-	>
-		{#each shells as [id, winsize] (id)}
-			{@const ws = id === moving ? movingSize : winsize}
-			<div
-				id="termwrapper"
-				class="absolute"
-				style:left={OFFSET_LEFT_CSS}
-				style:top={OFFSET_TOP_CSS}
-				style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS}
-				transition:fade|local
-				use:slide={{
-					x: ws.x,
-					y: ws.y,
-					center,
-					zoom,
-					immediate: id === moving,
-				}}
-				bind:this={termWrappers[id]}
-			>
-				<XTerm
-					{setupTestEventlisteners}
-					rows={ws.rows}
-					cols={ws.cols}
-					bind:write={writers[id]}
-					bind:termEl={termElements[id]}
-					dataevent={(data) =>
-						hasWriteAccess && handleInput(id, data)}
-					close={() => {
-						console.log("Closing Terminal");
-						srocket?.send({ close: id });
-					}}
-					shrink={() => {
-						if (!hasWriteAccess) return;
-						const rows = Math.max(ws.rows - 4, TERM_MIN_ROWS);
-						const cols = Math.max(ws.cols - 10, TERM_MIN_COLS);
-						if (rows !== ws.rows || cols !== ws.cols) {
-							srocket?.send({
-								move: [id, { ...ws, rows, cols }],
-							});
-						}
-					}}
-					expand={() => {
-						if (!hasWriteAccess) return;
-						const rows = ws.rows + 4;
-						const cols = ws.cols + 10;
-						srocket?.send({ move: [id, { ...ws, rows, cols }] });
-					}}
-					bringToFront={() => {
-						if (!hasWriteAccess) return;
-						showNetworkInfo = false;
-						srocket?.send({ move: [id, null] });
-					}}
-					startMove={(event) => {
-						if (!hasWriteAccess) return;
-						const [x, y] = normalizePosition(event);
-						// the setting of movingSize has to come first, because
-						// if we set moving first, the browser re-renders so fast
-						// that there is then an error that ws is not set.
-						movingSize = ws;
-						movingOrigin = [x - ws.x, y - ws.y];
-						movingIsDone = false;
-						moving = id;
-					}}
-					focus={() => {
-						if (!hasWriteAccess) return;
-						focused = [...focused, id];
-					}}
-					blur={() => {
-						focused = focused.filter((i) => i !== id);
-					}}
-				/>
+<!-- <div -->
+<!-- 	class="absolute inset-0 overflow-hidden touch-none" -->
+<!-- 	id="fabricEl" -->
+<!-- 	bind:this={fabricEl} -->
+<!-- > -->
+<!-- <div -->
+<!-- 	id="termwrapper" -->
+<!-- 	class="absolute" -->
+<!-- 	style:left={OFFSET_LEFT_CSS} -->
+<!-- 	style:top={OFFSET_TOP_CSS} -->
+<!-- 	style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS} -->
+<!-- 	transition:fade|local -->
+<!-- 	use:slide={{ -->
+<!-- 		x: ws.x, -->
+<!-- 		y: ws.y, -->
+<!-- 		center, -->
+<!-- 		zoom, -->
+<!-- 		immediate: id === moving, -->
+<!-- 	}} -->
+<!-- 	bind:this={termWrappers[id]} -->
+<!-- > -->
+<!-- 	<XTerm -->
+<!-- 		{setupTestEventlisteners} -->
+<!-- 		rows={ws.rows} -->
+<!-- 		cols={ws.cols} -->
+<!-- 		bind:write={writers[id]} -->
+<!-- 		bind:termEl={termElements[id]} -->
+<!-- 		dataevent={(data) => -->
+<!-- 			hasWriteAccess && handleInput(id, data)} -->
+<!-- 		close={() => { -->
+<!-- 			console.log("Closing Terminal"); -->
+<!-- 			srocket?.send({ close: id }); -->
+<!-- 		}} -->
+<!-- 		bringToFront={() => { -->
+<!-- 			console.log("bringToFront"); -->
+<!-- 			if (!hasWriteAccess) return; -->
+<!-- 			showNetworkInfo = false; -->
+<!-- 			srocket?.send({ move: [id, null] }); -->
+<!-- 		}} -->
+<!-- 		startMove={(event) => { -->
+<!-- 			console.log("startMove"); -->
+<!-- 			if (!hasWriteAccess) return; -->
+<!-- 			const [x, y] = normalizePosition(event); -->
+<!-- 			// the setting of movingSize has to come first, because -->
+<!-- 			// if we set moving first, the browser re-renders so fast -->
+<!-- 			// that there is then an error that ws is not set. -->
+<!-- 			movingSize = ws; -->
+<!-- 			movingOrigin = [x - ws.x, y - ws.y]; -->
+<!-- 			movingIsDone = false; -->
+<!-- 			moving = id; -->
+<!-- 		}} -->
+<!-- 		focus={() => { -->
+<!-- 			if (!hasWriteAccess) return; -->
+<!-- 			focused = [...focused, id]; -->
+<!-- 		}} -->
+<!-- 		blur={() => { -->
+<!-- 			focused = focused.filter((i) => i !== id); -->
+<!-- 		}} -->
+<!-- 	/> -->
 
-				<!-- User avatars -->
-				<div class="absolute bottom-2.5 right-2.5 pointer-events-none">
-					<Avatars
-						users={users.filter(
-							([uid, user]) =>
-								uid !== userId && user.focus === id,
-						)}
-					/>
-				</div>
+<!-- User avatars -->
+<!-- <div class="absolute bottom-2.5 right-2.5 pointer-events-none"> -->
+<!-- 	<Avatars -->
+<!-- 		users={users.filter( -->
+<!-- 			([uid, user]) => -->
+<!-- 				uid !== userId && user.focus === id, -->
+<!-- 		)} -->
+<!-- 	/> -->
+<!-- </div> -->
 
-				<!-- Interactable element for resizing -->
-				<div
-					class="absolute w-5 h-5 -bottom-1 -right-1 cursor-nwse-resize"
-					onmousedown={(event) => {
-						const canvasEl =
-							termElements[id].querySelector(".xterm-screen");
-						if (canvasEl) {
-							resizing = id;
-							const r = canvasEl.getBoundingClientRect();
-							resizingOrigin = [
-								event.pageX - r.width,
-								event.pageY - r.height,
-							];
-							resizingCell = [
-								r.width / ws.cols,
-								r.height / ws.rows,
-							];
-							resizingSize = ws;
-						}
-					}}
-					onpointerdown={(event) => event.stopPropagation()}
-					role="none"
-				></div>
-			</div>
-		{/each}
+<!-- Interactable element for resizing -->
+<!-- <div -->
+<!-- 	class="absolute w-5 h-5 -bottom-1 -right-1 cursor-nwse-resize" -->
+<!-- 	onmousedown={(event) => { -->
+<!-- 		const canvasEl = -->
+<!-- 			termElements[id].querySelector(".xterm-screen"); -->
+<!-- 		if (canvasEl) { -->
+<!-- 			resizing = id; -->
+<!-- 			const r = canvasEl.getBoundingClientRect(); -->
+<!-- 			resizingOrigin = [ -->
+<!-- 				event.pageX - r.width, -->
+<!-- 				event.pageY - r.height, -->
+<!-- 			]; -->
+<!-- 			resizingCell = [ -->
+<!-- 				r.width / ws.cols, -->
+<!-- 				r.height / ws.rows, -->
+<!-- 			]; -->
+<!-- 			resizingSize = ws; -->
+<!-- 		} -->
+<!-- 	}} -->
+<!-- 	onpointerdown={(event) => event.stopPropagation()} -->
+<!-- 	role="none" -->
+<!-- ></div> -->
+<!-- </div> -->
 
-		{#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)}
-			<div
-				class="absolute"
-				style:left={OFFSET_LEFT_CSS}
-				style:top={OFFSET_TOP_CSS}
-				style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS}
-				transition:fade|local={{ duration: 200 }}
-				use:slide={{
-					x: user.cursor?.[0] ?? 0,
-					y: user.cursor?.[1] ?? 0,
-					center,
-					zoom,
-				}}
-			>
-				<LiveCursor {user} />
-			</div>
-		{/each}
-	</div>
-</main>
+<!-- {#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)} -->
+<!-- 	<div -->
+<!-- 		class="absolute" -->
+<!-- 		style:left={OFFSET_LEFT_CSS} -->
+<!-- 		style:top={OFFSET_TOP_CSS} -->
+<!-- 		style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS} -->
+<!-- 		transition:fade|local={{ duration: 200 }} -->
+<!-- 		use:slide={{ -->
+<!-- 			x: user.cursor?.[0] ?? 0, -->
+<!-- 			y: user.cursor?.[1] ?? 0, -->
+<!-- 			center, -->
+<!-- 			zoom, -->
+<!-- 		}} -->
+<!-- 	> -->
+<!-- 		<LiveCursor {user} /> -->
+<!-- 	</div> -->
+<!-- {/each} -->

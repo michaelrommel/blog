@@ -53,14 +53,14 @@ export class TouchZoom {
 	// _scrollingAnchor;
 	// _resizeObserver;
 
-	_bounds = {
-		minX: 0,
-		maxX: 0,
-		minY: 0,
-		maxY: 0,
-		width: 0,
-		height: 0
-	};
+	// _bounds = {
+	// 	minX: 0,
+	// 	maxX: 0,
+	// 	minY: 0,
+	// 	maxY: 0,
+	// 	width: 0,
+	// 	height: 0
+	// };
 	_originPoint = undefined;
 	_delta = [0, 0];
 	_lastMovement = 1;
@@ -118,26 +118,26 @@ export class TouchZoom {
 		);
 	}
 
-	_getPoint(e) {
-		return [
-			+e.clientX.toFixed(2) - this._bounds.minX,
-			+e.clientY.toFixed(2) - this._bounds.minY
-		];
-	}
+	// _getPoint(e) {
+	// 	return [
+	// 		+e.clientX.toFixed(2) - this._bounds.minX,
+	// 		+e.clientY.toFixed(2) - this._bounds.minY
+	// 	];
+	// }
 
-	_updateBounds = () => {
-		const rect = this._node.getBoundingClientRect();
-		this._bounds = {
-			minX: rect.left,
-			maxX: rect.left + rect.width,
-			minY: rect.top,
-			maxY: rect.top + rect.height,
-			width: rect.width,
-			height: rect.height
-		};
-	};
+	// _updateBounds = () => {
+	// 	const rect = this._node.getBoundingClientRect();
+	// 	this._bounds = {
+	// 		minX: rect.left,
+	// 		maxX: rect.left + rect.width,
+	// 		minY: rect.top,
+	// 		maxY: rect.top + rect.height,
+	// 		width: rect.width,
+	// 		height: rect.height
+	// 	};
+	// };
 
-	_updateBoundsD = debounce(this._updateBounds, 100);
+	// _updateBoundsD = debounce(this._updateBounds, 100);
 
 	onMove(callback) {
 		this._callbacks.add(callback);
@@ -173,6 +173,7 @@ export class TouchZoom {
 	// }
 
 	_moved(manual = true) {
+		console.log('calling callbacks');
 		for (const callback of this._callbacks) {
 			callback(manual);
 		}
@@ -257,8 +258,10 @@ export class TouchZoom {
 	// };
 
 	_handleDrag = ({ delta, elapsedTime }) => {
+		console.log('entering drag handler');
 		if (delta[0] === 0 && delta[1] === 0 && elapsedTime < 200) return;
 		this.center = Vec.sub(this.center, Vec.div(delta, this.zoom));
+		console.log('calling moved function');
 		this._moved();
 	};
 
