@@ -1,7 +1,7 @@
 <script>
 	import Chart from "chart.js/auto";
 	import { onMount } from "svelte";
-	import { chartcolours } from "$lib/util.js";
+	import { chartcolours } from "$lib/utils.js";
 	import { format } from "date-fns";
 
 	const colourMap = Object.keys(chartcolours).map((c) => chartcolours[c]);

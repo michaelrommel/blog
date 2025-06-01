@@ -1,14 +1,17 @@
 <script>
 	import { onDestroy, onMount, tick } from "svelte";
 	import { fade } from "svelte/transition";
-	import { debounce, throttle } from "lodash-es";
+	import { Tween } from "svelte/motion";
+	import { expoOut } from "svelte/easing";
+
+	import { debounce, throttle, integerMedian } from "$lib/utils.js";
 
 	import FabricHandler from "./shell/FabricHandler.js";
 	import TermWindow from "./shell/TermWindow.svelte";
 
 	import { Encrypt } from "./shell/encrypt";
 	import { createLock } from "./shell/lock";
-	import { Srocket } from "./shell/srocket";
+	import { ReconWS } from "./shell/reconws.js";
 
 	import { makeToast } from "./shell/toast";
 	import { settings } from "./shell/settings";
@@ -30,25 +33,43 @@
 	const TERM_MIN_ROWS = 8;
 	const TERM_MIN_COLS = 32;
 
+	// DOM Element where the fabric is mounted
 	let fabricElement;
+	// enclosing container, needed for proper resizing
 	let fabricContainer;
+	// a debug console for tablets and such, where console.log is difficult
 	let consoleElement;
+
+	// the fabric instance
 	let fabric;
 	let gridSpacing = 32;
 	let center = $state([0, 0]);
 	let zoom = $state(1.0);
 
+	// let terminalWindows = $state([
+	// 	{ id: 1, z: 1, x: 96, y: 32, rows: 24, cols: 80 },
+	// 	{ id: 2, z: 3, x: 0, y: 0, rows: 24, cols: 80 },
+	// 	{ id: 3, z: 2, x: 64, y: 64, rows: 24, cols: 80 },
+	// ]);
+	// the individual terminal windows
 	let terminalWindows = $state([]);
+	// Bound "write" method for each terminal.
+	let writers = $state({});
+	// Terminal ID that is being dragged. This is being set in the
+	// TermWindow component itself and reported back here.
+	let movingId = $state(-1);
 
+	// toggles for UI elements
 	let showChat = $state(false); // @hmr:keep
 	let showSettings = $state(false); // @hmr:keep
 	let showNetworkInfo = $state(false); // @hmr:keep
 
-	let delay = 250;
-	let throttled = false;
-	let calls = 0;
-
-	const resizeFabricContainer = () => {
+	// a method of resizing the fabric container to fill the whole viewport
+	const _resizeFabricContainer = () => {
+		// the binding may not be establised by now
+		if (!fabricContainer) {
+			return;
+		}
 		let headerSize = document
 			.getElementById("header")
 			.getBoundingClientRect();
@@ -62,33 +83,38 @@
 		);
 		// get raw height
 		let height = `${vh - headerSize.height - footerSize.height}px`;
-		// account for "m-3"
+		// account for "m-3" on the outer enclosing element. I did not want
+		// to change that, because it is nice to have some separation from the
+		// browser's edge not only for articles.
 		fabricContainer.style.height = `calc(${height} - 6 * var(--spacing))`;
+		// console.log(`resize: ${height}`);
 	};
 
+	// all functions for maintaining the fabric
 	onMount(() => {
+		let headerHeight = null;
+		let windowHeight = null;
+
+		// at max every 250ms actually resize the container
+		let resizeFabricContainer = throttle(_resizeFabricContainer, 250, {
+			leading: true,
+			trailing: true,
+		});
+
 		// window.resize event listener
 		window.addEventListener("resize", function () {
-			// only run if we're not throttled
-			if (!throttled) {
-				// actual callback action
+			if (window.innerHeight !== windowHeight) {
+				windowHeight = window.innerHeight;
 				resizeFabricContainer();
-				// we're throttled!
-				throttled = true;
-				// set a timeout to un-throttle
-				setTimeout(function () {
-					throttled = false;
-				}, delay);
 			}
 		});
 
 		// we observe the header because it will change on font size changes
 		const headerTarget = document.getElementById("header");
 		function menuObserveCallback(entries) {
-			let cr = null;
 			for (const entry of entries) {
-				if (entry.contentRect.height !== cr) {
-					cr = entry.contentRect.height;
+				if (entry.contentRect.height !== headerHeight) {
+					headerHeight = entry.contentRect.height;
 					resizeFabricContainer();
 				}
 			}
@@ -100,52 +126,32 @@
 			fabricEl: fabricElement,
 			consoleEl: consoleElement,
 		});
-		fabric.onMove((state) => {
+		fabric.onMove(() => {
 			center = fabric.center;
 			zoom = fabric.zoom;
-
-			// Blur if the user is currently focused on a terminal.
-			//
-			// This makes it so that panning does not stop when the cursor happens to
-			// intersect with the textarea, which absorbs wheel and touch events.
-			if (document.activeElement) {
-				const classList = [...document.activeElement.classList];
-				if (classList.includes("xterm-helper-textarea")) {
-					document.activeElement.blur();
-				}
-			}
-
-			showNetworkInfo = false;
 		});
 	});
 
+	// communication functions and variables
 	const chunknums = {};
 	const locks = {};
 
 	let encrypt;
-	let srocket = null;
+	let ws = null;
+	let counter = 0n;
 
 	let connected = $state(false);
 	let exitReason = $state(null);
 
-	/** Bound "write" method for each terminal. */
-	let writers = $state({});
-	let termElements = $state({});
-	let termWrappers = $state({});
+	let subscriptions = new Set();
+
 	let userId = $state(0);
 	let users = $state([]);
-
-	let subscriptions = new Set();
 
 	// May be undefined before `users` is first populated.
 	let hasWriteAccess = $derived(
 		users.find(([uid]) => uid === userId)?.[1]?.canWrite,
 	);
-
-	let moving = $state(-1); // Terminal ID that is being dragged.
-	let movingOrigin = [0, 0]; // Coordinates of mouse at origin when drag started.
-	let movingSize = $state(); // New [x, y] position of the dragged terminal.
-	let movingIsDone = false; // Moving finished but hasn't been acknowledged.
 
 	let resizing = $state(-1); // Terminal ID that is being resized.
 	let resizingOrigin = [0, 0]; // Coordinates of top-left origin when resize started.
@@ -171,7 +177,8 @@
 			? await (await Encrypt.new(writePassword)).zeros()
 			: null;
 
-		srocket = new Srocket(`/shell/api/session/${id}`, {
+		// /shell/api is passed on by nginx to the sshx server instance on localhost
+		ws = new ReconWS(`/shell/api/session/${id}`, {
 			onMessage(message) {
 				if (message.hello) {
 					userId = message.hello[0];
@@ -184,7 +191,7 @@
 				} else if (message.invalidAuth) {
 					exitReason =
 						"The URL is not correct, invalid end-to-end encryption key.";
-					srocket?.dispose();
+					ws?.dispose();
 				} else if (message.chunks) {
 					let [id, seqnum, chunks] = message.chunks;
 					locks[id](async () => {
@@ -201,45 +208,61 @@
 						}
 					});
 				} else if (message.users) {
+					console.log(message);
+					// complete update on the user list
 					users = message.users;
 				} else if (message.userDiff) {
+					// differential update of single users, used a lot for updating
+					// user cursor positions
 					const [id, update] = message.userDiff;
+					// keep all other users, except the one in the message
 					users = users.filter(([uid]) => uid !== id);
+					// add the user back, but only if there is an actual user
+					// object provided, otherwise the user stays removed
 					if (update !== null) {
 						users = [...users, [id, update]];
 					}
 				} else if (message.shells) {
+					// update on the set of terminal windows
 					for (const [id, size] of message.shells) {
+						// iterate over all shells, old and new
 						let found = false;
 						for (const tw of terminalWindows) {
+							// look at the existing list, which has slightly
+							// different attributes and I want to keep that because
+							// it simplifies state management in the TermWindow component
 							if (tw.id !== id) continue;
+							found = true;
+							// take over attributes only if the window is *not* locally moved
+							if (id === movingId) continue;
+							// we found an existing entry, take over only the
+							// portions that the server maintains
 							tw.x = size.x;
 							tw.y = size.y;
 							tw.rows = size.rows;
 							tw.cols = size.cols;
-							found = true;
 						}
-						if (!found)
-							[
-								terminalWindows.push({
-									id,
-									z: id,
-									x: size.x,
-									y: size.y,
-									rows: size.rows,
-									cols: size.cols,
-								}),
-							];
-					}
-					if (movingIsDone) {
-						moving = -1;
+						if (!found) {
+							// this is a new terminal window that the server
+							// sent us. Maybe another user added it.
+							// here would be the place to add additional parameters
+							// that the TermWindow component needs
+							terminalWindows.push({
+								id, // the terminal ID
+								z: id, // the z stacking order of the terminal
+								x: size.x,
+								y: size.y,
+								rows: size.rows,
+								cols: size.cols,
+							});
+						}
 					}
 					for (const [id] of message.shells) {
 						if (!subscriptions.has(id)) {
 							chunknums[id] ??= 0;
 							locks[id] ??= createLock();
 							subscriptions.add(id);
-							srocket?.send({ subscribe: [id, chunknums[id]] });
+							ws?.send({ subscribe: [id, chunknums[id]] });
 						}
 					}
 				} else if (message.hear) {
@@ -264,11 +287,11 @@
 			},
 
 			onConnect() {
-				srocket?.send({
+				ws?.send({
 					authenticate: [encryptedZeros, writeEncryptedZeros],
 				});
 				if ($settings.name) {
-					srocket?.send({ setName: $settings.name });
+					ws?.send({ setName: $settings.name });
 				}
 				connected = true;
 			},
@@ -291,37 +314,56 @@
 		});
 	});
 
-	onDestroy(() => srocket?.dispose());
+	onDestroy(() => ws?.dispose());
 
 	// Send periodic ping messages for latency estimation.
 	onMount(() => {
 		const pingIntervalId = window.setInterval(() => {
-			if (srocket?.connected) {
-				srocket.send({ ping: BigInt(Date.now()) });
+			if (ws?.connected) {
+				ws.send({ ping: BigInt(Date.now()) });
 			}
 		}, 2000);
 		return () => window.clearInterval(pingIntervalId);
 	});
 
-	function integerMedian(values) {
-		if (values.length === 0) {
-			return null;
-		}
-		const sorted = values.toSorted();
-		const mid = Math.floor(sorted.length / 2);
-		return sorted.length % 2 !== 0
-			? sorted[mid]
-			: Math.round((sorted[mid - 1] + sorted[mid]) / 2);
-	}
-
 	$effect(() => {
 		if ($settings.name) {
-			console.log("User name changed");
-			srocket?.send({ setName: $settings.name });
+			console.log("settings: user name changed");
+			ws?.send({ setName: $settings.name });
 		}
 	});
 
-	let counter = 0n;
+	$effect(() => {
+		// this effect runs, when the terminalWindows change. This can
+		// happen, when we locally move a window or when somebody else moves
+		// it. In order to avoid loops, we send moves to the server only for
+		// terminals, when they are locally moved.
+		for (const tw of terminalWindows) {
+			if (tw.id === movingId) {
+				// this is the locally moving window, report to the server
+				sendMove({
+					move: [
+						tw.id,
+						{ x: tw.x, y: tw.y, rows: tw.rows, cols: tw.cols },
+					],
+				});
+				// console.log(
+				// 	"effect session: " +
+				// 		JSON.stringify($state.snapshot(terminalWindows)),
+				// );
+			}
+		}
+	});
+
+	// 50 milliseconds between successive terminal move updates.
+	const sendMove = throttle((message) => {
+		ws?.send(message);
+	}, 200);
+
+	// 80 milliseconds between successive cursor updates.
+	const sendCursor = throttle((message) => {
+		ws?.send(message);
+	}, 80);
 
 	async function handleCreate() {
 		if (hasWriteAccess === false) {
@@ -346,11 +388,12 @@
 		// 	height: termWrappers[id].clientHeight,
 		// }));
 		// const { x, y } = arrangeNewTerminal(existing);
-		srocket?.send({ create: [64, 64] });
+		ws?.send({ create: [64, 64] });
 		// touchZoom.moveTo([x, y], INITIAL_ZOOM);
 	}
 
-	async function handleInput(id, data) {
+	async function onData(id, data) {
+		console.log(data);
 		if (counter === 0n) {
 			// On the first call, initialize the counter to a random 64-bit integer.
 			const array = new Uint8Array(8);
@@ -360,7 +403,7 @@
 		const offset = counter;
 		counter += BigInt(data.length); // Must increment before the `await`.
 		const encrypted = await encrypt.segment(0x200000000n, offset, data);
-		srocket?.send({ data: [id, encrypted, offset] });
+		ws?.send({ data: [id, encrypted, offset] });
 	}
 
 	// // Stupid hack to preserve input focus when terminals are reordered.
@@ -377,18 +420,9 @@
 
 	// Global mouse handler logic follows, attached to the window element for smoothness.
 	// onMount(() => {
-	// 	// 50 milliseconds between successive terminal move updates.
-	// 	const sendMove = throttle((message) => {
-	// 		srocket?.send(message);
-	// 	}, 200);
-
-	// 	// 80 milliseconds between successive cursor updates.
-	// 	const sendCursor = throttle((message) => {
-	// 		srocket?.send(message);
-	// 	}, 80);
 
 	// 	function handleMouse(event) {
-	// 		if (moving !== -1 && !movingIsDone) {
+	// 		if (movingId !== -1 && !movingIsDone) {
 	// 			console.log("handleMouse");
 	// 			const [x, y] = normalizePosition(event);
 	// 			movingSize = {
@@ -396,7 +430,7 @@
 	// 				x: Math.round(x - movingOrigin[0]),
 	// 				y: Math.round(y - movingOrigin[1]),
 	// 			};
-	// 			// sendMove({ move: [moving, movingSize] });
+	// 			// sendMove({ move: [movingId, movingSize] });
 	// 		}
 
 	// if (resizing !== -1) {
@@ -422,11 +456,11 @@
 	// 	}
 
 	// 	function handleMouseEnd(event) {
-	// 		if (moving !== -1) {
+	// 		if (movingId !== -1) {
 	// 			console.log("handleMouseEnd");
 	// 			movingIsDone = true;
 	// 			// sendMove.cancel();
-	// 			// srocket?.send({ move: [moving, movingSize] });
+	// 			// srocket?.send({ move: [movingId, movingSize] });
 	// 		}
 
 	// 		// if (resizing !== -1) {
@@ -460,6 +494,10 @@
 	// 	srocket?.send({ setFocus: focused[0] ?? null });
 	// }, 20);
 
+	const pointerMove = (coords) => {
+		sendCursor({ setCursor: coords });
+	};
+
 	const focusWindow = (id) => {
 		let num_of_windows = terminalWindows.length;
 		let order = num_of_windows - 1;
@@ -485,13 +523,25 @@
 	const scrollToEdge = () => {
 		window.scrollTo(0, fabric.fabricOffset[1]);
 	};
+
+	const sl = (node, userId) => {
+		$effect(() => {
+			let user = users.filter(
+				([id, user]) => id === userId && user.cursor !== null,
+			)[0][1];
+			let transform = `scale(${(zoom * 100).toFixed(3)}%) translate3d(${user.cursor?.[0] + center?.[0]}px, ${user.cursor?.[1] + center?.[1]}px, 0px)`;
+			console.log($state.snapshot(user));
+			console.log(transform);
+			node.style.transform = transform;
+		});
+	};
 </script>
 
 <div
 	id="fabricContainer"
 	bind:this={fabricContainer}
 	class="flex"
-	style:height="200px"
+	style:height="600px"
 >
 	<div class="w-16">pinch</div>
 	<div class="relative h-full flex-grow">
@@ -514,13 +564,16 @@
 			role="none"
 		>
 			{#each terminalWindows as terminalWindow, i (terminalWindow.id)}
-				<!-- {@const ws = id === moving ? movingSize : terminalWindow} -->
 				<TermWindow
 					{center}
 					{zoom}
 					bind:terminalWindow={terminalWindows[i]}
 					bind:write={writers[terminalWindow.id]}
+					bind:movingId
+					{hasWriteAccess}
 					{focusWindow}
+					{pointerMove}
+					{onData}
 				/>
 			{/each}
 		</div>
@@ -530,6 +583,16 @@
 			<pre id="console" bind:this={consoleElement}></pre>
 		</div>
 	</div>
+	{#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)}
+		<div
+			class="absolute left-0 top-0 z-99"
+			style:transform-origin="left top"
+			transition:fade|local
+			use:sl={id}
+		>
+			<LiveCursor {user} />
+		</div>
+	{/each}
 </div>
 <!-- <main -->
 <!-- 	class="p-8" -->
@@ -633,7 +696,7 @@
 <!-- 		y: ws.y, -->
 <!-- 		center, -->
 <!-- 		zoom, -->
-<!-- 		immediate: id === moving, -->
+<!-- 		immediate: id === movingId, -->
 <!-- 	}} -->
 <!-- 	bind:this={termWrappers[id]} -->
 <!-- > -->
@@ -665,7 +728,7 @@
 <!-- 			movingSize = ws; -->
 <!-- 			movingOrigin = [x - ws.x, y - ws.y]; -->
 <!-- 			movingIsDone = false; -->
-<!-- 			moving = id; -->
+<!-- 			movingId = id; -->
 <!-- 		}} -->
 <!-- 		focus={() => { -->
 <!-- 			if (!hasWriteAccess) return; -->
@@ -710,21 +773,3 @@
 <!-- 	role="none" -->
 <!-- ></div> -->
 <!-- </div> -->
-
-<!-- {#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)} -->
-<!-- 	<div -->
-<!-- 		class="absolute" -->
-<!-- 		style:left={OFFSET_LEFT_CSS} -->
-<!-- 		style:top={OFFSET_TOP_CSS} -->
-<!-- 		style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS} -->
-<!-- 		transition:fade|local={{ duration: 200 }} -->
-<!-- 		use:slide={{ -->
-<!-- 			x: user.cursor?.[0] ?? 0, -->
-<!-- 			y: user.cursor?.[1] ?? 0, -->
-<!-- 			center, -->
-<!-- 			zoom, -->
-<!-- 		}} -->
-<!-- 	> -->
-<!-- 		<LiveCursor {user} /> -->
-<!-- 	</div> -->
-<!-- {/each} -->

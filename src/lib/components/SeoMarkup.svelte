@@ -1,8 +1,7 @@
 <script>
 	import { PUBLIC_ORIGIN } from "$env/static/public";
-	import { serializeStructuredData } from "$lib/util";
+	import { decorate, serializeStructuredData } from "$lib/utils.js";
 	import { page } from "$app/stores";
-	import { decorate } from "$lib/util";
 	export let data;
 </script>
 

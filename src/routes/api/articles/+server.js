@@ -1,4 +1,4 @@
-import { slugFromPath } from '$lib/util';
+import { slugFromPath } from '$lib/utils.js';
 import { json } from '@sveltejs/kit';
 import fg from 'fast-glob';
 import fs from 'node:fs/promises';

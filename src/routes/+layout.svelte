@@ -6,7 +6,7 @@
 	import Navigation from "$lib/components/Navigation.svelte";
 	import SeoMarkup from "$lib/components/SeoMarkup.svelte";
 	import Footer from "$lib/components/Footer.svelte";
-	import { debounce } from "$lib/util.js";
+	import { debounce } from "$lib/utils.js";
 	let { data, children } = $props();
 
 	let margins = $state([0, 0, 0, 0]);

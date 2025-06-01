@@ -1,5 +1,56 @@
 <svelte:options runes />
 
+<script module>
+	// Deduplicated terminal font loading.
+	const waitForFonts = (() => {
+		let state = "initial";
+		const waitlist = [];
+
+		return async function waitForFonts() {
+			if (state === "loaded") return;
+			else if (state === "initial") {
+				const FontFaceObserver = (await import("fontfaceobserver"))
+					.default;
+				state = "loading";
+				let regular = new FontFaceObserver("Victor Mono NF", {
+					weight: "normal",
+					style: "normal",
+				});
+				let bold = new FontFaceObserver("Victor Mono NF", {
+					weight: "bold",
+					style: "normal",
+				});
+				let italic = new FontFaceObserver("Victor Mono NF", {
+					weight: "normal",
+					style: "italic",
+				});
+				let bolditalic = new FontFaceObserver("Victor Mono NF", {
+					weight: "bold",
+					style: "italic",
+				});
+				try {
+					await Promise.all([
+						regular.load(),
+						bold.load(),
+						italic.load(),
+						bolditalic.load(),
+					]);
+				} catch (error) {
+					console.log(error);
+				}
+				state = "loaded";
+				console.log("ff observer loaded");
+				for (const fn of waitlist) fn();
+			} else {
+				await new Promise((resolve) => {
+					if (state === "loaded") resolve();
+					else waitlist.push(resolve);
+				});
+			}
+		};
+	})();
+</script>
+
 <script>
 	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
@@ -10,29 +61,28 @@
 	import themes from "./themes";
 	import { settings } from "$lib/components/shell/settings";
 
-	const OFFSET_LEFT_CSS = "0px";
-	const OFFSET_TOP_CSS = "0px";
-	const OFFSET_TRANSFORM_ORIGIN_CSS = `calc(${OFFSET_LEFT_CSS}) calc( ${OFFSET_TOP_CSS})`;
-
 	let {
 		center,
 		zoom,
 		terminalWindow = $bindable(),
 		write = $bindable(),
+		movingId = $bindable(), // the id of the moving window, to report back
+		hasWriteAccess,
 		focusWindow,
+		pointerMove,
+		onData,
 	} = $props();
-	// let terminalWindow = { x: 0, y: 0, rows: 24, cols: 80 };
 
 	let windowElement;
 	let terminalElement;
-	let isMoving = -1; // are we moving
+	let isMoving = false; // are we moving
 	let movingOrigin = [0, 0]; // Coordinates of mouse at origin when drag started.
-	let movingIsDone = false; // Moving finished but hasn't been acknowledged.
 	let tweenie = $state();
 	let immediate = true;
 
 	let term = null;
 	let theme = $derived(themes[$settings.theme]);
+	let terminalTitle = $state("Remote Terminal");
 
 	$effect(() => {
 		if (term) {
@@ -41,6 +91,7 @@
 			term.options.scrollback = $settings.scrollback;
 		}
 	});
+
 	$effect(() => {
 		// looks stupid, but otherwise effect would only trigger
 		// again when term changes, not when cols/rows changes
@@ -70,33 +121,43 @@
 	};
 
 	onMount(async () => {
-		const [{ Terminal }, { WebglAddon }, { ImageAddon }] =
-			await Promise.all([
-				import("@xterm/xterm"),
-				import("@xterm/addon-webgl"),
-				import("@xterm/addon-image"),
-			]);
+		const [{ Terminal }, { WebglAddon }] = await Promise.all([
+			import("@xterm/xterm"),
+			import("@xterm/addon-webgl"),
+		]);
+
+		await waitForFonts();
 
 		term = new Terminal({
 			allowTransparency: false,
 			cursorBlink: false,
 			cursorStyle: "block",
-			fontFamily:
-				'"Victor Mono NF", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+			fontFamily: '"Victor Mono NF"',
 			fontSize: 17,
 			fontWeight: 400,
 			fontWeightBold: 500,
-			lineHeight: 1.06,
+			lineHeight: 1.0,
 			scrollback: $settings.scrollback,
 			theme,
 		});
 		term.loadAddon(new WebglAddon());
 		term.open(terminalElement);
-
 		term.resize(terminalWindow.cols, terminalWindow.rows);
-		// term.onTitleChange((title) => {
-		// 	currentTitle = title;
-		// });
+		term.onTitleChange((title) => {
+			terminalTitle = title;
+		});
+
+		const utf8 = new TextEncoder();
+		term.onData((data) => {
+			if (hasWriteAccess) {
+				onData(terminalWindow.id, utf8.encode(data));
+			}
+		});
+		term.onBinary((data) => {
+			if (hasWriteAccess) {
+				onData(terminalWindow.id, Buffer.from(data, "binary"));
+			}
+		});
 	});
 
 	onMount(() => {
@@ -110,33 +171,40 @@
 		// 	);
 		// });
 
-		function handlePointerMove(event) {
-			if (isMoving !== -1 && !movingIsDone) {
+		function handlePointerStart(event) {
+			// only react on left mouse button
+			if (event.button === 0) {
 				const [x, y] = normalizePosition(event);
+				isMoving = true;
+				movingOrigin = [x - terminalWindow.x, y - terminalWindow.y];
+				movingId = terminalWindow.id;
+				immediate = false;
+				focusWindow(terminalWindow.id);
+				event.stopPropagation();
+			}
+		}
+
+		function handlePointerMove(event) {
+			const [x, y] = normalizePosition(event);
+			if (isMoving) {
 				terminalWindow = {
 					...terminalWindow,
 					x: Math.round(x - movingOrigin[0]),
 					y: Math.round(y - movingOrigin[1]),
 				};
 			}
+			pointerMove([x, y]);
 		}
-		function handlePointerEnd(event) {
-			if (isMoving !== -1) {
-				movingIsDone = true;
-				isMoving = -1;
+		function handlePointerEnd() {
+			if (isMoving) {
+				isMoving = false;
+				movingId = -1;
 				immediate = true;
 			}
 		}
-		function handlePointerStart(event) {
-			const [x, y] = normalizePosition(event);
-			isMoving = 1;
-			movingOrigin = [x - terminalWindow.x, y - terminalWindow.y];
-			movingIsDone = false;
-			immediate = false;
-			focusWindow(terminalWindow.id);
-			event.stopPropagation();
+		function handlePointerLeave() {
+			pointerMove(null);
 		}
-
 		function focusTerminal(event) {
 			// console.log(event);
 			focusWindow(terminalWindow.id);
@@ -145,6 +213,7 @@
 
 		on(window, "pointermove", handlePointerMove);
 		on(window, "pointerup", handlePointerEnd);
+		on(window, "pointerleave", handlePointerLeave);
 		on(windowElement, "pointerdown", handlePointerStart);
 		on(terminalElement, "pointerdown", focusTerminal);
 		on(terminalElement, "wheel", focusTerminal);
@@ -203,9 +272,7 @@
 </script>
 
 <div
-	class="absolute bg-gruvdbg0/50 inline-block border border-gruvdemphblue focused rounded-lg"
-	style:left={OFFSET_LEFT_CSS}
-	style:top={OFFSET_TOP_CSS}
+	class="absolute bg-gruvdbg0/50 top-0 left-0 inline-block border border-gruvdemphblue focused rounded-lg"
 	style:transform-origin="top left"
 	transition:fade|local
 	use:sl
@@ -229,17 +296,49 @@
 			</div>
 		</div>
 		<div
-			class="p-2 text-sm text-zinc-300 text-center font-medium overflow-hidden whitespace-nowrap text-ellipsis w-0 flex-grow-[4]"
+			class="p-1 text-sm text-gruvdfg text-center font-medium overflow-hidden whitespace-nowrap text-ellipsis w-0 flex-grow-[4]"
 		>
-			Remote Terminal
+			{terminalTitle}
 		</div>
 		<div class="flex-1"></div>
 	</div>
 
+	<div bind:this={terminalElement} class="rounded-lg p-1"></div>
 	<!-- <div -->
 	<!-- 	class="p-2 text-slate-100 bg-gray-800 rounded-b-2xl w-[20rem] h-[250px] overflow-y-scroll overflow-x-hidden" -->
 	<!-- 	style:scrollbar-color="gray rgba(0, 0, 0, 0)" -->
 	<!-- 	bind:this={terminalElement} -->
-	<!-- ></div> -->
-	<div bind:this={terminalElement} class="rounded-lg p-1"></div>
+	<!-- > -->
+	<!-- 		Windows with Svelte 5.<br /><br /> -->
+	<!-- 		<pre> -->
+	<!-- id={tweenie.current.winSize.id} -->
+	<!-- x={tweenie.current.winSize.x.toFixed(3)} -->
+	<!-- y={tweenie.current.winSize.y.toFixed(3)} -->
+	<!-- z={tweenie.current.winSize.z.toFixed(3)} -->
+	<!-- center=[ {tweenie.current.center[0].toFixed( -->
+	<!-- 				0, -->
+	<!-- 			)}, {tweenie.current.center[1].toFixed(0)} ] -->
+	<!-- zoom={tweenie.current.zoom.toFixed(3)} -->
+
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+	<!-- And this is some long text, so that this div will overflow -->
+	<!-- and I have the chance to see scrolling with the wheel working. -->
+
+	<!-- 		</pre> -->
+	<!-- 	</div> -->
 </div>

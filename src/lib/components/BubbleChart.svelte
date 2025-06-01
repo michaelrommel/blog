@@ -1,7 +1,7 @@
 <script>
 	import Chart from "chart.js/auto";
 	import { onMount } from "svelte";
-	import { chartcolours } from "$lib/util.js";
+	import { chartcolours } from "$lib/utils.js";
 	import colorLib from "@kurkle/color";
 	import { sub, format, startOfDay, differenceInDays } from "date-fns";
 
