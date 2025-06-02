@@ -69,7 +69,6 @@
 		movingId = $bindable(), // the id of the moving window, to report back
 		hasWriteAccess,
 		focusWindow,
-		pointerMove,
 		onData,
 	} = $props();
 
@@ -100,14 +99,7 @@
 		term?.resize(c, r);
 	});
 
-	// Returns the mouse position in infinite grid coordinates,
-	// offset transformations and zoom.
-	function normalizePosition(event) {
-		return [Math.round(event.pageX / zoom), Math.round(event.pageY / zoom)];
-	}
-
 	const preloadBuffer = [];
-
 	write = (data) => {
 		if (!term) {
 			// Before the terminal is loaded, push data into a buffer.
@@ -175,13 +167,12 @@
 			if (event.button === 0) {
 				isMoving = true;
 				movingOrigin = [
-					Math.round(event.pageX / zoom) - terminalWindow.x,
-					Math.round(event.pageY / zoom) - terminalWindow.y,
+					Math.round(event.pageX / zoom - terminalWindow.x),
+					Math.round(event.pageY / zoom - terminalWindow.y),
 				];
 				movingId = terminalWindow.id;
 				immediate = false;
 				focusWindow(terminalWindow.id);
-				pointerMove([event.pageX, event.pageY]);
 				event.stopPropagation();
 			}
 		}
@@ -190,11 +181,10 @@
 			if (isMoving) {
 				terminalWindow = {
 					...terminalWindow,
-					x: Math.round(event.pageX / zoom) - movingOrigin[0],
-					y: Math.round(event.pageY / zoom) - movingOrigin[1],
+					x: Math.round(event.pageX / zoom - movingOrigin[0]),
+					y: Math.round(event.pageY / zoom - movingOrigin[1]),
 				};
 			}
-			pointerMove([event.pageX, event.pageY]);
 		}
 		function handlePointerEnd() {
 			if (isMoving) {
@@ -203,25 +193,14 @@
 				immediate = true;
 			}
 		}
-		function handlePointerEnter() {
-			console.log("pointerEnter");
-			pointerMove(null);
-		}
-		function handlePointerLeave() {
-			console.log("pointerleave");
-			pointerMove(null);
-		}
 		function focusTerminal(event) {
 			// console.log(event);
 			focusWindow(terminalWindow.id);
-			pointerMove([event.pageX, event.pageY]);
 			event.stopPropagation();
 		}
 
 		on(window, "pointermove", handlePointerMove);
 		on(window, "pointerup", handlePointerEnd);
-		on(window, "pointerenter", handlePointerEnter);
-		on(window, "pointerleave", handlePointerLeave);
 		on(windowElement, "pointerdown", handlePointerStart);
 		on(terminalElement, "pointerdown", focusTerminal);
 		on(terminalElement, "wheel", focusTerminal);

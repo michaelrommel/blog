@@ -127,12 +127,9 @@
 			fabricEl: fabricElement,
 			consoleEl: consoleElement,
 		});
-		fabric.onMove((state) => {
-			pointerMove(state?.xy);
-			if (!state || state?.tap) return;
+		fabric.onMove(() => {
 			center = fabric.center;
 			zoom = fabric.zoom;
-			pointerMove(state?.xy);
 		});
 	});
 
@@ -361,7 +358,7 @@
 	// 50 milliseconds between successive terminal move updates.
 	const sendMove = throttle((message) => {
 		ws?.send(message);
-	}, 200);
+	}, 100);
 
 	async function handleCreate() {
 		if (hasWriteAccess === false) {
@@ -379,15 +376,7 @@
 			});
 			return;
 		}
-		// const existing = terminalWindows.map(([id, winsize]) => ({
-		// 	x: winsize.x,
-		// 	y: winsize.y,
-		// 	width: termWrappers[id].clientWidth,
-		// 	height: termWrappers[id].clientHeight,
-		// }));
-		// const { x, y } = arrangeNewTerminal(existing);
 		ws?.send({ create: [64, 64] });
-		// touchZoom.moveTo([x, y], INITIAL_ZOOM);
 	}
 
 	async function onData(id, data) {
@@ -492,13 +481,13 @@
 	// 	srocket?.send({ setFocus: focused[0] ?? null });
 	// }, 20);
 
-	// 80 milliseconds between successive cursor updates.
+	// nn milliseconds between successive cursor updates.
 	const sendCursor = throttle(
 		(message) => {
 			fabric._consolelog(`cursor: ${JSON.stringify(message)}`);
 			ws?.send(message);
 		},
-		80,
+		100,
 		{ leading: true, trailing: true },
 	);
 
@@ -512,7 +501,6 @@
 	const pointerMove = (coords) => {
 		if (!coords) sendCursor({ setCursor: null });
 		else {
-			console.log(coords);
 			const fabricOffset = getFabricOffset();
 			let x = Math.round(
 				(coords[0] - fabricOffset[0]) / zoom - center[0],
@@ -525,11 +513,12 @@
 	};
 
 	onMount(() => {
-		function handleMouse(event) {
-			const message = { x: event.offsetX, y: event.offsetY };
-			fabric._consolelog(`mouse: ${JSON.stringify(message)}`);
+		function handlePointer(event) {
+			const coords = [event.pageX, event.pageY];
+			pointerMove(coords);
 		}
-		on(fabricElement, "pointermove", handleMouse);
+		on(fabricElement, "pointerenter", handlePointer);
+		on(fabricElement, "pointermove", handlePointer);
 	});
 
 	const focusWindow = (id) => {
@@ -563,8 +552,8 @@
 			let user = users.filter(
 				([id, user]) => id === userId && user.cursor !== null,
 			)[0][1];
-			let cursorX = Math.round((user.cursor?.[0] + center?.[0]) * zoom);
-			let cursorY = Math.round((user.cursor?.[1] + center?.[1]) * zoom);
+			let cursorX = Math.round(user.cursor?.[0] + center?.[0]);
+			let cursorY = Math.round(user.cursor?.[1] + center?.[1]);
 			let transform = `scale(${(zoom * 100).toFixed(3)}%) translate3d(${cursorX}px, ${cursorY}px, 0px)`;
 			fabric._consolelog(JSON.stringify($state.snapshot(user)));
 			fabric._consolelog(
@@ -611,7 +600,6 @@
 					bind:movingId
 					{hasWriteAccess}
 					{focusWindow}
-					{pointerMove}
 					{onData}
 				/>
 			{/each}

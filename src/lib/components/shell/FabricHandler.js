@@ -66,7 +66,7 @@ function FabricHandler(opts) {
 				that.zoom
 			);
 			that.zoom = Vec.clamp(
-				that.zoom + Math.sign(deltaY) * 0.05,
+				that.zoom - Math.sign(deltaY) * 0.05,
 				MIN_ZOOM,
 				MAX_ZOOM
 			);
@@ -170,9 +170,6 @@ function FabricHandler(opts) {
 			onPinchEnd: this._handlePinchEnd
 		},
 		{
-			drag: {
-				filterTaps: true
-			},
 			pinch: {
 				pinchOnWheel: true,
 				scaleBounds: { min: MIN_ZOOM, max: MAX_ZOOM }
