@@ -3,6 +3,7 @@
 	import { fade } from "svelte/transition";
 	import { Tween } from "svelte/motion";
 	import { expoOut } from "svelte/easing";
+	import { on } from "svelte/events";
 
 	import { debounce, throttle, integerMedian } from "$lib/utils.js";
 
@@ -126,9 +127,12 @@
 			fabricEl: fabricElement,
 			consoleEl: consoleElement,
 		});
-		fabric.onMove(() => {
+		fabric.onMove((state) => {
+			pointerMove(state?.xy);
+			if (!state || state?.tap) return;
 			center = fabric.center;
 			zoom = fabric.zoom;
+			pointerMove(state?.xy);
 		});
 	});
 
@@ -208,7 +212,6 @@
 						}
 					});
 				} else if (message.users) {
-					console.log(message);
 					// complete update on the user list
 					users = message.users;
 				} else if (message.userDiff) {
@@ -360,11 +363,6 @@
 		ws?.send(message);
 	}, 200);
 
-	// 80 milliseconds between successive cursor updates.
-	const sendCursor = throttle((message) => {
-		ws?.send(message);
-	}, 80);
-
 	async function handleCreate() {
 		if (hasWriteAccess === false) {
 			makeToast({
@@ -494,9 +492,45 @@
 	// 	srocket?.send({ setFocus: focused[0] ?? null });
 	// }, 20);
 
+	// 80 milliseconds between successive cursor updates.
+	const sendCursor = throttle(
+		(message) => {
+			fabric._consolelog(`cursor: ${JSON.stringify(message)}`);
+			ws?.send(message);
+		},
+		80,
+		{ leading: true, trailing: true },
+	);
+
+	const getFabricOffset = () => [
+		fabricElement?.getBoundingClientRect().x +
+			(window.pageXOffset || window.scrollX),
+		fabricElement?.getBoundingClientRect().y +
+			(window.pageYOffset || window.scrollY),
+	];
+
 	const pointerMove = (coords) => {
-		sendCursor({ setCursor: coords });
+		if (!coords) sendCursor({ setCursor: null });
+		else {
+			console.log(coords);
+			const fabricOffset = getFabricOffset();
+			let x = Math.round(
+				(coords[0] - fabricOffset[0]) / zoom - center[0],
+			);
+			let y = Math.round(
+				(coords[1] - fabricOffset[1]) / zoom - center[1],
+			);
+			sendCursor({ setCursor: [x, y] });
+		}
 	};
+
+	onMount(() => {
+		function handleMouse(event) {
+			const message = { x: event.offsetX, y: event.offsetY };
+			fabric._consolelog(`mouse: ${JSON.stringify(message)}`);
+		}
+		on(fabricElement, "pointermove", handleMouse);
+	});
 
 	const focusWindow = (id) => {
 		let num_of_windows = terminalWindows.length;
@@ -529,9 +563,14 @@
 			let user = users.filter(
 				([id, user]) => id === userId && user.cursor !== null,
 			)[0][1];
-			let transform = `scale(${(zoom * 100).toFixed(3)}%) translate3d(${user.cursor?.[0] + center?.[0]}px, ${user.cursor?.[1] + center?.[1]}px, 0px)`;
-			console.log($state.snapshot(user));
-			console.log(transform);
+			let cursorX = Math.round((user.cursor?.[0] + center?.[0]) * zoom);
+			let cursorY = Math.round((user.cursor?.[1] + center?.[1]) * zoom);
+			let transform = `scale(${(zoom * 100).toFixed(3)}%) translate3d(${cursorX}px, ${cursorY}px, 0px)`;
+			fabric._consolelog(JSON.stringify($state.snapshot(user)));
+			fabric._consolelog(
+				JSON.stringify($state.snapshot(terminalWindows)),
+			);
+			fabric._consolelog(JSON.stringify($state.snapshot(center)));
 			node.style.transform = transform;
 		});
 	};
@@ -578,21 +617,21 @@
 			{/each}
 		</div>
 		<div
-			class="absolute bottom-0 inset-x-0 px-2 h-24 bg-emerald-200 text-zinc-800"
+			class="absolute bottom-0 inset-x-0 px-2 h-48 bg-emerald-200 text-zinc-800 text-xs"
 		>
 			<pre id="console" bind:this={consoleElement}></pre>
 		</div>
+		{#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)}
+			<div
+				class="absolute left-0 top-0 z-99"
+				style:transform-origin="left top"
+				transition:fade|local
+				use:sl={id}
+			>
+				<LiveCursor {user} />
+			</div>
+		{/each}
 	</div>
-	{#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)}
-		<div
-			class="absolute left-0 top-0 z-99"
-			style:transform-origin="left top"
-			transition:fade|local
-			use:sl={id}
-		>
-			<LiveCursor {user} />
-		</div>
-	{/each}
 </div>
 <!-- <main -->
 <!-- 	class="p-8" -->

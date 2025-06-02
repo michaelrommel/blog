@@ -103,10 +103,7 @@
 	// Returns the mouse position in infinite grid coordinates,
 	// offset transformations and zoom.
 	function normalizePosition(event) {
-		return [
-			Math.round(center[0] + event.pageX / zoom),
-			Math.round(center[1] + event.pageY / zoom),
-		];
+		return [Math.round(event.pageX / zoom), Math.round(event.pageY / zoom)];
 	}
 
 	const preloadBuffer = [];
@@ -122,7 +119,8 @@
 
 	onMount(async () => {
 		const [{ Terminal }, { WebglAddon }] = await Promise.all([
-			import("@xterm/xterm"),
+			//import("@xterm/xterm"),
+			import("sshx-xterm"),
 			import("@xterm/addon-webgl"),
 		]);
 
@@ -133,9 +131,9 @@
 			cursorBlink: false,
 			cursorStyle: "block",
 			fontFamily: '"Victor Mono NF"',
-			fontSize: 17,
+			fontSize: 16,
 			fontWeight: 400,
-			fontWeightBold: 500,
+			fontWeightBold: 600,
 			lineHeight: 1.0,
 			scrollback: $settings.scrollback,
 			theme,
@@ -172,28 +170,31 @@
 		// });
 
 		function handlePointerStart(event) {
+			console.log(event);
 			// only react on left mouse button
 			if (event.button === 0) {
-				const [x, y] = normalizePosition(event);
 				isMoving = true;
-				movingOrigin = [x - terminalWindow.x, y - terminalWindow.y];
+				movingOrigin = [
+					Math.round(event.pageX / zoom) - terminalWindow.x,
+					Math.round(event.pageY / zoom) - terminalWindow.y,
+				];
 				movingId = terminalWindow.id;
 				immediate = false;
 				focusWindow(terminalWindow.id);
+				pointerMove([event.pageX, event.pageY]);
 				event.stopPropagation();
 			}
 		}
 
 		function handlePointerMove(event) {
-			const [x, y] = normalizePosition(event);
 			if (isMoving) {
 				terminalWindow = {
 					...terminalWindow,
-					x: Math.round(x - movingOrigin[0]),
-					y: Math.round(y - movingOrigin[1]),
+					x: Math.round(event.pageX / zoom) - movingOrigin[0],
+					y: Math.round(event.pageY / zoom) - movingOrigin[1],
 				};
 			}
-			pointerMove([x, y]);
+			pointerMove([event.pageX, event.pageY]);
 		}
 		function handlePointerEnd() {
 			if (isMoving) {
@@ -202,17 +203,24 @@
 				immediate = true;
 			}
 		}
+		function handlePointerEnter() {
+			console.log("pointerEnter");
+			pointerMove(null);
+		}
 		function handlePointerLeave() {
+			console.log("pointerleave");
 			pointerMove(null);
 		}
 		function focusTerminal(event) {
 			// console.log(event);
 			focusWindow(terminalWindow.id);
+			pointerMove([event.pageX, event.pageY]);
 			event.stopPropagation();
 		}
 
 		on(window, "pointermove", handlePointerMove);
 		on(window, "pointerup", handlePointerEnd);
+		on(window, "pointerenter", handlePointerEnter);
 		on(window, "pointerleave", handlePointerLeave);
 		on(windowElement, "pointerdown", handlePointerStart);
 		on(terminalElement, "pointerdown", focusTerminal);

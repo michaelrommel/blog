@@ -140,6 +140,9 @@ importers:
       shiki:
         specifier: ^3.3.0
         version: 3.3.0
+      sshx-xterm:
+        specifier: ^5.2.1
+        version: 5.2.1
       svelte-persisted-store:
         specifier: ^0.12.0
         version: 0.12.0(svelte@5.28.2)
@@ -2329,6 +2332,9 @@ packages:
   speech-rule-engine@4.0.7:
     resolution: {integrity: sha512-sJrL3/wHzNwJRLBdf6CjJWIlxC04iYKkyXvYSVsWVOiC2DSkHmxsqOhEeMsBA9XK+CHuNcsdkbFDnoUfAsmp9g==}
     hasBin: true
+
+  sshx-xterm@5.2.1:
+    resolution: {integrity: sha512-g9J4maiabj59uXtkI0YZfBceREtlh7+laeB3mFHGDTvKe9Kn6kiATeeva2OytwesnNWjX0CqMb53jwk/i0aC5A==}
 
   standard-as-callback@2.1.0:
     resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
@@ -4935,6 +4941,8 @@ snapshots:
       commander: 9.2.0
       wicked-good-xpath: 1.3.0
       xmldom-sre: 0.1.31
+
+  sshx-xterm@5.2.1: {}
 
   standard-as-callback@2.1.0: {}
 

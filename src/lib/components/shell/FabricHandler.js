@@ -34,6 +34,11 @@ function FabricHandler(opts) {
 	const that = this;
 
 	this._handleDrag = (state) => {
+		if (state.tap) {
+			// send the tap to the parent
+			that._moved(state);
+			return;
+		}
 		that.isPinching = false;
 		if (state.delta[0] === 0 && state.delta[1] === 0 && state.elapsedTime < 200)
 			return;
@@ -165,6 +170,9 @@ function FabricHandler(opts) {
 			onPinchEnd: this._handlePinchEnd
 		},
 		{
+			drag: {
+				filterTaps: true
+			},
 			pinch: {
 				pinchOnWheel: true,
 				scaleBounds: { min: MIN_ZOOM, max: MAX_ZOOM }
