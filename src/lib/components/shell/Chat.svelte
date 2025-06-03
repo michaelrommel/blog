@@ -39,30 +39,25 @@
 		if (text) {
 			chatevent(text);
 			text = "";
-			// let el = document.getElementById("chatinput");
-			// console.log(el);
-			// el.focus();
 		}
 	}
 </script>
 
 <div
-	class="flex flex-col h-full max-h-[800px] bg-gruvdbg1 rounded-md"
+	class="flex flex-col h-full max-h-[800px] bg-gruvdbg1/60 rounded-md"
 	in:fade|local={{ duration: 100 }}
 	out:fade|local={{ duration: 75 }}
 >
-	<div class="flex-1 flex items-center px-3">
-		<div class="flex space-x-2 text-transparent hover:text-black/75">
-			<button
-				class="bg-red-500 w-3 h-3 rounded-full"
-				aria-label="Close"
-				onclick={close}
-			></button>
-		</div>
+	<div class="flex items-center p-3">
+		<button
+			class="bg-red-500 w-3 h-3 rounded-full"
+			aria-label="Close"
+			onclick={close}
+		></button>
+		<div class="ml-3 text-zinc-300 text-sm font-medium">Chat Messages</div>
 	</div>
-	<div class="ml-3 text-zinc-300 text-sm font-medium">Chat Messages</div>
 
-	<div class="px-3 py-2 flex-1 overflow-y-auto" bind:this={scrollEl}>
+	<div class="px-3 py-2 flex-grow overflow-y-auto" bind:this={scrollEl}>
 		<div class="shellchat space-y-3">
 			{#each Object.keys(groupedMessages) as id (id)}
 				<div
@@ -88,7 +83,7 @@
 	<form class="p-3 relative" data-sveltekit-keepfocus onsubmit={handleSubmit}>
 		<input
 			id="chatinput"
-			class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl bg-gruvdbg0 focus:ring-2 focus:ring-ring"
+			class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl bg-gruvdbg0/60 focus:ring-2 focus:ring-ring"
 			placeholder="Aa"
 			bind:value={text}
 		/>

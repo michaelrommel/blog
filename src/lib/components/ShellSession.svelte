@@ -17,15 +17,15 @@
 	import { makeToast } from "./shell/toast";
 	import { settings } from "./shell/settings";
 
-	import Chat from "./shell/ui/Chat.svelte";
-	import ChooseName from "./shell/ui/ChooseName.svelte";
-	import NameList from "./shell/ui/NameList.svelte";
-	import NetworkInfo from "./shell/ui/NetworkInfo.svelte";
-	import SettingsDialog from "./shell/ui/SettingsDialog.svelte";
-	import Toolbar from "./shell/ui/Toolbar.svelte";
+	import Chat from "./shell/Chat.svelte";
+	import ChooseName from "./shell/ChooseName.svelte";
+	import NetworkInfo from "./shell/NetworkInfo.svelte";
+	import Toolbar from "./shell/Toolbar.svelte";
+	import LiveCursor from "./shell/LiveCursor.svelte";
+	import SettingsDialog from "./shell/SettingsDialog.svelte";
+	// import NameList from "./shell/ui/NameList.svelte";
 	// import XTerm from "./shell/ui/XTerm.svelte";
-	import Avatars from "./shell/ui/Avatars.svelte";
-	import LiveCursor from "./shell/ui/LiveCursor.svelte";
+	// import Avatars from "./shell/ui/Avatars.svelte";
 
 	import { Eye } from "@lucide/svelte";
 
@@ -587,25 +587,15 @@
 		toggleNetworkInfo={() => {
 			showNetworkInfo = !showNetworkInfo;
 		}}
+		serverLatency={integerMedian(serverLatencies)}
+		shellLatency={integerMedian(shellLatencies)}
+		status={connected ? "connected" : exitReason ? "no-shell" : "no-server"}
 	/>
-	{#if showNetworkInfo}
-		<div class="absolute">
-			<NetworkInfo
-				status={connected
-					? "connected"
-					: exitReason
-						? "no-shell"
-						: "no-server"}
-				serverLatency={integerMedian(serverLatencies)}
-				shellLatency={integerMedian(shellLatencies)}
-			/>
-		</div>
-	{/if}
 
 	{#if showChat}
 		<div
 			class="absolute flex flex-col justify-end inset-y-10
-			right-4 top-28 w-80 pointer-events-none z-10"
+			right-3 top-28 w-80 z-10"
 		>
 			<Chat
 				{userId}
