@@ -1,5 +1,5 @@
 <script>
-	import { ExternalLink } from "lucide-svelte";
+	import { ExternalLink } from "@lucide/svelte";
 	export let href;
 </script>
 

@@ -1,10 +1,7 @@
 <script>
 	import { tick } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { Send } from "lucide-svelte";
-
-	import CircleButton from "./CircleButton.svelte";
-	import CircleButtons from "./CircleButtons.svelte";
+	import { Send } from "@lucide/svelte";
 
 	let { userId, messages, chatevent, close } = $props();
 
@@ -54,12 +51,16 @@
 	in:fade|local={{ duration: 100 }}
 	out:fade|local={{ duration: 75 }}
 >
-	<div class="flex items-center p-3">
-		<CircleButtons>
-			<CircleButton kind="red" onclick={close} />
-		</CircleButtons>
-		<div class="ml-3 text-zinc-300 text-sm font-medium">Chat Messages</div>
+	<div class="flex-1 flex items-center px-3">
+		<div class="flex space-x-2 text-transparent hover:text-black/75">
+			<button
+				class="bg-red-500 w-3 h-3 rounded-full"
+				aria-label="Close"
+				onclick={close}
+			></button>
+		</div>
 	</div>
+	<div class="ml-3 text-zinc-300 text-sm font-medium">Chat Messages</div>
 
 	<div class="px-3 py-2 flex-1 overflow-y-auto" bind:this={scrollEl}>
 		<div class="shellchat space-y-3">

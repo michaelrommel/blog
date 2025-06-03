@@ -2,13 +2,15 @@
 </script>
 
 <script>
-	import Sun from "lucide-svelte/icons/sun";
-	import Moon from "lucide-svelte/icons/moon";
-	import Menu from "lucide-svelte/icons/menu";
-	import ArrowDown from "lucide-svelte/icons/a-arrow-down";
-	import ArrowUp from "lucide-svelte/icons/a-arrow-up";
-	import User from "lucide-svelte/icons/user-round";
-	import Logout from "lucide-svelte/icons/log-out";
+	import {
+		Sun,
+		Moon,
+		Menu,
+		ArrowDown,
+		ArrowUp,
+		User,
+		LogOut,
+	} from "@lucide/svelte";
 	import Journal from "virtual:icons/bi/journal-bookmark-fill";
 
 	import { toggleMode } from "mode-watcher";
@@ -128,7 +130,7 @@
 <!-- class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full" -->
 
 <header id="header" class="bg-gruvlbg/90 dark:bg-gruvdbg/90 backdrop-blur-xs">
-	<nav class="mx-2 md:mx-4 lg:mx-8">
+	<nav class="hidden mx-2 md:mx-4 lg:mx-8">
 		<div
 			class="w-full flex items-center justify-between text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl"
 		>
@@ -248,7 +250,7 @@
 												size="icon"
 												class="px-1 ml-2"
 											>
-												<Logout />
+												<LogOut />
 											</Button>
 										</form>
 									</div>

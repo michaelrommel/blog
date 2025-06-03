@@ -1,5 +1,5 @@
 <script>
-	import ChevronDown from "lucide-svelte/icons/chevron-down";
+	import { ChevronDown } from "@lucide/svelte";
 	import { Select as SelectPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils.js";
 
@@ -8,7 +8,10 @@
 
 <SelectPrimitive.ScrollDownButton
 	bind:ref
-	class={cn("flex cursor-default items-center justify-center py-1", className)}
+	class={cn(
+		"flex cursor-default items-center justify-center py-1",
+		className,
+	)}
 	{...restProps}
 >
 	<ChevronDown class="size-4" />

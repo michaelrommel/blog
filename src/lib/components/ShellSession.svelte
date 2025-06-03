@@ -26,7 +26,8 @@
 	// import XTerm from "./shell/ui/XTerm.svelte";
 	import Avatars from "./shell/ui/Avatars.svelte";
 	import LiveCursor from "./shell/ui/LiveCursor.svelte";
-	import { Eye } from "lucide-svelte";
+
+	import { Eye } from "@lucide/svelte";
 
 	let { id, receiveName } = $props();
 
@@ -571,7 +572,49 @@
 	class="flex"
 	style:height="600px"
 >
-	<div class="w-16">pinch</div>
+	<Toolbar
+		{connected}
+		{hasWriteAccess}
+		{newMessages}
+		createTerminal={handleCreate}
+		toggleChat={() => {
+			showChat = !showChat;
+			newMessages = false;
+		}}
+		toggleSettings={() => {
+			showSettings = true;
+		}}
+		toggleNetworkInfo={() => {
+			showNetworkInfo = !showNetworkInfo;
+		}}
+	/>
+	{#if showNetworkInfo}
+		<div class="absolute">
+			<NetworkInfo
+				status={connected
+					? "connected"
+					: exitReason
+						? "no-shell"
+						: "no-server"}
+				serverLatency={integerMedian(serverLatencies)}
+				shellLatency={integerMedian(shellLatencies)}
+			/>
+		</div>
+	{/if}
+
+	{#if showChat}
+		<div
+			class="absolute flex flex-col justify-end inset-y-10
+			right-4 top-28 w-80 pointer-events-none z-10"
+		>
+			<Chat
+				{userId}
+				messages={chatMessages}
+				chatevent={(text) => ws?.send({ chat: text })}
+				close={() => (showChat = false)}
+			/>
+		</div>
+	{/if}
 	<div class="relative h-full flex-grow">
 		<div
 			class="absolute inset-0 -z-10 bg-[#212121]"
@@ -645,34 +688,7 @@
 <!-- 			showNetworkInfo = !showNetworkInfo; -->
 <!-- 		}} -->
 <!-- 	/> -->
-
-<!-- 	{#if showNetworkInfo} -->
-<!-- 		<div class="absolute"> -->
-<!-- 			<NetworkInfo -->
-<!-- 				status={connected -->
-<!-- 					? "connected" -->
-<!-- 					: exitReason -->
-<!-- 						? "no-shell" -->
-<!-- 						: "no-server"} -->
-<!-- 				serverLatency={integerMedian(serverLatencies)} -->
-<!-- 				shellLatency={integerMedian(shellLatencies)} -->
-<!-- 			/> -->
-<!-- 		</div> -->
-<!-- 	{/if} -->
 <!-- </div> -->
-
-<!-- {#if showChat} -->
-<!-- 	<div -->
-<!-- 		class="absolute flex flex-col justify-end inset-y-14 right-4 top-28 w-80 pointer-events-none z-10" -->
-<!-- 	> -->
-<!-- 		<Chat -->
-<!-- 			{userId} -->
-<!-- 			messages={chatMessages} -->
-<!-- 			chatevent={(text) => srocket?.send({ chat: text })} -->
-<!-- 			close={() => (showChat = false)} -->
-<!-- 		/> -->
-<!-- 	</div> -->
-<!-- {/if} -->
 
 <!-- <SettingsDialog bind:isopen={showSettings} /> -->
 <!-- <ChooseName /> -->

@@ -1,7 +1,8 @@
 <script>
 	import { onMount } from "svelte";
 
-	import Info from "lucide-svelte/icons/info";
+	import { Info } from "@lucide/svelte";
+
 	import * as Popover from "$lib/components/ui/popover";
 	import { Slider } from "$lib/components/ui/slider";
 	import { Button } from "$lib/components/ui/button";
