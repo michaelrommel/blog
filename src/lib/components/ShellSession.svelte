@@ -18,12 +18,12 @@
 	import { settings } from "./shell/settings";
 
 	import Chat from "./shell/Chat.svelte";
+	import NameList from "./shell/NameList.svelte";
 	import ChooseName from "./shell/ChooseName.svelte";
 	import NetworkInfo from "./shell/NetworkInfo.svelte";
 	import Toolbar from "./shell/Toolbar.svelte";
 	import LiveCursor from "./shell/LiveCursor.svelte";
 	import SettingsDialog from "./shell/SettingsDialog.svelte";
-	// import NameList from "./shell/ui/NameList.svelte";
 	// import XTerm from "./shell/ui/XTerm.svelte";
 	// import Avatars from "./shell/ui/Avatars.svelte";
 
@@ -554,6 +554,20 @@
 		window.scrollTo(0, fabric.fabricOffset[1]);
 	};
 
+	const collectWindows = () => {
+		let offset = 1;
+		terminalWindows.forEach((tw) => {
+			movingId = tw.id;
+			tw.x = offset * gridSpacing;
+			tw.y = offset * gridSpacing;
+			tw.z = offset;
+			offset += 1;
+			updateServer(tw);
+		});
+		center = [gridSpacing, gridSpacing];
+		scrollToEdge();
+	};
+
 	const sl = (node, userId) => {
 		$effect(() => {
 			let user = users.filter(
@@ -583,6 +597,7 @@
 		{hasWriteAccess}
 		{newMessages}
 		createTerminal={handleCreate}
+		{collectWindows}
 		toggleChat={() => {
 			showChat = !showChat;
 			newMessages = false;
@@ -595,18 +610,32 @@
 		}}
 		serverLatency={integerMedian(serverLatencies)}
 		shellLatency={integerMedian(shellLatencies)}
-		status={connected ? "connected" : exitReason ? "no-shell" : "no-server"}
+		status={connected ? "connected" : exitReason ? "no shell" : "no server"}
 	/>
 
-	{#if showChat}
-		<Chat
-			{userId}
-			messages={chatMessages}
-			chatevent={(text) => ws?.send({ chat: text })}
-			close={() => (showChat = false)}
-		/>
-	{/if}
-	<div class="relative h-full flex-grow">
+	<div class="relative h-full flex-grow overflow-hidden">
+		<div
+			class="absolute right-0 w-30 top-0 z-10 flex flex-col rounded-md border border-gruvgray"
+			in:fade|local={{ duration: 100 }}
+			out:fade|local={{ duration: 75 }}
+		>
+			<NameList {users} />
+		</div>
+		<div
+			class="absolute right-0 w-80 bottom-0 z-10 flex flex-col h-dvh rounded-md border border-gruvgray"
+			class:hidden={!showChat}
+			style:max-height="max(min(80dvh,600px),60dvh)"
+			in:fade|local={{ duration: 100 }}
+			out:fade|local={{ duration: 75 }}
+		>
+			<Chat
+				{showChat}
+				{userId}
+				messages={chatMessages}
+				chatevent={(text) => ws?.send({ chat: text })}
+				close={() => (showChat = false)}
+			/>
+		</div>
 		<div
 			class="absolute inset-0 -z-10 bg-[#212121]"
 			style:background-image="radial-gradient(#404040 {1.5 * zoom}px,
@@ -619,6 +648,16 @@
 				(center[0] - gridSpacing / 2)}px {zoom *
 				(center[1] - gridSpacing / 2)}px"
 		></div>
+		{#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)}
+			<div
+				class="absolute left-0 top-0 z-99"
+				style:transform-origin="left top"
+				transition:fade|local
+				use:sl={id}
+			>
+				<LiveCursor {user} />
+			</div>
+		{/each}
 		<div
 			class="absolute top-[0px] inset-0 overflow-hidden touch-none"
 			bind:this={fabricElement}
@@ -640,21 +679,14 @@
 				/>
 			{/each}
 		</div>
-		<div
-			class="absolute bottom-0 inset-x-0 px-2 h-48 bg-emerald-200 text-zinc-800 text-xs"
-		>
-			<pre id="console" bind:this={consoleElement}></pre>
+		<div class="absolute bottom-0 inset-x-0 px-2 h-48 bg-gruvdbg1 text-xs">
+			Debug:
+			<pre
+				sdfasdfasdfasdf
+				class="absolute top-0"
+				id="console"
+				bind:this={consoleElement}></pre>
 		</div>
-		{#each users.filter(([id, user]) => id !== userId && user.cursor !== null) as [id, user] (id)}
-			<div
-				class="absolute left-0 top-0 z-99"
-				style:transform-origin="left top"
-				transition:fade|local
-				use:sl={id}
-			>
-				<LiveCursor {user} />
-			</div>
-		{/each}
 	</div>
 </div>
 <!-- <main -->
@@ -710,9 +742,6 @@
 <!-- 		<div class="text-yellow-400">Connecting…</div> -->
 <!-- 	{/if} -->
 
-<!-- 	<div class="mt-4"> -->
-<!-- 		<NameList {users} /> -->
-<!-- 	</div> -->
 <!-- </div> -->
 
 <!-- <div -->

@@ -8,6 +8,7 @@
 		PanelTop,
 		Server,
 		SquareTerminal,
+		Group,
 	} from "@lucide/svelte";
 	import { Button } from "$lib/components/ui/button";
 	import * as Popover from "$lib/components/ui/popover";
@@ -17,6 +18,7 @@
 		hasWriteAccess,
 		newMessages,
 		createTerminal,
+		collectWindows,
 		toggleChat,
 		toggleSettings,
 		serverLatency,
@@ -60,6 +62,15 @@
 				: "Create new terminal"}
 	>
 		<CirclePlus />
+	</Button>
+	<Button
+		variant="outline"
+		size="icon"
+		class="p-1 my-1"
+		title="Collect all windows"
+		onclick={collectWindows}
+	>
+		<Group />
 	</Button>
 	<Button
 		variant="outline"
