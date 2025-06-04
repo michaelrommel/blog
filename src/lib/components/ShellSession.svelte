@@ -83,7 +83,8 @@
 		let height = `${vh - headerSize.height - footerSize.height}px`;
 		// account for "m-3" on the outer enclosing element. I did not want
 		// to change that, because it is nice to have some separation from the
-		// browser's edge not only for articles.
+		// browser's edge not only for articles. One pixel for Firefox, which
+		// miraculously started adding a scrollbar.
 		fabricContainer.style.height = `calc(${height} - 6 * var(--spacing) - 1px)`;
 		// console.log(`resize: ${height}`);
 	};
@@ -589,7 +590,7 @@
 <div
 	id="fabricContainer"
 	bind:this={fabricContainer}
-	class="flex"
+	class="flex overflow-hidden"
 	style:height="600px"
 >
 	<Toolbar
@@ -622,9 +623,9 @@
 			<NameList {users} />
 		</div>
 		<div
-			class="absolute right-0 w-80 bottom-0 z-10 flex flex-col h-dvh rounded-md border border-gruvgray"
+			class="absolute right-0 w-80 bottom-0 z-10 flex flex-col rounded-md border border-gruvgray"
 			class:hidden={!showChat}
-			style:max-height="max(min(80dvh,400px),60dvh)"
+			style:height="clamp(30%,900px,80%)"
 			in:fade|local={{ duration: 100 }}
 			out:fade|local={{ duration: 75 }}
 		>
