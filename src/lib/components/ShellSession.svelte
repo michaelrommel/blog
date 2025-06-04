@@ -84,7 +84,7 @@
 		// account for "m-3" on the outer enclosing element. I did not want
 		// to change that, because it is nice to have some separation from the
 		// browser's edge not only for articles.
-		fabricContainer.style.height = `calc(${height} - 6 * var(--spacing))`;
+		fabricContainer.style.height = `calc(${height} - 6 * var(--spacing) - 1px)`;
 		// console.log(`resize: ${height}`);
 	};
 
@@ -556,11 +556,11 @@
 
 	const collectWindows = () => {
 		let offset = 1;
-		terminalWindows.forEach((tw) => {
-			movingId = tw.id;
+		let ids = terminalWindows.map((tw) => tw.id);
+		ids.forEach((id) => {
+			let tw = terminalWindows.filter((win) => win.id === id)[0];
 			tw.x = offset * gridSpacing;
 			tw.y = offset * gridSpacing;
-			tw.z = offset;
 			offset += 1;
 			updateServer(tw);
 		});
@@ -624,7 +624,7 @@
 		<div
 			class="absolute right-0 w-80 bottom-0 z-10 flex flex-col h-dvh rounded-md border border-gruvgray"
 			class:hidden={!showChat}
-			style:max-height="max(min(80dvh,600px),60dvh)"
+			style:max-height="max(min(80dvh,400px),60dvh)"
 			in:fade|local={{ duration: 100 }}
 			out:fade|local={{ duration: 75 }}
 		>

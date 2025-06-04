@@ -10,11 +10,11 @@
 	// });
 </script>
 
-<div class="flex items-center p-1 bg-gruvdbg0/50 rounded-t-md">
+<div class="flex items-center p-1 bg-gruvdbg1/90 rounded-t-md">
 	<div class="ml-2 text-zinc-300 text-sm font-medium">Buddies</div>
 </div>
 
-<div class="p-1 flex-grow rounded-b-md overflow-y-auto bg-gruvdbg1">
+<div class="p-1 flex-grow rounded-b-md overflow-y-auto bg-gruvdbg0">
 	<div class="rounded-b-md text-xs">
 		<ul class="flex flex-col">
 			{#each sortedUsers as [id, user] (id)}

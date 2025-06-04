@@ -43,7 +43,7 @@
 	}
 </script>
 
-<div class="flex items-center p-1 bg-gruvdbg0/50 rounded-t-md">
+<div class="flex items-center p-1 bg-gruvdbg1/90 rounded-t-md">
 	<button
 		class="ml-2 bg-gruvlemphyellow w-3 h-3 rounded-full"
 		aria-label="Close"
@@ -53,7 +53,7 @@
 </div>
 
 <div
-	class="px-3 py-2 flex-grow overflow-y-auto bg-gruvdbg1"
+	class="px-3 py-2 flex-grow overflow-y-auto bg-gruvdbg0"
 	bind:this={scrollEl}
 >
 	<div class="shellchat space-y-3">
@@ -79,19 +79,19 @@
 </div>
 
 <form
-	class="p-3 relative bg-gruvdbg1 rounded-b-md"
+	class="p-3 relative bg-gruvdbg0 rounded-b-md"
 	data-sveltekit-keepfocus
 	onsubmit={handleSubmit}
 >
 	<input
 		id="chatinput"
-		class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl bg-gruvdbg0/60 focus:ring-2 focus:ring-ring"
+		class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl bg-gruvdbg1 focus:ring-2 focus:ring-ring"
 		placeholder="Aa"
 		bind:value={text}
 	/>
 	<div class="absolute right-6 inset-y-0">
 		<button class="h-full align-middle" transition:fly|local={{ x: 8 }}>
-			<Send class="text-indigo-300 hover:text-white transition-colors" />
+			<Send class="text-gruvdfg4 hover:text-gruvdfg transition-colors" />
 		</button>
 	</div>
 </form>

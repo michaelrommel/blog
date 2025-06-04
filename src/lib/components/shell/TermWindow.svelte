@@ -278,13 +278,13 @@
 </script>
 
 <div
-	class="absolute bg-gruvdbg0/50 top-0 left-0 inline-block border border-gruvdemphblue focused rounded-lg"
+	class="absolute bg-gruvdbg1/90 top-0 left-0 inline-block border border-gruvdemphblue focused rounded-lg"
 	style:transform-origin="top left"
 	transition:fade|local
 	use:sl
 >
 	<div class="flex select-none" bind:this={windowElement}>
-		<div class="flex items-center px-3">
+		<div class="flex items-center pt-1 px-3">
 			<div class="flex space-x-2 text-transparent hover:text-black/75">
 				<button
 					class="bg-gruvlemphred w-3 h-3 rounded-full"
@@ -304,7 +304,7 @@
 			</div>
 		</div>
 		<div
-			class="p-1 text-sm text-gruvdfg text-center font-medium overflow-hidden whitespace-nowrap text-ellipsis w-0 flex-grow-[4]"
+			class="pt-1 text-sm text-gruvdfg text-center font-medium overflow-hidden whitespace-nowrap text-ellipsis w-0 flex-grow-[4]"
 		>
 			{terminalTitle}
 		</div>
