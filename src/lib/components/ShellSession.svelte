@@ -31,10 +31,6 @@
 
 	let { id, receiveName } = $props();
 
-	// Terminal width and height limits.
-	const TERM_MIN_ROWS = 8;
-	const TERM_MIN_COLS = 32;
-
 	// DOM Element where the fabric is mounted
 	let fabricElement;
 	// enclosing container, needed for proper resizing
@@ -225,7 +221,9 @@
 					}
 				} else if (message.shells) {
 					// update on the set of terminal windows
+					let toBeClosed = terminalWindows.map((tw) => tw.id);
 					for (const [id, size] of message.shells) {
+						toBeClosed = toBeClosed.filter((tw) => tw !== id);
 						// iterate over all shells, old and new
 						let found = false;
 						for (const tw of terminalWindows) {
@@ -257,8 +255,6 @@
 								cols: size.cols,
 							});
 						}
-					}
-					for (const [id] of message.shells) {
 						if (!subscriptions.has(id)) {
 							chunknums[id] ??= 0;
 							locks[id] ??= createLock();
@@ -266,8 +262,16 @@
 							ws?.send({ subscribe: [id, chunknums[id]] });
 						}
 					}
+					// remove closed terminals
+					// if (toBeClosed.length > 0) {
+					// 	console.log(
+					// 		`need to close window ${JSON.stringify(toBeClosed)}`,
+					// 	);
+					// }
+					terminalWindows = terminalWindows.filter(
+						(tw) => !toBeClosed.includes(tw.id),
+					);
 				} else if (message.hear) {
-					console.log(message.hear);
 					const [uid, name, msg] = message.hear;
 					chatMessages.push({ uid, name, msg, sentAt: new Date() });
 					chatMessages = chatMessages;
@@ -329,7 +333,7 @@
 
 	$effect(() => {
 		if ($settings.name) {
-			console.log("settings: user name changed");
+			// console.log("settings: user name changed");
 			ws?.send({ setName: $settings.name });
 		}
 	});
@@ -342,12 +346,7 @@
 		for (const tw of terminalWindows) {
 			if (tw.id === movingId) {
 				// this is the locally moving window, report to the server
-				sendMove({
-					move: [
-						tw.id,
-						{ x: tw.x, y: tw.y, rows: tw.rows, cols: tw.cols },
-					],
-				});
+				updateServer(tw);
 				// console.log(
 				// 	"effect session: " +
 				// 		JSON.stringify($state.snapshot(terminalWindows)),
@@ -356,6 +355,13 @@
 		}
 	});
 
+	// this function does not check for moving windows so we can use it
+	// to send a resize triggered by a toolbar button to the server
+	const updateServer = (tw) => {
+		sendMove({
+			move: [tw.id, { x: tw.x, y: tw.y, rows: tw.rows, cols: tw.cols }],
+		});
+	};
 	// 50 milliseconds between successive terminal move updates.
 	const sendMove = throttle((message) => {
 		ws?.send(message);
@@ -381,7 +387,7 @@
 	}
 
 	async function onData(id, data) {
-		console.log(data);
+		// console.log(data);
 		if (counter === 0n) {
 			// On the first call, initialize the counter to a random 64-bit integer.
 			const array = new Uint8Array(8);
@@ -485,7 +491,7 @@
 	// nn milliseconds between successive cursor updates.
 	const sendCursor = throttle(
 		(message) => {
-			fabric._consolelog(`cursor: ${JSON.stringify(message)}`);
+			// fabric._consolelog(`cursor: ${JSON.stringify(message)}`);
 			ws?.send(message);
 		},
 		100,
@@ -556,11 +562,11 @@
 			let cursorX = Math.round(user.cursor?.[0] + center?.[0]);
 			let cursorY = Math.round(user.cursor?.[1] + center?.[1]);
 			let transform = `scale(${(zoom * 100).toFixed(3)}%) translate3d(${cursorX}px, ${cursorY}px, 0px)`;
-			fabric._consolelog(JSON.stringify($state.snapshot(user)));
-			fabric._consolelog(
-				JSON.stringify($state.snapshot(terminalWindows)),
-			);
-			fabric._consolelog(JSON.stringify($state.snapshot(center)));
+			// fabric._consolelog(JSON.stringify($state.snapshot(user)));
+			// fabric._consolelog(
+			// 	JSON.stringify($state.snapshot(terminalWindows)),
+			// );
+			// fabric._consolelog(JSON.stringify($state.snapshot(center)));
 			node.style.transform = transform;
 		});
 	};
@@ -634,6 +640,8 @@
 					{hasWriteAccess}
 					{focusWindow}
 					{onData}
+					onClose={() => ws?.send({ close: terminalWindow.id })}
+					onWindowUpdate={() => updateServer(terminalWindow)}
 				/>
 			{/each}
 		</div>

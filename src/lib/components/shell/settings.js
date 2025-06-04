@@ -6,8 +6,8 @@ const storedSettings = persisted('shell-settings', {});
 
 /** A persisted store for settings of the current user. */
 export const settings = derived(storedSettings, ($storedSettings) => {
-	console.log('settings: ');
-	console.log($storedSettings);
+	// console.log('settings: ');
+	// console.log($storedSettings);
 	// Do some validation on all of the stored settings.
 	const name = $storedSettings.name ?? '';
 
@@ -29,6 +29,6 @@ export const settings = derived(storedSettings, ($storedSettings) => {
 });
 
 export function updateSettings(values) {
-	console.log(`Updating settings with ${JSON.stringify(values)}`);
+	// console.log(`Updating settings with ${JSON.stringify(values)}`);
 	storedSettings.update((settings) => ({ ...settings, ...values }));
 }

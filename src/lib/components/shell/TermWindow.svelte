@@ -70,6 +70,8 @@
 		hasWriteAccess,
 		focusWindow,
 		onData,
+		onClose,
+		onWindowUpdate,
 	} = $props();
 
 	let windowElement;
@@ -82,6 +84,10 @@
 	let term = null;
 	let theme = $derived(themes[$settings.theme]);
 	let terminalTitle = $state("Remote Terminal");
+
+	// Terminal width and height limits.
+	const TERM_MIN_ROWS = 8;
+	const TERM_MIN_COLS = 32;
 
 	$effect(() => {
 		if (term) {
@@ -98,6 +104,20 @@
 		const r = terminalWindow.rows;
 		term?.resize(c, r);
 	});
+
+	const shrink = () => {
+		if (!hasWriteAccess) return;
+		terminalWindow.rows = Math.max(terminalWindow.rows - 4, TERM_MIN_ROWS);
+		terminalWindow.cols = Math.max(terminalWindow.cols - 10, TERM_MIN_COLS);
+		onWindowUpdate();
+	};
+
+	const expand = () => {
+		if (!hasWriteAccess) return;
+		terminalWindow.rows = terminalWindow.rows + 4;
+		terminalWindow.cols = terminalWindow.cols + 10;
+		onWindowUpdate();
+	};
 
 	const preloadBuffer = [];
 	write = (data) => {
@@ -162,7 +182,6 @@
 		// });
 
 		function handlePointerStart(event) {
-			console.log(event);
 			// only react on left mouse button
 			if (event.button === 0) {
 				isMoving = true;
@@ -263,22 +282,24 @@
 	style:transform-origin="top left"
 	transition:fade|local
 	use:sl
-	bind:this={windowElement}
 >
-	<div class="flex select-none">
-		<div class="flex-1 flex items-center px-3">
+	<div class="flex select-none" bind:this={windowElement}>
+		<div class="flex items-center px-3">
 			<div class="flex space-x-2 text-transparent hover:text-black/75">
 				<button
-					class="bg-red-500 w-3 h-3 rounded-full"
+					class="bg-gruvlemphred w-3 h-3 rounded-full"
 					aria-label="Close"
+					onclick={onClose}
 				></button>
 				<button
-					class="bg-yellow-300 w-3 h-3 rounded-full"
+					class="bg-gruvlemphyellow w-3 h-3 rounded-full"
 					aria-label="Shrink"
+					onclick={shrink}
 				></button>
 				<button
-					class="bg-green-400 w-3 h-3 rounded-full"
+					class="bg-green-600 w-3 h-3 rounded-full"
 					aria-label="Expand"
+					onclick={expand}
 				></button>
 			</div>
 		</div>

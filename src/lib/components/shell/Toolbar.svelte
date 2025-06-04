@@ -25,16 +25,26 @@
 	} = $props();
 
 	let popoverOpen = $state(false);
+	let isAutoClosing = false;
+	const autoClose = () => {
+		if (!isAutoClosing) {
+			isAutoClosing = true;
+			window.setTimeout(() => {
+				popoverOpen = false;
+				isAutoClosing = false;
+			}, 3000);
+		}
+	};
+
+	let wasConnected = false;
 	$effect(() => {
-		if (!connected) {
+		// triggered on a change of connected
+		if (wasConnected !== connected) {
+			wasConnected = connected;
 			popoverOpen = true;
+			autoClose();
 		}
 	});
-	const autoclose = () => {
-		window.setTimeout(() => {
-			popoverOpen = false;
-		}, 3000);
-	};
 </script>
 
 <div class="flex flex-col items-center mr-3">
@@ -80,7 +90,7 @@
 				size="icon"
 				class="p-0.5 my-1 rounded-full"
 				title="Show connection info"
-				onclick={autoclose}
+				onclick={autoClose}
 			>
 				<div class:hidden={connected}>
 					<Unplug class="text-gruvdemphred" />
@@ -104,19 +114,19 @@
 			<PanelTop strokeWidth="1.5" />
 		</div>
 		<div
-			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg border-dashed"
+			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg4 border-dashed"
 		>
-			<div class="ml-1 text-xs">{serverLatency}</div>
-			<div class="ml-1 text-xs">ms</div>
+			<div class="mx-1 text-xs">{serverLatency}</div>
+			<div class="mx-1 text-xs">ms</div>
 		</div>
 		<div class="mb p-2 bg-gruvdbg1 rounded" title="Server">
 			<Server strokeWidth="1.5" />
 		</div>
 		<div
-			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg border-dashed"
+			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg4 border-dashed"
 		>
-			<div class="ml-1 text-xs">{shellLatency}</div>
-			<div class="ml-1 text-xs">ms</div>
+			<div class="mx-1 text-xs">{shellLatency}</div>
+			<div class="mx-1 text-xs">ms</div>
 		</div>
 		<div class="mb p-2 bg-gruvdbg1 rounded" title="Shell">
 			<SquareTerminal strokeWidth="1.5" />
