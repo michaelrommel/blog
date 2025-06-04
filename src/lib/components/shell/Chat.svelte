@@ -44,20 +44,24 @@
 </script>
 
 <div
-	class="flex flex-col h-full max-h-[800px] bg-gruvdbg1/60 rounded-md"
+	class="absolute right-3 w-80 bottom-10 z-10 flex flex-col h-dvh rounded-md border border-gruvgray"
+	style:max-height="max(min(80dvh,600px),60dvh)"
 	in:fade|local={{ duration: 100 }}
 	out:fade|local={{ duration: 75 }}
 >
-	<div class="flex items-center p-3">
+	<div class="flex items-center p-3 bg-gruvdbg0/50 rounded-t-md">
 		<button
-			class="bg-red-500 w-3 h-3 rounded-full"
+			class="bg-gruvlemphyellow w-3 h-3 rounded-full"
 			aria-label="Close"
 			onclick={close}
 		></button>
 		<div class="ml-3 text-zinc-300 text-sm font-medium">Chat Messages</div>
 	</div>
 
-	<div class="px-3 py-2 flex-grow overflow-y-auto" bind:this={scrollEl}>
+	<div
+		class="px-3 py-2 flex-grow overflow-y-auto bg-gruvdbg1"
+		bind:this={scrollEl}
+	>
 		<div class="shellchat space-y-3">
 			{#each Object.keys(groupedMessages) as id (id)}
 				<div
@@ -80,7 +84,11 @@
 		</div>
 	</div>
 
-	<form class="p-3 relative" data-sveltekit-keepfocus onsubmit={handleSubmit}>
+	<form
+		class="p-3 relative bg-gruvdbg1 rounded-b-md"
+		data-sveltekit-keepfocus
+		onsubmit={handleSubmit}
+	>
 		<input
 			id="chatinput"
 			class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl bg-gruvdbg0/60 focus:ring-2 focus:ring-ring"

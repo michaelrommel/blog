@@ -84,21 +84,18 @@
 	</Button>
 	<div class="h-8"></div>
 	<Popover.Root bind:open={popoverOpen}>
-		<Popover.Trigger>
-			<Button
-				variant="outline"
-				size="icon"
-				class="p-0.5 my-1 rounded-full"
-				title="Show connection info"
-				onclick={autoClose}
-			>
-				<div class:hidden={connected}>
-					<Unplug class="text-gruvdemphred" />
-				</div>
-				<div class:hidden={!connected}>
-					<Cable class="rotate-45 text-gruvdemphgreen" />
-				</div>
-			</Button>
+		<Popover.Trigger
+			class="my-1 rounded-full mb bg-gruvdbg1 p-2 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-accent disabled:pointer-events-none"
+			title="Show connection info"
+			onclick={autoClose}
+			role="none"
+		>
+			<div class:hidden={connected}>
+				<Unplug class="text-gruvdemphred" />
+			</div>
+			<div class:hidden={!connected}>
+				<Cable class="rotate-45 text-gruvdemphgreen" />
+			</div>
 		</Popover.Trigger>
 		<Popover.Content
 			class="p-2 px-4"

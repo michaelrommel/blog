@@ -599,17 +599,12 @@
 	/>
 
 	{#if showChat}
-		<div
-			class="absolute flex flex-col justify-end inset-y-10
-			right-3 top-28 w-80 z-10"
-		>
-			<Chat
-				{userId}
-				messages={chatMessages}
-				chatevent={(text) => ws?.send({ chat: text })}
-				close={() => (showChat = false)}
-			/>
-		</div>
+		<Chat
+			{userId}
+			messages={chatMessages}
+			chatevent={(text) => ws?.send({ chat: text })}
+			close={() => (showChat = false)}
+		/>
 	{/if}
 	<div class="relative h-full flex-grow">
 		<div
