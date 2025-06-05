@@ -26,16 +26,18 @@
 	bind:isopen
 >
 	<div class="flex flex-col gap-4">
-		<div class="item">
-			<div>
-				<p class="item-title">Name</p>
-				<p class="item-subtitle">
+		<div
+			class="bg-gruvdbg0 rounded-lg p-4 flex gap-4 flex-col sm:flex-row items-start"
+		>
+			<div class="flex-1">
+				<p class="font-medium mb-1">Name</p>
+				<p class="text-sm text-gruvdfg4">
 					Choose how you appear to other users.
 				</p>
 			</div>
 			<div>
 				<input
-					class="input-common"
+					class="w-52 px-3 py-2 text-sm rounded-md bg-gruvdbg0h hover:bg-white/5 border border-zinc-700 outline-none focus:ring-2 focus:ring-ring appearance-none transition-colors"
 					placeholder="Your name"
 					bind:value={inputName}
 					maxlength="50"
@@ -47,14 +49,18 @@
 				/>
 			</div>
 		</div>
-		<div class="item">
-			<div>
-				<p class="item-title">Color palette</p>
-				<p class="item-subtitle">Color theme for text in terminals.</p>
+		<div
+			class="bg-gruvdbg0 rounded-lg p-4 flex gap-4 flex-col sm:flex-row items-start"
+		>
+			<div class="flex-1">
+				<p class="font-medium mb-1">Color palette</p>
+				<p class="text-sm text-gruvdfg4">
+					Color theme for text in terminals.
+				</p>
 			</div>
 			<div class="relative">
 				<select
-					class="input-common !pr-5"
+					class="w-52 px-3 py-2 text-sm rounded-md bg-gruvdbg0h hover:bg-white/5 border border-zinc-700 outline-none focus:ring-2 focus:ring-ring appearance-none transition-colors !pr-5"
 					bind:value={inputTheme}
 					onchange={() => updateSettings({ theme: inputTheme })}
 				>
@@ -64,17 +70,19 @@
 				</select>
 			</div>
 		</div>
-		<div class="item">
-			<div>
-				<p class="item-title">Scrollback</p>
-				<p class="item-subtitle">
+		<div
+			class="bg-gruvdbg0 zinc-800/25 rounded-lg p-4 flex gap-4 flex-col sm:flex-row items-start"
+		>
+			<div class="flex-1">
+				<p class="font-medium mb-1">Scrollback</p>
+				<p class="text-sm text-gruvdfg4">
 					Lines of previous text displayed in the terminal window.
 				</p>
 			</div>
 			<div>
 				<input
 					type="number"
-					class="input-common"
+					class="w-52 px-3 py-2 text-sm rounded-md bg-gruvdbg0h hover:bg-white/5 border border-zinc-700 outline-none focus:ring-2 focus:ring-ring appearance-none transition-colors"
 					bind:value={inputScrollback}
 					oninput={() => {
 						if (inputScrollback >= 0) {
@@ -87,11 +95,11 @@
 		</div>
 	</div>
 
-	<p class="mt-6 text-sm text-right text-zinc-400">
+	<p class="mt-6 text-sm text-right text-gruvlemphblue">
 		<a
 			target="_blank"
 			rel="noreferrer"
-			href="https://github.com/ekzhang/sshx"
+			href="https://github.com/michaelrommel/blog"
 		>
 			<!-- eslint-disable-next-line -->
 			git {__COMMIT__}/{__MODIFIED__}

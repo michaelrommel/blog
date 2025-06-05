@@ -604,7 +604,7 @@
 			newMessages = false;
 		}}
 		toggleSettings={() => {
-			showSettings = true;
+			showSettings = !showSettings;
 		}}
 		toggleNetworkInfo={() => {
 			showNetworkInfo = !showNetworkInfo;
@@ -637,6 +637,7 @@
 				close={() => (showChat = false)}
 			/>
 		</div>
+		<SettingsDialog bind:isopen={showSettings} />
 		<div
 			class="absolute inset-0 -z-10 bg-[#212121]"
 			style:background-image="radial-gradient(#404040 {1.5 * zoom}px,
@@ -716,7 +717,6 @@
 <!-- 	/> -->
 <!-- </div> -->
 
-<!-- <SettingsDialog bind:isopen={showSettings} /> -->
 <!-- <ChooseName /> -->
 
 <!--
