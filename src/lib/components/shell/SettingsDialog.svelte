@@ -24,6 +24,7 @@
 	title="Terminal Settings"
 	description="Customize your collaborative terminal."
 	bind:isopen
+	wide={true}
 >
 	<div class="flex flex-col gap-4">
 		<div

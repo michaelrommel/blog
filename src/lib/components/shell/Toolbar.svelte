@@ -49,7 +49,7 @@
 	});
 </script>
 
-<div class="flex flex-col items-center mr-3">
+<div class="px-1 flex flex-col items-center mr-3">
 	<Button
 		variant="outline"
 		size="icon"

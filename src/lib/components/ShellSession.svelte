@@ -637,6 +637,7 @@
 				close={() => (showChat = false)}
 			/>
 		</div>
+		<ChooseName />
 		<SettingsDialog bind:isopen={showSettings} />
 		<div
 			class="absolute inset-0 -z-10 bg-[#212121]"
@@ -716,8 +717,6 @@
 <!-- 		}} -->
 <!-- 	/> -->
 <!-- </div> -->
-
-<!-- <ChooseName /> -->
 
 <!--
     Dotted circle background appears underneath the rest of the elements, but
