@@ -75,11 +75,16 @@
 	<Button
 		variant="outline"
 		size="icon"
-		class="p-1 my-1"
+		class="p-1 my-1 relative"
 		title="Show chat window"
 		onclick={toggleChat}
 	>
 		<MessageSquare />
+		{#if newMessages}
+			<div
+				class="absolute top-1.5 right-1 p-[4.5px] bg-gruvdemphred rounded-full"
+			></div>
+		{/if}
 	</Button>
 	<Button
 		variant="outline"
@@ -88,9 +93,6 @@
 		title="Show settings window"
 		onclick={toggleSettings}
 	>
-		{#if newMessages}
-			<div class="activity"></div>
-		{/if}
 		<Settings />
 	</Button>
 	<div class="h-8"></div>

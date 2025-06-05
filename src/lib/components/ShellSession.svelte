@@ -1,11 +1,9 @@
 <script>
 	import { onDestroy, onMount, tick } from "svelte";
 	import { fade } from "svelte/transition";
-	import { Tween } from "svelte/motion";
-	import { expoOut } from "svelte/easing";
 	import { on } from "svelte/events";
 
-	import { debounce, throttle, integerMedian } from "$lib/utils.js";
+	import { throttle, integerMedian } from "$lib/utils.js";
 
 	import FabricHandler from "./shell/FabricHandler.js";
 	import TermWindow from "./shell/TermWindow.svelte";
@@ -18,16 +16,11 @@
 	import { settings } from "./shell/settings";
 
 	import Chat from "./shell/Chat.svelte";
-	import NameList from "./shell/NameList.svelte";
+	import BuddyList from "./shell/BuddyList.svelte";
 	import ChooseName from "./shell/ChooseName.svelte";
-	import NetworkInfo from "./shell/NetworkInfo.svelte";
 	import Toolbar from "./shell/Toolbar.svelte";
 	import LiveCursor from "./shell/LiveCursor.svelte";
 	import SettingsDialog from "./shell/SettingsDialog.svelte";
-	// import XTerm from "./shell/ui/XTerm.svelte";
-	// import Avatars from "./shell/ui/Avatars.svelte";
-
-	import { Eye } from "@lucide/svelte";
 
 	let { id, receiveName } = $props();
 
@@ -44,11 +37,13 @@
 	let center = $state([0, 0]);
 	let zoom = $state(1.0);
 
+	const DEBUG = false;
 	// let terminalWindows = $state([
 	// 	{ id: 1, z: 1, x: 96, y: 32, rows: 24, cols: 80 },
 	// 	{ id: 2, z: 3, x: 0, y: 0, rows: 24, cols: 80 },
 	// 	{ id: 3, z: 2, x: 64, y: 64, rows: 24, cols: 80 },
 	// ]);
+
 	// the individual terminal windows
 	let terminalWindows = $state([]);
 	// Bound "write" method for each terminal.
@@ -413,21 +408,6 @@
 	// 	if (activeElement instanceof HTMLElement) activeElement.focus();
 	// });
 
-	// Global mouse handler logic follows, attached to the window element for smoothness.
-	// onMount(() => {
-
-	// 	function handleMouse(event) {
-	// 		if (movingId !== -1 && !movingIsDone) {
-	// 			console.log("handleMouse");
-	// 			const [x, y] = normalizePosition(event);
-	// 			movingSize = {
-	// 				...movingSize,
-	// 				x: Math.round(x - movingOrigin[0]),
-	// 				y: Math.round(y - movingOrigin[1]),
-	// 			};
-	// 			// sendMove({ move: [movingId, movingSize] });
-	// 		}
-
 	// if (resizing !== -1) {
 	// 	const cols = Math.max(
 	// 		Math.floor(
@@ -446,37 +426,6 @@
 	// 		srocket?.send({ move: [resizing, resizingSize] });
 	// 	}
 	// }
-
-	// sendCursor({ setCursor: normalizePosition(event) });
-	// 	}
-
-	// 	function handleMouseEnd(event) {
-	// 		if (movingId !== -1) {
-	// 			console.log("handleMouseEnd");
-	// 			movingIsDone = true;
-	// 			// sendMove.cancel();
-	// 			// srocket?.send({ move: [movingId, movingSize] });
-	// 		}
-
-	// 		// if (resizing !== -1) {
-	// 		// 	resizing = -1;
-	// 		// }
-
-	// 		// if (event.type === "mouseleave") {
-	// 		// 	sendCursor.cancel();
-	// 		// 	srocket?.send({ setCursor: null });
-	// 		// }
-	// 	}
-
-	// 	window.addEventListener("mousemove", handleMouse);
-	// 	window.addEventListener("mouseup", handleMouseEnd);
-	// 	// document.body.addEventListener("mouseleave", handleMouseEnd);
-	// 	return () => {
-	// 		window.removeEventListener("mousemove", handleMouse);
-	// 		window.removeEventListener("mouseup", handleMouseEnd);
-	// 		// document.body.removeEventListener("mouseleave", handleMouseEnd);
-	// 	};
-	// });
 
 	// let focused = [];
 	// $effect(() => {
@@ -616,11 +565,11 @@
 
 	<div class="relative h-full flex-grow overflow-hidden">
 		<div
-			class="absolute right-0 w-30 top-0 z-10 flex flex-col rounded-md border border-gruvgray"
+			class="absolute right-0 w-40 top-0 z-10 flex flex-col rounded-md border border-gruvgray"
 			in:fade|local={{ duration: 100 }}
 			out:fade|local={{ duration: 75 }}
 		>
-			<NameList {users} />
+			<BuddyList {users} />
 		</div>
 		<div
 			class="absolute right-0 w-80 bottom-0 z-10 flex flex-col rounded-md border border-gruvgray"
@@ -682,10 +631,11 @@
 				/>
 			{/each}
 		</div>
-		<div class="absolute bottom-0 inset-x-0 px-2 h-48 bg-gruvdbg1 text-xs">
-			Debug:
+		<div
+			class="absolute bottom-0 inset-x-0 px-2 h-48 bg-gruvdbg1 text-xs"
+			class:hidden={!DEBUG}
+		>
 			<pre
-				sdfasdfasdfasdf
 				class="absolute top-0"
 				id="console"
 				bind:this={consoleElement}></pre>
@@ -693,78 +643,9 @@
 	</div>
 </div>
 <!-- <main -->
-<!-- 	class="p-8" -->
 <!-- 	class:cursor-nwse-resize={resizing !== -1} -->
 <!-- 	onwheel={(event) => event.preventDefault()} -->
-<!-- > -->
-<!-- <div -->
-<!-- 	class="absolute top-100px inset-x-0 flex justify-center pointer-events-none z-10" -->
-<!-- > -->
-<!-- 	<Toolbar -->
-<!-- 		{connected} -->
-<!-- 		{newMessages} -->
-<!-- 		{hasWriteAccess} -->
-<!-- 		createTerminal={handleCreate} -->
-<!-- 		toggleChat={() => { -->
-<!-- 			showChat = !showChat; -->
-<!-- 			newMessages = false; -->
-<!-- 		}} -->
-<!-- 		toggleSettings={() => { -->
-<!-- 			showSettings = true; -->
-<!-- 		}} -->
-<!-- 		toggleNetworkInfo={() => { -->
-<!-- 			showNetworkInfo = !showNetworkInfo; -->
-<!-- 		}} -->
-<!-- 	/> -->
-<!-- </div> -->
 
-<!--
-    Dotted circle background appears underneath the rest of the elements, but
-    moves and zooms with the fabric of the canvas.
-  -->
-
-<!-- <div class="py-2"> -->
-<!-- 	{#if exitReason !== null} -->
-<!-- 		<div class="text-red-400">{exitReason}</div> -->
-<!-- 	{:else if connected} -->
-<!-- 		<div class="flex items-center"> -->
-<!-- 			<div class="text-green-400">You are connected!</div> -->
-<!-- 			{#if userId && hasWriteAccess === false} -->
-<!-- 				<div -->
-<!-- 					class="bg-yellow-900 text-yellow-200 px-1 py-0.5 rounded ml-3 inline-flex items-center gap-1" -->
-<!-- 				> -->
-<!-- 					<Eye size="14" /> -->
-<!-- 					<span class="text-xs">Read-only</span> -->
-<!-- 				</div> -->
-<!-- 			{/if} -->
-<!-- 		</div> -->
-<!-- 	{:else} -->
-<!-- 		<div class="text-yellow-400">Connecting…</div> -->
-<!-- 	{/if} -->
-
-<!-- </div> -->
-
-<!-- <div -->
-<!-- 	class="absolute inset-0 overflow-hidden touch-none" -->
-<!-- 	id="fabricEl" -->
-<!-- 	bind:this={fabricEl} -->
-<!-- > -->
-<!-- <div -->
-<!-- 	id="termwrapper" -->
-<!-- 	class="absolute" -->
-<!-- 	style:left={OFFSET_LEFT_CSS} -->
-<!-- 	style:top={OFFSET_TOP_CSS} -->
-<!-- 	style:transform-origin={OFFSET_TRANSFORM_ORIGIN_CSS} -->
-<!-- 	transition:fade|local -->
-<!-- 	use:slide={{ -->
-<!-- 		x: ws.x, -->
-<!-- 		y: ws.y, -->
-<!-- 		center, -->
-<!-- 		zoom, -->
-<!-- 		immediate: id === movingId, -->
-<!-- 	}} -->
-<!-- 	bind:this={termWrappers[id]} -->
-<!-- > -->
 <!-- 	<XTerm -->
 <!-- 		{setupTestEventlisteners} -->
 <!-- 		rows={ws.rows} -->
@@ -804,16 +685,6 @@
 <!-- 		}} -->
 <!-- 	/> -->
 
-<!-- User avatars -->
-<!-- <div class="absolute bottom-2.5 right-2.5 pointer-events-none"> -->
-<!-- 	<Avatars -->
-<!-- 		users={users.filter( -->
-<!-- 			([uid, user]) => -->
-<!-- 				uid !== userId && user.focus === id, -->
-<!-- 		)} -->
-<!-- 	/> -->
-<!-- </div> -->
-
 <!-- Interactable element for resizing -->
 <!-- <div -->
 <!-- 	class="absolute w-5 h-5 -bottom-1 -right-1 cursor-nwse-resize" -->
@@ -837,4 +708,3 @@
 <!-- 	onpointerdown={(event) => event.stopPropagation()} -->
 <!-- 	role="none" -->
 <!-- ></div> -->
-<!-- </div> -->
