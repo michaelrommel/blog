@@ -92,28 +92,33 @@
 
 .xterm .xterm-viewport {
 	/* On OS X this is required in order for the scroll bar to appear fully opaque */
-	background-color: #000;
+	/* background-color: #000; */
 	overflow-y: scroll;
+	scrollbar-color: var(--color-gruvlfg2) transparent;
 	cursor: default;
 	position: absolute;
 	right: 0;
 	left: 0;
 	top: 0;
 	bottom: 0;
-	border-radius: var(--radius-lg);
+	border-bottom-right-radius: var(--radius-lg);
+	border-bottom-left-radius: var(--radius-lg);
 }
 
 .xterm .xterm-screen {
 	position: relative;
-	border-radius: var(--radius-lg);
+	border-bottom-right-radius: var(--radius-lg);
+	border-bottom-left-radius: var(--radius-lg);
 }
 
 .xterm .xterm-screen .xterm-rows {
-	border-radius: var(--radius-lg);
+	border-bottom-right-radius: var(--radius-lg);
+	border-bottom-left-radius: var(--radius-lg);
 }
 
 .xterm .xterm-screen .xterm-rows>div:nth-last-child(1) {
-	border-radius: var(--radius-lg);
+	border-bottom-right-radius: var(--radius-lg);
+	border-bottom-left-radius: var(--radius-lg);
 }
 
 .xterm .xterm-screen canvas {
