@@ -211,7 +211,7 @@
 						users = [...users, [id, update]];
 					}
 				} else if (message.shells) {
-					// console.log("shells");
+					// console.log(message.shells);
 					// update on the set of terminal windows
 					let toBeClosed = terminalWindows.map((tw) => tw.id);
 					// we remember how many terminals there were
@@ -354,10 +354,22 @@
 
 	// this function does not check for moving windows so we can use it
 	// to send a resize triggered by a toolbar button to the server
-	const updateServer = (tw) => {
-		sendMove({
-			move: [tw.id, { x: tw.x, y: tw.y, rows: tw.rows, cols: tw.cols }],
-		});
+	const updateServer = (tw, force = false) => {
+		if (force) {
+			ws?.send({
+				move: [
+					tw.id,
+					{ x: tw.x, y: tw.y, rows: tw.rows, cols: tw.cols },
+				],
+			});
+		} else {
+			sendMove({
+				move: [
+					tw.id,
+					{ x: tw.x, y: tw.y, rows: tw.rows, cols: tw.cols },
+				],
+			});
+		}
 	};
 	// 50 milliseconds between successive terminal move updates.
 	const sendMove = throttle((message) => {
@@ -489,14 +501,21 @@
 
 	const collectWindows = () => {
 		let offset = 1;
-		let ids = terminalWindows.map((tw) => tw.id);
-		ids.forEach((id) => {
-			let tw = terminalWindows.filter((win) => win.id === id)[0];
+		const stackMap = terminalWindows
+			.map((win) => [win.z, win.id])
+			.sort((a, b) => {
+				return a[0] == b[0] ? 0 : a[0] > b[0] ? -1 : 1;
+			});
+		const reorderedTerminalWindows = [];
+		stackMap.forEach(([, id]) => {
+			const tw = { ...terminalWindows.filter((tw) => tw.id === id)[0] };
 			tw.x = offset * gridSpacing;
 			tw.y = offset * gridSpacing;
 			offset += 1;
-			updateServer(tw);
+			reorderedTerminalWindows.push(tw);
 		});
+		terminalWindows = reorderedTerminalWindows;
+		reorderedTerminalWindows.forEach((tw) => updateServer(tw, true));
 		center = [gridSpacing, gridSpacing];
 		scrollToEdge();
 	};
