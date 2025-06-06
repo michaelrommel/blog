@@ -68,7 +68,7 @@
 		write = $bindable(),
 		movingId = $bindable(), // the id of the moving window, to report back
 		hasWriteAccess,
-		focusWindow,
+		bringWindowToFront,
 		onData,
 		onClose,
 		onWindowUpdate,
@@ -112,15 +112,23 @@
 		term?.resize(c, r);
 	});
 
-	const shrink = () => {
+	const close = (event) => {
 		if (!hasWriteAccess) return;
+		event.stopPropagation();
+		onClose();
+	};
+
+	const shrink = (event) => {
+		if (!hasWriteAccess) return;
+		event.stopPropagation();
 		terminalWindow.rows = Math.max(terminalWindow.rows - 4, TERM_MIN_ROWS);
 		terminalWindow.cols = Math.max(terminalWindow.cols - 10, TERM_MIN_COLS);
 		onWindowUpdate();
 	};
 
-	const expand = () => {
+	const expand = (event) => {
 		if (!hasWriteAccess) return;
+		event.stopPropagation();
 		terminalWindow.rows = terminalWindow.rows + 4;
 		terminalWindow.cols = terminalWindow.cols + 10;
 		onWindowUpdate();
@@ -215,7 +223,6 @@
 					terminalWidth / resizingSize[0],
 					terminalHeight / resizingSize[1],
 				];
-				console.log(cell);
 				let wfr = getWireframeRect();
 				wireframeElement.style.width = wfr[0];
 				wireframeElement.style.height = wfr[1];
@@ -226,10 +233,12 @@
 		}
 
 		function handlePointerStart(event) {
+			if (!hasWriteAccess) {
+				bringWindowToFront(terminalWindow.id);
+				return;
+			}
 			// only react on left mouse button
 			if (event.button === 0) {
-				focusWindow(terminalWindow.id);
-				if (!hasWriteAccess) return;
 				isMoving = true;
 				movingOrigin = [
 					Math.round(event.pageX / zoom - terminalWindow.x),
@@ -237,6 +246,7 @@
 				];
 				movingId = terminalWindow.id;
 				immediate = false;
+				// bringWindowToFront(terminalWindow.id);
 				event.stopPropagation();
 			}
 		}
@@ -270,6 +280,7 @@
 				isMoving = false;
 				movingId = -1;
 				immediate = true;
+				bringWindowToFront(terminalWindow.id);
 			}
 			if (isResizing) {
 				isResizing = false;
@@ -281,8 +292,8 @@
 			}
 		}
 
-		function focusTerminal(event) {
-			focusWindow(terminalWindow.id);
+		function bringTerminalToFront(event) {
+			bringWindowToFront(terminalWindow.id);
 			event.stopPropagation();
 		}
 
@@ -290,8 +301,8 @@
 		on(window, "pointerup", handlePointerEnd);
 		on(windowElement, "pointerdown", handlePointerStart);
 		on(resizeHandle, "pointerdown", handleResizeStart);
-		on(terminalElement, "pointerdown", focusTerminal);
-		on(terminalElement, "wheel", focusTerminal);
+		on(terminalElement, "pointerdown", bringTerminalToFront);
+		on(terminalElement, "wheel", bringTerminalToFront);
 	});
 
 	tweenie = Tween.of(
@@ -323,27 +334,15 @@
 
 	const sl = (node) => {
 		$effect(() => {
-			// console.log(
-			// 	"ef slide child: " +
-			// 		JSON.stringify(
-			// 			$state.snapshot(tweenie?.current.winSize?.id),
-			// 		) +
-			// 		" => " +
-			// 		JSON.stringify(
-			// 			$state.snapshot(tweenie?.current.winSize?.x),
-			// 		),
-			// );
 			node.style.transform = `scale(${(tweenie?.current.zoom * 100).toFixed(3)}%) translate3d(${tweenie?.current.winSize?.x + tweenie?.current.center?.[0]}px, ${tweenie?.current.winSize?.y + tweenie?.current.center?.[1]}px, 0)`;
-			// node.style.transform = `scale(${(tweenie?.current.zoom * 100).toFixed(3)}%)`;
-			// node.style.transform = `translate3d(${(tweenie?.current.winSize?.x + tweenie?.current.center?.[0]) * tweenie?.current.zoom}px, ${(tweenie?.current.winSize?.y + tweenie?.current.center?.[1]) * tweenie?.current.zoom}px, 0)`;
 			node.style["z-index"] = tweenie?.current.winSize?.z;
 		});
 	};
+
 	// function listen(node, { name, handler }) {
 	// 	node.addEventListener(name, handler);
 	// 	return { destroy: () => node.removeEventListener(name, handler) };
 	// }
-	// style:background-image="radial-gradient(#333 {zoom}px, transparent 0)"
 </script>
 
 <div
@@ -355,20 +354,25 @@
 	<div class="flex select-none" bind:this={windowElement}>
 		<div class="flex items-center pt-1 px-3">
 			<div class="flex space-x-2 text-transparent hover:text-black/75">
+				<!-- 
+					TODO: This should be onclick, but that is not working 
+					due to the containing element's onpointerdown
+					stopPropagation() call.
+				-->
 				<button
 					class="bg-gruvlemphred w-3 h-3 rounded-full"
 					aria-label="Close"
-					onclick={onClose}
+					onpointerdown={close}
 				></button>
 				<button
 					class="bg-gruvlemphyellow w-3 h-3 rounded-full"
 					aria-label="Shrink"
-					onclick={shrink}
+					onpointerdown={shrink}
 				></button>
 				<button
 					class="bg-green-600 w-3 h-3 rounded-full"
 					aria-label="Expand"
-					onclick={expand}
+					onpointerdown={expand}
 				></button>
 			</div>
 		</div>
@@ -397,42 +401,4 @@
 		bind:this={resizeHandle}
 		class="absolute bottom-[-2px] right-[-2px] border-4 border-t-transparent border-l-transparent border-b-gruvdfg4 border-r-gruvdfg4 rounded-br-lg w-[15px] h-[15px] cursor-nwse-resize"
 	></div>
-
-	<!-- <div -->
-	<!-- 	class="p-2 text-slate-100 bg-gray-800 rounded-b-2xl w-[20rem] h-[250px] overflow-y-scroll overflow-x-hidden" -->
-	<!-- 	style:scrollbar-color="gray rgba(0, 0, 0, 0)" -->
-	<!-- 	bind:this={terminalElement} -->
-	<!-- > -->
-	<!-- 		Windows with Svelte 5.<br /><br /> -->
-	<!-- 		<pre> -->
-	<!-- id={tweenie.current.winSize.id} -->
-	<!-- x={tweenie.current.winSize.x.toFixed(3)} -->
-	<!-- y={tweenie.current.winSize.y.toFixed(3)} -->
-	<!-- z={tweenie.current.winSize.z.toFixed(3)} -->
-	<!-- center=[ {tweenie.current.center[0].toFixed( -->
-	<!-- 				0, -->
-	<!-- 			)}, {tweenie.current.center[1].toFixed(0)} ] -->
-	<!-- zoom={tweenie.current.zoom.toFixed(3)} -->
-
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-	<!-- And this is some long text, so that this div will overflow -->
-	<!-- and I have the chance to see scrolling with the wheel working. -->
-
-	<!-- 		</pre> -->
-	<!-- 	</div> -->
 </div>

@@ -38,15 +38,15 @@
 		}
 	};
 
-	let wasConnected = false;
-	$effect(() => {
-		// triggered on a change of connected
-		if (wasConnected !== connected) {
-			wasConnected = connected;
-			popoverOpen = true;
-			autoClose();
-		}
-	});
+	// let wasConnected = false;
+	// $effect(() => {
+	// 	// triggered on a change of connected
+	// 	if (wasConnected !== connected) {
+	// 		wasConnected = connected;
+	// 		popoverOpen = true;
+	// 		autoClose();
+	// 	}
+	// });
 </script>
 
 <div class="px-1 flex flex-col items-center mr-3">

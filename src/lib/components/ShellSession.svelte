@@ -6,20 +6,20 @@
 	import { throttle, integerMedian } from "$lib/utils.js";
 
 	import FabricHandler from "./shell/FabricHandler.js";
-	import TermWindow from "./shell/TermWindow.svelte";
 
-	import { Encrypt } from "./shell/encrypt";
-	import { createLock } from "./shell/lock";
 	import { ReconWS } from "./shell/reconws.js";
+	import { Encrypt } from "./shell/encrypt.js";
+	import { createLock } from "./shell/lock.js";
 
-	import { makeToast } from "./shell/toast";
-	import { settings } from "./shell/settings";
+	import { makeToast } from "./shell/toast.js";
+	import { settings } from "./shell/settings.js";
 
+	import TermWindow from "./shell/TermWindow.svelte";
+	import LiveCursor from "./shell/LiveCursor.svelte";
+	import Toolbar from "./shell/Toolbar.svelte";
 	import Chat from "./shell/Chat.svelte";
 	import BuddyList from "./shell/BuddyList.svelte";
 	import ChooseName from "./shell/ChooseName.svelte";
-	import Toolbar from "./shell/Toolbar.svelte";
-	import LiveCursor from "./shell/LiveCursor.svelte";
 	import SettingsDialog from "./shell/SettingsDialog.svelte";
 
 	let { id, receiveName } = $props();
@@ -211,9 +211,12 @@
 						users = [...users, [id, update]];
 					}
 				} else if (message.shells) {
-					console.log(message.shells);
+					// console.log("shells");
 					// update on the set of terminal windows
 					let toBeClosed = terminalWindows.map((tw) => tw.id);
+					// we remember how many terminals there were
+					// for the z stacking order.
+					let maxZ = toBeClosed.length;
 					for (const [id, size] of message.shells) {
 						toBeClosed = toBeClosed.filter((tw) => tw !== id);
 						// iterate over all shells, old and new
@@ -238,9 +241,10 @@
 							// sent us. Maybe another user added it.
 							// here would be the place to add additional parameters
 							// that the TermWindow component needs
+							maxZ += 1;
 							terminalWindows.push({
 								id, // the terminal ID
-								z: id, // the z stacking order of the terminal
+								z: maxZ, // the z stacking order of the terminal
 								x: size.x,
 								y: size.y,
 								rows: size.rows,
@@ -263,6 +267,7 @@
 					terminalWindows = terminalWindows.filter(
 						(tw) => !toBeClosed.includes(tw.id),
 					);
+					restackTerminals(null);
 				} else if (message.hear) {
 					const [uid, name, msg] = message.hear;
 					chatMessages.push({ uid, name, msg, sentAt: new Date() });
@@ -392,37 +397,6 @@
 		ws?.send({ data: [id, encrypted, offset] });
 	}
 
-	// // Stupid hack to preserve input focus when terminals are reordered.
-	// // See: https://github.com/sveltejs/svelte/issues/3973
-	// let activeElement = null;
-
-	// $effect.pre(() => {
-	// 	activeElement = document.activeElement;
-	// });
-
-	// $effect(() => {
-	// 	if (activeElement instanceof HTMLElement) activeElement.focus();
-	// });
-
-	// if (resizing !== -1) {
-	// 	const cols = Math.max(
-	// 		Math.floor(
-	// 			(event.pageX - resizingOrigin[0]) / resizingCell[0],
-	// 		),
-	// 		TERM_MIN_COLS, // Minimum number of columns.
-	// 	);
-	// 	const rows = Math.max(
-	// 		Math.floor(
-	// 			(event.pageY - resizingOrigin[1]) / resizingCell[1],
-	// 		),
-	// 		TERM_MIN_ROWS, // Minimum number of rows.
-	// 	);
-	// 	if (rows !== resizingSize.rows || cols !== resizingSize.cols) {
-	// 		resizingSize = { ...resizingSize, rows, cols };
-	// 		srocket?.send({ move: [resizing, resizingSize] });
-	// 	}
-	// }
-
 	// let focused = [];
 	// $effect(() => {
 	// 	setFocus(focused);
@@ -474,22 +448,35 @@
 		on(fabricElement, "pointermove", handlePointer);
 	});
 
-	const focusWindow = (id) => {
-		let num_of_windows = terminalWindows.length;
-		let order = num_of_windows - 1;
-		terminalWindows = terminalWindows
+	const restackTerminals = (frontId) => {
+		// console.log(`restack: ${frontId}`);
+		// console.log($state.snapshot(terminalWindows));
+		// map of ids in z-descending order
+		const stackMap = terminalWindows
+			.map((win) => [win.z, win.id])
 			.sort((a, b) => {
-				return a.z == b.z ? 0 : a.z > b.z ? -1 : 1;
-			})
-			.map((win) => {
-				if (win.id == id) {
-					win.z = num_of_windows;
-				} else {
-					win.z = order;
-					order = order - 1;
-				}
-				return win;
+				return a[0] == b[0] ? 0 : a[0] > b[0] ? -1 : 1;
 			});
+		let num_of_windows = stackMap.length;
+		let maxZ = num_of_windows;
+		const reorderedTerminalWindows = [];
+		stackMap.forEach(([, id]) => {
+			const tw = { ...terminalWindows.filter((tw) => tw.id === id)[0] };
+			// if we have been given a frontId, this window shall
+			// receive the topmost z value
+			if (frontId) {
+				if (tw.id === frontId) {
+					tw.z = maxZ;
+				} else {
+					tw.z = --num_of_windows;
+				}
+			} else {
+				tw.z = num_of_windows--;
+			}
+			reorderedTerminalWindows.push(tw);
+		});
+		// console.log(reorderedTerminalWindows);
+		terminalWindows = reorderedTerminalWindows;
 	};
 
 	// this function is used to scroll to the top of the fabric and
@@ -620,7 +607,7 @@
 					bind:write={writers[terminalWindow.id]}
 					bind:movingId
 					{hasWriteAccess}
-					{focusWindow}
+					bringWindowToFront={restackTerminals}
 					{onData}
 					onClose={() => ws?.send({ close: terminalWindow.id })}
 					onWindowUpdate={() => updateServer(terminalWindow)}
