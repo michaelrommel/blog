@@ -226,9 +226,10 @@
 		}
 
 		function handlePointerStart(event) {
-			if (!hasWriteAccess) return;
 			// only react on left mouse button
 			if (event.button === 0) {
+				focusWindow(terminalWindow.id);
+				if (!hasWriteAccess) return;
 				isMoving = true;
 				movingOrigin = [
 					Math.round(event.pageX / zoom - terminalWindow.x),
@@ -236,7 +237,6 @@
 				];
 				movingId = terminalWindow.id;
 				immediate = false;
-				focusWindow(terminalWindow.id);
 				event.stopPropagation();
 			}
 		}
