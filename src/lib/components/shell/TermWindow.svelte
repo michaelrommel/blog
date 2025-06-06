@@ -39,7 +39,7 @@
 					console.log(error);
 				}
 				state = "loaded";
-				console.log("ff observer loaded");
+				// console.log("ff observer loaded");
 				for (const fn of waitlist) fn();
 			} else {
 				await new Promise((resolve) => {
@@ -76,6 +76,13 @@
 
 	let windowElement;
 	let terminalElement;
+	let wireframeElement;
+	let resizeHandle;
+	let isResizing = false; // are we resizing
+	let resizingSize = $state([0, 0]);
+	let cell = [0, 0];
+	let chromeHeight = 0;
+	let resizingOrigin = [0, 0]; // Coordinates of mouse at origin when drag started.
 	let isMoving = false; // are we moving
 	let movingOrigin = [0, 0]; // Coordinates of mouse at origin when drag started.
 	let tweenie = $state();
@@ -181,7 +188,45 @@
 		// 	);
 		// });
 
+		function getWireframeRect() {
+			return [
+				`${resizingSize[0] * cell[0]}px`,
+				`${resizingSize[1] * cell[1] + chromeHeight}px`,
+			];
+		}
+
+		function handleResizeStart(event) {
+			if (!hasWriteAccess) return;
+			// only react on left mouse button
+			if (event.button === 0) {
+				isResizing = true;
+				resizingSize = [terminalWindow.cols, terminalWindow.rows];
+				resizingOrigin = [
+					Math.round(event.pageX / zoom),
+					Math.round(event.pageY / zoom),
+				];
+				chromeHeight =
+					windowElement.getBoundingClientRect().height / zoom;
+				let terminalHeight =
+					terminalElement.getBoundingClientRect().height / zoom;
+				let terminalWidth =
+					terminalElement.getBoundingClientRect().width / zoom;
+				cell = [
+					terminalWidth / resizingSize[0],
+					terminalHeight / resizingSize[1],
+				];
+				console.log(cell);
+				let wfr = getWireframeRect();
+				wireframeElement.style.width = wfr[0];
+				wireframeElement.style.height = wfr[1];
+				wireframeElement.classList.remove("hidden");
+				wireframeElement.classList.add("flex");
+				event.stopPropagation();
+			}
+		}
+
 		function handlePointerStart(event) {
+			if (!hasWriteAccess) return;
 			// only react on left mouse button
 			if (event.button === 0) {
 				isMoving = true;
@@ -204,6 +249,21 @@
 					y: Math.round(event.pageY / zoom - movingOrigin[1]),
 				};
 			}
+			if (isResizing) {
+				let cols = Math.round(
+					(event.pageX / zoom - resizingOrigin[0]) / cell[0],
+				);
+				let rows = Math.round(
+					(event.pageY / zoom - resizingOrigin[1]) / cell[1],
+				);
+				resizingSize = [
+					Math.max(terminalWindow.cols + cols, TERM_MIN_COLS),
+					Math.max(terminalWindow.rows + rows, TERM_MIN_ROWS),
+				];
+				let wfr = getWireframeRect();
+				wireframeElement.style.width = wfr[0];
+				wireframeElement.style.height = wfr[1];
+			}
 		}
 		function handlePointerEnd() {
 			if (isMoving) {
@@ -211,9 +271,17 @@
 				movingId = -1;
 				immediate = true;
 			}
+			if (isResizing) {
+				isResizing = false;
+				wireframeElement.classList.remove("flex");
+				wireframeElement.classList.add("hidden");
+				terminalWindow.cols = resizingSize[0];
+				terminalWindow.rows = resizingSize[1];
+				onWindowUpdate();
+			}
 		}
+
 		function focusTerminal(event) {
-			// console.log(event);
 			focusWindow(terminalWindow.id);
 			event.stopPropagation();
 		}
@@ -221,6 +289,7 @@
 		on(window, "pointermove", handlePointerMove);
 		on(window, "pointerup", handlePointerEnd);
 		on(windowElement, "pointerdown", handlePointerStart);
+		on(resizeHandle, "pointerdown", handleResizeStart);
 		on(terminalElement, "pointerdown", focusTerminal);
 		on(terminalElement, "wheel", focusTerminal);
 	});
@@ -278,7 +347,7 @@
 </script>
 
 <div
-	class="absolute bg-gruvdbg1/90 top-0 left-0 inline-block border border-gruvdemphblue focused rounded-lg"
+	class="absolute bg-gruvdbg1/90 top-0 left-0 inline-block border border-gruvlfg3 focused rounded-lg"
 	style:transform-origin="top left"
 	transition:fade|local
 	use:sl
@@ -311,7 +380,24 @@
 		<div class="flex-1"></div>
 	</div>
 
-	<div bind:this={terminalElement} class="rounded-lg p-1"></div>
+	<div bind:this={terminalElement} class="rounded-lg"></div>
+
+	<div
+		bind:this={wireframeElement}
+		class="absolute top-0 left-0 outline-2 outline-orange-400 outline-dashed rounded-lg bg-transparent pointer-events-none hidden items-center justify-center"
+	>
+		<div
+			class="bg-gruvdbg1 text-md text-gruvdfg1 px-8 py-3 border-2 border-gruvdbg4 border-dashed rounded-full select-none"
+		>
+			{resizingSize[0]} x {resizingSize[1]}
+		</div>
+	</div>
+
+	<div
+		bind:this={resizeHandle}
+		class="absolute bottom-[-2px] right-[-2px] border-4 border-t-transparent border-l-transparent border-b-gruvdfg4 border-r-gruvdfg4 rounded-br-lg w-[15px] h-[15px] cursor-nwse-resize"
+	></div>
+
 	<!-- <div -->
 	<!-- 	class="p-2 text-slate-100 bg-gray-800 rounded-b-2xl w-[20rem] h-[250px] overflow-y-scroll overflow-x-hidden" -->
 	<!-- 	style:scrollbar-color="gray rgba(0, 0, 0, 0)" -->

@@ -9,7 +9,7 @@
 	let groupedMessages = $state({});
 
 	$effect(() => {
-		console.log("message update");
+		// console.log("message update");
 		group_messages(messages);
 		tick().then(() => {
 			scrollEl.scroll({ top: scrollEl.scrollHeight });
@@ -30,7 +30,6 @@
 			}
 		}
 		groupedMessages = gm;
-		console.log(gm);
 	}
 
 	let text = $state(null);

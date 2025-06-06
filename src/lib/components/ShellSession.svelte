@@ -147,11 +147,6 @@
 		users.find(([uid]) => uid === userId)?.[1]?.canWrite,
 	);
 
-	let resizing = $state(-1); // Terminal ID that is being resized.
-	let resizingOrigin = [0, 0]; // Coordinates of top-left origin when resize started.
-	let resizingSize; // Last resize message sent.
-	let resizingCell = [0, 0]; // Pixel dimensions of a single terminal cell.
-
 	let chatMessages = $state([]);
 	let newMessages = $state(false);
 
@@ -216,6 +211,7 @@
 						users = [...users, [id, update]];
 					}
 				} else if (message.shells) {
+					console.log(message.shells);
 					// update on the set of terminal windows
 					let toBeClosed = terminalWindows.map((tw) => tw.id);
 					for (const [id, size] of message.shells) {

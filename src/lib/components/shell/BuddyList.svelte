@@ -6,9 +6,9 @@
 	let sortedUsers = $derived(
 		[...users].sort((a, b) => (b[1].name < a[1].name ? 1 : -1)),
 	);
-	$effect(() => {
-		console.log($state.snapshot(sortedUsers));
-	});
+	// $effect(() => {
+	// 	console.log($state.snapshot(sortedUsers));
+	// });
 </script>
 
 <div class="flex items-center p-1 bg-gruvdbg1/90 rounded-t-md">
@@ -21,11 +21,11 @@
 			{#each sortedUsers as [id, user] (id)}
 				<li
 					class="flex p-1 gap-2 items-center overflow-hidden"
-					class:opacity-75={!user.canWrite}
+					class:opacity-50={!user.canWrite}
 				>
 					<div
 						style:background="hsl({nameToHue(user.name)}, 100%, 50%)"
-						class="shrink-0 w-3.5 h-3.5 rounded-full border border-[#a89984]"
+						class="shrink-0 w-3.5 h-3.5 rounded-full border border-gruvlfg3"
 					></div>
 
 					<div class="overflow-hidden max-w-24">
