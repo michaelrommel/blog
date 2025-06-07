@@ -146,8 +146,8 @@
 
 	onMount(async () => {
 		const [{ Terminal }, { WebglAddon }] = await Promise.all([
-			//import("@xterm/xterm"),
-			import("sshx-xterm"),
+			import("miro-xterm"),
+			//import("sshx-xterm"),
 			import("@xterm/addon-webgl"),
 		]);
 
@@ -399,6 +399,6 @@
 
 	<div
 		bind:this={resizeHandle}
-		class="absolute bottom-[-2px] right-[-2px] border-4 border-t-transparent border-l-transparent border-b-gruvdfg4 border-r-gruvdfg4 rounded-br-lg w-[15px] h-[15px] cursor-nwse-resize"
+		class="absolute bottom-[-2px] right-[-2px] z-[98] border-4 border-t-transparent border-l-transparent border-b-gruvdfg4 border-r-gruvdfg4 rounded-br-lg w-[15px] h-[15px] cursor-nwse-resize"
 	></div>
 </div>
