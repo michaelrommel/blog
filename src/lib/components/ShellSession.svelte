@@ -4,6 +4,7 @@
 	import { on } from "svelte/events";
 
 	import { throttle, integerMedian } from "$lib/utils.js";
+	import { toast } from "svelte-sonner";
 
 	import FabricHandler from "./shell/FabricHandler.js";
 
@@ -11,7 +12,6 @@
 	import { Encrypt } from "./shell/encrypt.js";
 	import { createLock } from "./shell/lock.js";
 
-	import { makeToast } from "./shell/toast.js";
 	import { settings } from "./shell/settings.js";
 
 	import TermWindow from "./shell/TermWindow.svelte";
@@ -172,14 +172,16 @@
 				if (message.hello) {
 					userId = message.hello[0];
 					receiveName(message.hello[1]);
-					makeToast({
-						kind: "success",
-						message: `Connected to the server.`,
+					toast.success("Connected to the server", {
+						duration: 3000,
 					});
 					exitReason = null;
 				} else if (message.invalidAuth) {
 					exitReason =
 						"The URL is not correct, invalid end-to-end encryption key.";
+					toast.error(exitReason, {
+						duration: 30000,
+					});
 					ws?.dispose();
 				} else if (message.chunks) {
 					let [id, seqnum, chunks] = message.chunks;
@@ -378,17 +380,17 @@
 
 	async function handleCreate() {
 		if (hasWriteAccess === false) {
-			makeToast({
-				kind: "info",
-				message:
-					"You are in read-only mode and cannot create new terminals.",
-			});
+			toast.info(
+				"You are in read-only mode and cannot create new terminals.",
+				{
+					duration: 5000,
+				},
+			);
 			return;
 		}
-		if (terminalWindows.length >= 14) {
-			makeToast({
-				kind: "error",
-				message: "You can only create up to 14 terminals.",
+		if (terminalWindows.length >= 4) {
+			toast.error("You can only create up to 4 terminals.", {
+				duration: 5000,
 			});
 			return;
 		}
@@ -500,6 +502,9 @@
 	};
 
 	const collectWindows = () => {
+		fabric.center = [gridSpacing, gridSpacing];
+		center = fabric.center;
+		if (!hasWriteAccess) return;
 		let offset = 1;
 		const stackMap = terminalWindows
 			.map((win) => [win.z, win.id])
@@ -516,7 +521,6 @@
 		});
 		terminalWindows = reorderedTerminalWindows;
 		reorderedTerminalWindows.forEach((tw) => updateServer(tw, true));
-		center = [gridSpacing, gridSpacing];
 		scrollToEdge();
 	};
 
@@ -528,12 +532,12 @@
 			let cursorX = Math.round(user.cursor?.[0] + center?.[0]);
 			let cursorY = Math.round(user.cursor?.[1] + center?.[1]);
 			let transform = `scale(${(zoom * 100).toFixed(3)}%) translate3d(${cursorX}px, ${cursorY}px, 0px)`;
+			node.style.transform = transform;
 			// fabric._consolelog(JSON.stringify($state.snapshot(user)));
 			// fabric._consolelog(
 			// 	JSON.stringify($state.snapshot(terminalWindows)),
 			// );
 			// fabric._consolelog(JSON.stringify($state.snapshot(center)));
-			node.style.transform = transform;
 		});
 	};
 </script>
@@ -644,40 +648,7 @@
 		</div>
 	</div>
 </div>
-<!-- <main -->
-<!-- 	class:cursor-nwse-resize={resizing !== -1} -->
-<!-- 	onwheel={(event) => event.preventDefault()} -->
 
-<!-- 	<XTerm -->
-<!-- 		{setupTestEventlisteners} -->
-<!-- 		rows={ws.rows} -->
-<!-- 		cols={ws.cols} -->
-<!-- 		bind:write={writers[id]} -->
-<!-- 		bind:termEl={termElements[id]} -->
-<!-- 		dataevent={(data) => -->
-<!-- 			hasWriteAccess && handleInput(id, data)} -->
-<!-- 		close={() => { -->
-<!-- 			console.log("Closing Terminal"); -->
-<!-- 			srocket?.send({ close: id }); -->
-<!-- 		}} -->
-<!-- 		bringToFront={() => { -->
-<!-- 			console.log("bringToFront"); -->
-<!-- 			if (!hasWriteAccess) return; -->
-<!-- 			showNetworkInfo = false; -->
-<!-- 			srocket?.send({ move: [id, null] }); -->
-<!-- 		}} -->
-<!-- 		startMove={(event) => { -->
-<!-- 			console.log("startMove"); -->
-<!-- 			if (!hasWriteAccess) return; -->
-<!-- 			const [x, y] = normalizePosition(event); -->
-<!-- 			// the setting of movingSize has to come first, because -->
-<!-- 			// if we set moving first, the browser re-renders so fast -->
-<!-- 			// that there is then an error that ws is not set. -->
-<!-- 			movingSize = ws; -->
-<!-- 			movingOrigin = [x - ws.x, y - ws.y]; -->
-<!-- 			movingIsDone = false; -->
-<!-- 			movingId = id; -->
-<!-- 		}} -->
 <!-- 		focus={() => { -->
 <!-- 			if (!hasWriteAccess) return; -->
 <!-- 			focused = [...focused, id]; -->
@@ -685,28 +656,3 @@
 <!-- 		blur={() => { -->
 <!-- 			focused = focused.filter((i) => i !== id); -->
 <!-- 		}} -->
-<!-- 	/> -->
-
-<!-- Interactable element for resizing -->
-<!-- <div -->
-<!-- 	class="absolute w-5 h-5 -bottom-1 -right-1 cursor-nwse-resize" -->
-<!-- 	onmousedown={(event) => { -->
-<!-- 		const canvasEl = -->
-<!-- 			termElements[id].querySelector(".xterm-screen"); -->
-<!-- 		if (canvasEl) { -->
-<!-- 			resizing = id; -->
-<!-- 			const r = canvasEl.getBoundingClientRect(); -->
-<!-- 			resizingOrigin = [ -->
-<!-- 				event.pageX - r.width, -->
-<!-- 				event.pageY - r.height, -->
-<!-- 			]; -->
-<!-- 			resizingCell = [ -->
-<!-- 				r.width / ws.cols, -->
-<!-- 				r.height / ws.rows, -->
-<!-- 			]; -->
-<!-- 			resizingSize = ws; -->
-<!-- 		} -->
-<!-- 	}} -->
-<!-- 	onpointerdown={(event) => event.stopPropagation()} -->
-<!-- 	role="none" -->
-<!-- ></div> -->

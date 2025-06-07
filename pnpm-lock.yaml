@@ -74,9 +74,6 @@ importers:
       ioredis:
         specifier: ^5.6.1
         version: 5.6.1
-      mode-watcher:
-        specifier: ^1.0.2
-        version: 1.0.7(svelte@5.33.14)
       nanoid:
         specifier: ^5.1.5
         version: 5.1.5
@@ -225,9 +222,15 @@ importers:
       globals:
         specifier: ^16.0.0
         version: 16.2.0
+      mode-watcher:
+        specifier: ^1.0.6
+        version: 1.0.7(svelte@5.33.14)
       svelte:
         specifier: ^5.28.2
         version: 5.33.14
+      svelte-sonner:
+        specifier: ^1.0.4
+        version: 1.0.4(svelte@5.33.14)
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.3.0
@@ -2202,6 +2205,11 @@ packages:
     peerDependencies:
       svelte: ^5.7.0
 
+  runed@0.26.0:
+    resolution: {integrity: sha512-qWFv0cvLVRd8pdl/AslqzvtQyEn5KaIugEernwg9G98uJVSZcs/ygvPBvF80LA46V8pwRvSKnaVLDI3+i2wubw==}
+    peerDependencies:
+      svelte: ^5.7.0
+
   runed@0.28.0:
     resolution: {integrity: sha512-k2xx7RuO9hWcdd9f+8JoBeqWtYrm5CALfgpkg2YDB80ds/QE4w0qqu34A7fqiAwiBBSBQOid7TLxwxVC27ymWQ==}
     peerDependencies:
@@ -2287,6 +2295,11 @@ packages:
     engines: {node: '>=0.14'}
     peerDependencies:
       svelte: ^3.48.0 || ^4 || ^5
+
+  svelte-sonner@1.0.4:
+    resolution: {integrity: sha512-ctm9jeV0Rf3im2J6RU1emccrJFjRSdNSPsLlxaF62TLZw9bB1D40U/U7+wqEgohJY/X7FBdghdj0BFQF/IqKPQ==}
+    peerDependencies:
+      svelte: ^5.0.0
 
   svelte-toolbelt@0.7.1:
     resolution: {integrity: sha512-HcBOcR17Vx9bjaOceUvxkY3nGmbBmCBBbuWLLEWO6jtmWH8f/QoWmbyUfQZrpDINH39en1b8mptfPQT9VKQ1xQ==}
@@ -4763,6 +4776,11 @@ snapshots:
       esm-env: 1.2.2
       svelte: 5.33.14
 
+  runed@0.26.0(svelte@5.33.14):
+    dependencies:
+      esm-env: 1.2.2
+      svelte: 5.33.14
+
   runed@0.28.0(svelte@5.33.14):
     dependencies:
       esm-env: 1.2.2
@@ -4847,6 +4865,11 @@ snapshots:
 
   svelte-persisted-store@0.12.0(svelte@5.33.14):
     dependencies:
+      svelte: 5.33.14
+
+  svelte-sonner@1.0.4(svelte@5.33.14):
+    dependencies:
+      runed: 0.26.0(svelte@5.33.14)
       svelte: 5.33.14
 
   svelte-toolbelt@0.7.1(svelte@5.33.14):

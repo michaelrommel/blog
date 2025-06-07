@@ -3,6 +3,7 @@
 	import { onMount, setContext } from "svelte";
 	import { page } from "$app/stores";
 	import { ModeWatcher } from "mode-watcher";
+	import { Toaster } from "$lib/components/ui/sonner/index.js";
 	import Navigation from "$lib/components/Navigation.svelte";
 	import SeoMarkup from "$lib/components/SeoMarkup.svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -49,6 +50,17 @@
 />
 
 <ModeWatcher />
+<Toaster
+	position="top-center"
+	richColors
+	visibleToasts={5}
+	closeButton
+	duration={10000}
+	toastOptions={{
+		style: "background-color: hsl(var(--gruvdbg1));",
+	}}
+/>
+
 <wrapper bind:this={navigationElement} class="sticky top-0 z-10 w-full block">
 	<Navigation data={{ user: data.user }} />
 </wrapper>
