@@ -52,11 +52,11 @@
 		if (latency === null) {
 			return "";
 		} else if (latency < 80) {
-			return "text-gruvdemphgreen";
+			return "text-gruvlemphgreen dark:text-gruvdemphgreen";
 		} else if (latency < 300) {
-			return "text-gruvdemphyellow";
+			return "text-gruvlemphyellow dark:text-gruvdemphyellow";
 		} else {
-			return "text-gruvdemphred";
+			return "text-gruvlemphred dark:text-gruvdemphred";
 		}
 	}
 	// let wasConnected = false;
@@ -119,16 +119,18 @@
 	<div class="h-8"></div>
 	<Popover.Root bind:open={popoverOpen}>
 		<Popover.Trigger
-			class="my-1 rounded-full mb bg-gruvdbg1 p-2 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-accent disabled:pointer-events-none"
+			class="my-1 rounded-full mb bg-gruvlbg1 dark:bg-gruvdbg1 p-2 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-accent disabled:pointer-events-none"
 			title="Show connection info"
 			onclick={autoClose}
 			role="none"
 		>
 			<div class:hidden={connected}>
-				<Unplug class="text-gruvdemphred" />
+				<Unplug class="text-gruvlemphred dark:text-gruvdemphred" />
 			</div>
 			<div class:hidden={!connected}>
-				<Cable class="rotate-45 text-gruvdemphgreen" />
+				<Cable
+					class="rotate-45 text-gruvlemphgreen dark:text-gruvdemphgreen"
+				/>
 			</div>
 		</Popover.Trigger>
 		<Popover.Content
@@ -141,8 +143,14 @@
 		</Popover.Content>
 	</Popover.Root>
 	<div class="flex-col">
-		<div class="mb p-2 bg-gruvdbg1 rounded" title="Browser">
-			<PanelTop strokeWidth="1.5" />
+		<div
+			class="mb p-2 bg-gruvlbg1 dark:bg-gruvdbg1 rounded"
+			title="Browser"
+		>
+			<PanelTop
+				strokeWidth="1.5"
+				class="text-gruvlfg2 dark:text-gruvdfg2"
+			/>
 		</div>
 		<div
 			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg4 border-dashed"
@@ -154,8 +162,11 @@
 				{displayLatency(serverLatency)[1]}
 			</div>
 		</div>
-		<div class="mb p-2 bg-gruvdbg1 rounded" title="Server">
-			<Server strokeWidth="1.5" />
+		<div class="mb p-2 bg-gruvlbg1 dark:bg-gruvdbg1 rounded" title="Server">
+			<Server
+				strokeWidth="1.5"
+				class="text-gruvlfg2 dark:text-gruvdfg2"
+			/>
 		</div>
 		<div
 			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg4 border-dashed"
@@ -167,8 +178,11 @@
 				{displayLatency(shellLatency)[1]}
 			</div>
 		</div>
-		<div class="mb p-2 bg-gruvdbg1 rounded" title="Shell">
-			<SquareTerminal strokeWidth="1.5" />
+		<div class="mb p-2 bg-gruvlbg1 dark:bg-gruvdbg1 rounded" title="Shell">
+			<SquareTerminal
+				strokeWidth="1.5"
+				class="text-gruvlfg2 dark:text-gruvdfg2"
+			/>
 		</div>
 	</div>
 </div>

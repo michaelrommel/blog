@@ -599,7 +599,7 @@
 		<ChooseName />
 		<SettingsDialog bind:isopen={showSettings} />
 		<div
-			class="absolute inset-0 -z-10 bg-gruvdbg0h"
+			class="absolute inset-0 -z-10 bg-gruvlbg0h dark:bg-gruvdbg0h"
 			style:background-image="radial-gradient(#404040 {1.5 * zoom}px,
 			transparent 0), radial-gradient(#8800ff {5 * zoom}px, transparent 0)"
 			style:background-size="{gridSpacing * zoom}px {gridSpacing *

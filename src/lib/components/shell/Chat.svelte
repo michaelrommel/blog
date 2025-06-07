@@ -52,7 +52,7 @@
 </div>
 
 <div
-	class="px-3 py-2 flex-grow overflow-y-auto bg-gruvdbg0"
+	class="px-3 py-2 flex-grow overflow-y-auto bg-gruvdbg0 text-gruvdfg"
 	bind:this={scrollEl}
 >
 	<div class="shellchat space-y-3">
@@ -84,7 +84,7 @@
 >
 	<input
 		id="chatinput"
-		class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl bg-gruvdbg1 focus:ring-2 focus:ring-ring"
+		class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl text-gruvdfg bg-gruvdbg1 focus:ring-2 focus:ring-ring"
 		placeholder="Aa"
 		bind:value={text}
 	/>

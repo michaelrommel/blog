@@ -28,12 +28,12 @@
 						class="shrink-0 w-3.5 h-3.5 rounded-full border border-gruvlfg3"
 					></div>
 
-					<div class="overflow-hidden max-w-24">
+					<div class="overflow-hidden max-w-24 text-gruvdfg">
 						{user.name}
 					</div>
 					<div class="shrink-0 w-3.5">
 						{#if !user.canWrite}
-							<Eye size="18px" />
+							<Eye size="18px" class="text-gruvdfg" />
 						{/if}
 					</div>
 				</li>
