@@ -55,7 +55,6 @@
 	// toggles for UI elements
 	let showChat = $state(false); // @hmr:keep
 	let showSettings = $state(false); // @hmr:keep
-	let showNetworkInfo = $state(false); // @hmr:keep
 
 	// a method of resizing the fabric container to fill the whole viewport
 	const _resizeFabricContainer = () => {
@@ -568,9 +567,6 @@
 		}}
 		toggleSettings={() => {
 			showSettings = !showSettings;
-		}}
-		toggleNetworkInfo={() => {
-			showNetworkInfo = !showNetworkInfo;
 		}}
 		serverLatency={integerMedian(serverLatencies)}
 		shellLatency={integerMedian(shellLatencies)}

@@ -38,6 +38,27 @@
 		}
 	};
 
+	function displayLatency(latency) {
+		if (latency < 1) {
+			return ["1", "ms"];
+		} else if (latency <= 950) {
+			return [`${Math.round(latency)}`, "ms"];
+		} else {
+			return [`${(latency / 1000).toFixed(1)}`, "s"];
+		}
+	}
+
+	function colorLatency(latency) {
+		if (latency === null) {
+			return "";
+		} else if (latency < 80) {
+			return "text-gruvdemphgreen";
+		} else if (latency < 300) {
+			return "text-gruvdemphyellow";
+		} else {
+			return "text-gruvdemphred";
+		}
+	}
 	// let wasConnected = false;
 	// $effect(() => {
 	// 	// triggered on a change of connected
@@ -126,8 +147,12 @@
 		<div
 			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg4 border-dashed"
 		>
-			<div class="mx-1 text-xs">{serverLatency}</div>
-			<div class="mx-1 text-xs">ms</div>
+			<div class="mx-1 text-xs {colorLatency(serverLatency)}">
+				{displayLatency(serverLatency)[0]}
+			</div>
+			<div class="mx-1 text-xs {colorLatency(serverLatency)}">
+				{displayLatency(serverLatency)[1]}
+			</div>
 		</div>
 		<div class="mb p-2 bg-gruvdbg1 rounded" title="Server">
 			<Server strokeWidth="1.5" />
@@ -135,8 +160,12 @@
 		<div
 			class="flex flex-col justify-center items-center ml-1 h-14 border-l border-gruvdfg4 border-dashed"
 		>
-			<div class="mx-1 text-xs">{shellLatency}</div>
-			<div class="mx-1 text-xs">ms</div>
+			<div class="mx-1 text-xs {colorLatency(shellLatency)}">
+				{displayLatency(shellLatency)[0]}
+			</div>
+			<div class="mx-1 text-xs {colorLatency(shellLatency)}">
+				{displayLatency(shellLatency)[1]}
+			</div>
 		</div>
 		<div class="mb p-2 bg-gruvdbg1 rounded" title="Shell">
 			<SquareTerminal strokeWidth="1.5" />
