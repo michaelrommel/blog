@@ -212,6 +212,6 @@ const themes = {
 	'Tokyo Night': tokyoNight
 };
 
-export const defaultTheme = 'VS Code Dark';
+export const defaultTheme = 'Gruvbox Dark';
 
 export default themes;

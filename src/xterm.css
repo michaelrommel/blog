@@ -121,17 +121,19 @@
 	border-bottom-left-radius: var(--radius-lg);
 }
 
+.xterm .xterm-screen canvas {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-bottom-right-radius: var(--radius-lg);
+	border-bottom-left-radius: var(--radius-lg);
+}
+
 .xterm div.slider {
 	border-top-left-radius: var(--radius-lg);
 	border-top-right-radius: var(--radius-lg);
 	border-bottom-right-radius: var(--radius-lg);
 	border-bottom-left-radius: var(--radius-lg);
-}
-
-.xterm .xterm-screen canvas {
-	position: absolute;
-	left: 0;
-	top: 0;
 }
 
 .xterm-char-measure-element {
@@ -282,6 +284,11 @@
 .xterm .xterm-scrollable-element>.scrollbar>.scra {
 	cursor: pointer;
 	font-size: 11px !important;
+}
+
+.xterm .xterm-scrollable-element {
+	border-bottom-right-radius: var(--radius-lg);
+	border-bottom-left-radius: var(--radius-lg);
 }
 
 .xterm .xterm-scrollable-element>.visible {

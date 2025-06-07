@@ -9,14 +9,14 @@
 	let inputTheme = $state();
 	let inputScrollback = $state();
 
-	let initialized = false;
+	// let initialized = false;
 	$effect(() => {
-		if (!initialized) {
-			initialized = true;
-			inputName = $settings.name;
-			inputTheme = $settings.theme;
-			inputScrollback = $settings.scrollback;
-		}
+		// if (!initialized) {
+		// 	initialized = true;
+		inputName = $settings.name;
+		inputTheme = $settings.theme;
+		inputScrollback = $settings.scrollback;
+		// }
 	});
 </script>
 
