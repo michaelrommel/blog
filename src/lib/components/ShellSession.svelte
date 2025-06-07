@@ -3,7 +3,7 @@
 	import { fade } from "svelte/transition";
 	import { on } from "svelte/events";
 
-	import { throttle, integerMedian } from "$lib/utils.js";
+	import { debounce, throttle, integerMedian } from "$lib/utils.js";
 	import { toast } from "svelte-sonner";
 
 	import FabricHandler from "./shell/FabricHandler.js";
@@ -411,16 +411,15 @@
 		ws?.send({ data: [id, encrypted, offset] });
 	}
 
-	// let focused = [];
-	// $effect(() => {
-	// 	setFocus(focused);
-	// });
+	let focused = $state([]);
+	$effect(() => {
+		sendFocus(focused);
+	});
 
-	// // Wait a small amount of time, since blur events happen before focus events.
-	// const setFocus = debounce((focused) => {
-	// 	console.log("setFocus");
-	// 	srocket?.send({ setFocus: focused[0] ?? null });
-	// }, 20);
+	// Wait a small amount of time, since blur events happen before focus events.
+	const sendFocus = debounce((focused) => {
+		ws?.send({ setFocus: focused[0] ?? null });
+	}, 20);
 
 	// nn milliseconds between successive cursor updates.
 	const sendCursor = throttle(
@@ -524,6 +523,15 @@
 		scrollToEdge();
 	};
 
+	const onFocus = (id) => {
+		if (!hasWriteAccess) return;
+		focused = [...focused, id];
+	};
+
+	const onBlur = (id) => {
+		focused = focused.filter((i) => i !== id);
+	};
+
 	const sl = (node, userId) => {
 		$effect(() => {
 			let user = users.filter(
@@ -595,7 +603,7 @@
 		<ChooseName />
 		<SettingsDialog bind:isopen={showSettings} />
 		<div
-			class="absolute inset-0 -z-10 bg-[#212121]"
+			class="absolute inset-0 -z-10 bg-gruvdbg0h"
 			style:background-image="radial-gradient(#404040 {1.5 * zoom}px,
 			transparent 0), radial-gradient(#8800ff {5 * zoom}px, transparent 0)"
 			style:background-size="{gridSpacing * zoom}px {gridSpacing *
@@ -626,14 +634,20 @@
 				<TermWindow
 					{center}
 					{zoom}
+					{hasWriteAccess}
+					focusUsers={users.filter(
+						([uid, user]) =>
+							uid !== userId && user.focus === terminalWindow.id,
+					)}
 					bind:terminalWindow={terminalWindows[i]}
 					bind:write={writers[terminalWindow.id]}
 					bind:movingId
-					{hasWriteAccess}
 					bringWindowToFront={restackTerminals}
 					{onData}
 					onClose={() => ws?.send({ close: terminalWindow.id })}
 					onWindowUpdate={() => updateServer(terminalWindow)}
+					{onFocus}
+					{onBlur}
 				/>
 			{/each}
 		</div>

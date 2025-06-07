@@ -60,23 +60,28 @@
 
 	import themes from "./themes";
 	import { settings } from "$lib/components/shell/settings";
+	import Avatars from "./Avatars.svelte";
 
 	let {
 		center,
 		zoom,
+		hasWriteAccess,
+		focusUsers,
 		terminalWindow = $bindable(),
 		write = $bindable(),
 		movingId = $bindable(), // the id of the moving window, to report back
-		hasWriteAccess,
 		bringWindowToFront,
 		onData,
 		onClose,
 		onWindowUpdate,
+		onFocus,
+		onBlur,
 	} = $props();
 
 	let windowElement;
 	let terminalElement;
 	let wireframeElement;
+	let isFocused;
 	let resizeHandle;
 	let isResizing = false; // are we resizing
 	let resizingSize = $state([0, 0]);
@@ -95,6 +100,8 @@
 	// Terminal width and height limits.
 	const TERM_MIN_ROWS = 8;
 	const TERM_MIN_COLS = 32;
+
+	// $effect(() => console.log(JSON.stringify($state.snapshot(focusUsers))));
 
 	$effect(() => {
 		if (term) {
@@ -183,6 +190,32 @@
 				onData(terminalWindow.id, Buffer.from(data, "binary"));
 			}
 		});
+
+		function setFocused(hasFocusAttr) {
+			if (hasFocusAttr && !isFocused) {
+				isFocused = hasFocusAttr;
+				onFocus(terminalWindow.id);
+			} else if (!hasFocusAttr && isFocused) {
+				isFocused = hasFocusAttr;
+				onBlur(terminalWindow.id);
+			}
+		}
+
+		const focusObserver = new MutationObserver((mutations) => {
+			for (const mutation of mutations) {
+				if (
+					mutation.type === "attributes" &&
+					mutation.attributeName === "class"
+				) {
+					// The "focus" class is set directly by xterm.js,
+					// but there isn't any way to listen for it.
+					const target = mutation.target;
+					const hasFocusAttr = target.classList.contains("focus");
+					setFocused(hasFocusAttr);
+				}
+			}
+		});
+		focusObserver.observe(term.element, { attributeFilter: ["class"] });
 	});
 
 	onMount(() => {
@@ -381,7 +414,9 @@
 		>
 			{terminalTitle}
 		</div>
-		<div class="flex-1"></div>
+		<div class="flex-1 flex flex-row-reverse">
+			<Avatars users={focusUsers} />
+		</div>
 	</div>
 
 	<div bind:this={terminalElement} class="rounded-lg"></div>
