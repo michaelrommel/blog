@@ -72,8 +72,8 @@ importers:
         specifier: ^5.6.1
         version: 5.6.1
       miro-xterm:
-        specifier: file:../../miro-xterm
-        version: file:../../miro-xterm
+        specifier: https://github.com/michaelrommel/miro-xterm#sshx
+        version: '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d9c266be5eb524af0a2d069ac39f8e9b95085db'
       nanoid:
         specifier: ^5.1.5
         version: 5.1.5
@@ -1010,6 +1010,10 @@ packages:
   '@xterm/xterm@5.5.0':
     resolution: {integrity: sha512-hqJHYaQb5OptNunnyAnkHyM8aCjZ1MEIDTQu1iIbbTD/xops91NB5yq1ZK/dC2JDbVWtF23zUtl9JE2NqwT87A==}
 
+  '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d9c266be5eb524af0a2d069ac39f8e9b95085db':
+    resolution: {tarball: https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d9c266be5eb524af0a2d069ac39f8e9b95085db}
+    version: 5.5.0
+
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
@@ -1887,9 +1891,6 @@ packages:
   minizlib@3.0.2:
     resolution: {integrity: sha512-oG62iEk+CYt5Xj2YqI5Xi9xWUeZhDI8jjQmC5oThVH5JGCTgIjr7ciJDzC7MBzYd//WvR1OTmP5Q38Q8ShQtVA==}
     engines: {node: '>= 18'}
-
-  miro-xterm@file:../../miro-xterm:
-    resolution: {directory: ../../miro-xterm, type: directory}
 
   mj-context-menu@0.6.1:
     resolution: {integrity: sha512-7NO5s6n10TIV96d4g2uDpG7ZDpIhMh0QNfGdJw/W47JswFcosz457wqz/b5sAKvl12sxINGFCn80NZHKwxQEXA==}
@@ -3224,6 +3225,8 @@ snapshots:
 
   '@xterm/xterm@5.5.0': {}
 
+  '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d9c266be5eb524af0a2d069ac39f8e9b95085db': {}
+
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
       acorn: 8.14.1
@@ -4346,8 +4349,6 @@ snapshots:
   minizlib@3.0.2:
     dependencies:
       minipass: 7.1.2
-
-  miro-xterm@file:../../miro-xterm: {}
 
   mj-context-menu@0.6.1: {}
 

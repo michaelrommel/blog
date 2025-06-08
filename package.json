@@ -59,7 +59,7 @@
 		"fontfaceobserver": "^2.3.0",
 		"hastscript": "^9.0.1",
 		"ioredis": "^5.6.1",
-		"miro-xterm": "file:../../miro-xterm",
+		"miro-xterm": "https://github.com/michaelrommel/miro-xterm#sshx",
 		"nanoid": "^5.1.5",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-mathjax": "^7.1.0",
