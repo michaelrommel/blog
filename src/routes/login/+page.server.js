@@ -4,14 +4,22 @@ import {
 	invalidateSession
 } from '$lib/server/session';
 
+export const ssr = false;
+
 export async function load(event) {
+	// if we have already an user, forward to the login page
+	// and let it redirect there
 	if (event.locals.session !== null && event.locals.user !== null) {
-		return redirect(302, '/');
+		return {
+			user: event.locals.user
+		};
+	} else {
+		// we are not authenticated yet, store the referring url
+		const referrer = event.url.searchParams.get('referrer');
+		return {
+			referrer
+		};
 	}
-	return {
-		title: 'Log in',
-		description: 'Authenticate to this blog via different providers'
-	};
 }
 
 export const actions = {

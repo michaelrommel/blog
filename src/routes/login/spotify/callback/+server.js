@@ -1,4 +1,3 @@
-import { page } from '$app/state';
 import { spotify, deleteOauthCookies } from '$lib/server/oauth';
 import {
 	createUser,
@@ -70,7 +69,7 @@ export async function GET(event) {
 	return new Response(null, {
 		status: 302,
 		headers: {
-			Location: page.url.pathname
+			Location: '/login'
 		}
 	});
 }

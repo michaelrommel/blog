@@ -3,6 +3,20 @@
 	import Google from "virtual:icons/cib/google";
 	// import Instagram from "virtual:icons/cib/instagram";
 	import Spotify from "virtual:icons/cib/spotify";
+
+	import { goto } from "$app/navigation";
+
+	let { data } = $props();
+
+	if (data.user) {
+		// we have an authenticated user now, see, if we stored a
+		// referring url in localstorage
+		const referrer = localStorage.getItem("referrer");
+		localStorage.removeItem("referrer");
+		goto(referrer ? referrer : "/");
+	} else {
+		localStorage.setItem("referrer", data?.referrer);
+	}
 </script>
 
 <div id="articlecontainer" class="">
