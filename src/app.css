@@ -636,7 +636,7 @@
 	}
 
 	.shellchat>.message-group.from-me .chat {
-		@apply text-gruvlfg0 bg-gruvdemphblue dark:bg-gruvlemphblue;
+		@apply text-gruvlfg0 dark:text-gruvdfg2 bg-gruvdemphblue dark:bg-gruvlemphblue;
 	}
 }
 
