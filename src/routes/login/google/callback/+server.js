@@ -1,3 +1,4 @@
+import { page } from '$app/state';
 import { google, deleteOauthCookies } from '$lib/server/oauth';
 import { ObjectParser } from '@pilcrowjs/object-parser';
 import {
@@ -66,7 +67,7 @@ export async function GET(event) {
 	return new Response(null, {
 		status: 302,
 		headers: {
-			Location: '/'
+			Location: page.url.pathname
 		}
 	});
 }

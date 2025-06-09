@@ -1,13 +1,19 @@
 <script>
 	import "../app.css";
+
 	import { onMount, setContext } from "svelte";
 	import { page } from "$app/stores";
+
+	import { debounce } from "$lib/utils.js";
+
 	import { ModeWatcher } from "mode-watcher";
+	import { Check, X, Info, TriangleAlert } from "@lucide/svelte";
+
 	import { Toaster } from "$lib/components/ui/sonner/index.js";
 	import Navigation from "$lib/components/Navigation.svelte";
 	import SeoMarkup from "$lib/components/SeoMarkup.svelte";
 	import Footer from "$lib/components/Footer.svelte";
-	import { debounce } from "$lib/utils.js";
+
 	let { data, children } = $props();
 
 	let margins = $state([0, 0, 0, 0]);
@@ -50,16 +56,51 @@
 />
 
 <ModeWatcher />
+<!-- richColors -->
 <Toaster
-	position="top-center"
-	richColors
+	position="bottom-right"
 	visibleToasts={5}
+	expand
 	closeButton
 	duration={10000}
 	toastOptions={{
-		style: "background-color: hsl(var(--gruvdbg1));",
+		// style: "background-color: hsl(var(--gruvdbg1));",
+		unstyled: true,
+		classes: {
+			toast: "p-2 rounded-xl bg-gruvlbg1 dark:bg-gruvdbg1 border border-gruvgray flex items-center",
+			title: "font-serif m-2 pl-1 pr-5 text-sm dark:text-gruvdfg",
+			closeButton: "absolute top-2 right-2",
+			description: "text-red-400",
+			actionButton: "bg-zinc-400",
+			cancelButton: "bg-orange-400",
+		},
 	}}
-/>
+>
+	{#snippet successIcon()}
+		<Check
+			class="m-2 p-1 bg-gruvlemphgreen text-gruvlbg dark:bg-gruvdemphgreen dark:text-gruvdbg rounded-full"
+			size="30"
+		/>
+	{/snippet}
+	{#snippet errorIcon()}
+		<X
+			class="m-2 p-1 bg-gruvlemphred text-gruvlbg dark:bg-gruvdemphred rounded-full"
+			size="30"
+		/>
+	{/snippet}
+	{#snippet infoIcon()}
+		<Info
+			class="m-2 p-1 bg-gruvlemphblue text-gruvlbg dark:bg-gruvblue dark:text-gruvdbg rounded-full"
+			size="30"
+		/>
+	{/snippet}
+	{#snippet warningIcon()}
+		<TriangleAlert
+			class="m-2 p-1 bg-gruvlemphyellow text-gruvlbg dark:bg-gruvyellow dark:text-gruvdbg rounded-full"
+			size="30"
+		/>
+	{/snippet}
+</Toaster>
 
 <wrapper bind:this={navigationElement} class="sticky top-0 z-10 w-full block">
 	<Navigation data={{ user: data.user }} />

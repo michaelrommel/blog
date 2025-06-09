@@ -1,3 +1,4 @@
+import { page } from '$app/state';
 import { github, deleteOauthCookies } from '$lib/server/oauth';
 import {
 	createUser,
@@ -71,10 +72,16 @@ export async function GET(event) {
 	setSessionTokenCookie(event, sessionToken, session.expiresAt);
 	deleteOauthCookies(event, 'github');
 
+	// console.log('in server.js of github callback');
+	// console.log(page);
+	// console.log(page.data);
+	// console.log(page.url);
+	// console.log(page.url.searchParams.toString());
+	// console.log('out of server.js');
 	return new Response(null, {
 		status: 302,
 		headers: {
-			Location: '/'
+			Location: page.url.pathname
 		}
 	});
 }

@@ -42,17 +42,21 @@
 	}
 </script>
 
-<div class="flex items-center p-1 bg-gruvdbg1/90 rounded-t-md">
+<div
+	class="flex items-center p-1 bg-gruvlbg1/90 dark:bg-gruvdbg1/90 rounded-t-md"
+>
 	<button
 		class="ml-2 bg-gruvlemphyellow w-3 h-3 rounded-full"
 		aria-label="Close"
 		onclick={close}
 	></button>
-	<div class="ml-2 text-zinc-300 text-sm font-medium">Chat Messages</div>
+	<div class="ml-2 text-gruvlfg dark:text-gruvdfg text-sm font-medium">
+		Chat Messages
+	</div>
 </div>
 
 <div
-	class="px-3 py-2 flex-grow overflow-y-auto bg-gruvdbg0 text-gruvdfg"
+	class="px-3 py-2 flex-grow overflow-y-auto bg-gruvlbg0 text-gruvlfg dark:bg-gruvdbg0 dark:text-gruvdfg"
 	bind:this={scrollEl}
 >
 	<div class="shellchat space-y-3">
@@ -61,7 +65,7 @@
 				class="message-group"
 				class:from-me={userId === groupedMessages[id][0].uid}
 			>
-				<aside class="pl-2.5 text-zinc-400 text-xs">
+				<aside class="pl-2.5 text-gruvlfg2 dark:text-gruvdfg2 text-xs">
 					{groupedMessages[id][0].name}
 				</aside>
 				{#each groupedMessages[id] as chat (chat)}
@@ -78,13 +82,13 @@
 </div>
 
 <form
-	class="p-3 relative bg-gruvdbg0 rounded-b-md"
+	class="p-3 relative bg-gruvlbg0 dark:bg-gruvdbg0 rounded-b-md"
 	data-sveltekit-keepfocus
 	onsubmit={handleSubmit}
 >
 	<input
 		id="chatinput"
-		class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl text-gruvdfg bg-gruvdbg1 focus:ring-2 focus:ring-ring"
+		class="pl-3 pr-12 py-1.5 w-full outline-none rounded-2xl text-gruvlfg bg-gruvlbg1 dark:text-gruvdfg dark:bg-gruvdbg1 focus:ring-2 focus:ring-ring"
 		placeholder="Aa"
 		bind:value={text}
 	/>

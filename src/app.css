@@ -632,11 +632,11 @@
 	}
 
 	.shellchat .chat {
-		@apply px-2.5 py-1.5 text-sm rounded-2xl max-w-full break-words bg-gruvdbg2;
+		@apply px-2.5 py-1.5 text-sm rounded-2xl max-w-full break-words text-gruvlfg dark:text-gruvdfg bg-gruvlbg2 dark:bg-gruvdbg2;
 	}
 
 	.shellchat>.message-group.from-me .chat {
-		@apply bg-gruvlemphblue;
+		@apply text-gruvlfg0 bg-gruvdemphblue dark:bg-gruvlemphblue;
 	}
 }
 

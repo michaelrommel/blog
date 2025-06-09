@@ -22,7 +22,7 @@
 	import ChooseName from "./shell/ChooseName.svelte";
 	import SettingsDialog from "./shell/SettingsDialog.svelte";
 
-	let { id, receiveName } = $props();
+	let { id, receiveName, hash, user } = $props();
 
 	// DOM Element where the fabric is mounted
 	let fabricElement;
@@ -153,10 +153,11 @@
 	let shellLatencies = $state([]);
 
 	onMount(async () => {
+		if (!user) return;
+
 		// The page hash sets the end-to-end encryption key.
-		const key = window.location.hash?.slice(1).split(",")[0] ?? "";
-		const writePassword =
-			window.location.hash?.slice(1).split(",")[1] ?? null;
+		const key = hash?.split(",")[0] ?? "";
+		const writePassword = hash?.split(",")[1] ?? null;
 
 		encrypt = await Encrypt.new(key);
 		const encryptedZeros = await encrypt.zeros();
@@ -172,7 +173,7 @@
 					userId = message.hello[0];
 					receiveName(message.hello[1]);
 					toast.success("Connected to the server", {
-						duration: 3000,
+						duration: 5000,
 					});
 					exitReason = null;
 				} else if (message.invalidAuth) {
@@ -596,7 +597,7 @@
 				close={() => (showChat = false)}
 			/>
 		</div>
-		<ChooseName />
+		<ChooseName {user} />
 		<SettingsDialog bind:isopen={showSettings} />
 		<div
 			class="absolute inset-0 -z-10 bg-gruvlbg0h dark:bg-gruvdbg0h"

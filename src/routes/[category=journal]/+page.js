@@ -21,7 +21,6 @@ export async function load({ params, fetch }) {
 		.sort((a, b) => {
 			const x = new Date(a.structuredData.dateModified);
 			const y = new Date(b.structuredData.dateModified);
-			console.log(x, y);
 			if (x < y) {
 				return 1;
 			} else if (x > y) {

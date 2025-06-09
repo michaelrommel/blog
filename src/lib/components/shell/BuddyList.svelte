@@ -11,11 +11,17 @@
 	// });
 </script>
 
-<div class="flex items-center p-1 bg-gruvdbg1/90 rounded-t-md">
-	<div class="ml-2 text-zinc-300 text-sm font-medium">Buddies</div>
+<div
+	class="flex items-center p-1 bg-gruvlbg1/90 dark:bg-gruvdbg1/90 rounded-t-md"
+>
+	<div class="ml-2 text-gruvlfg dark:text-gruvdfg text-sm font-medium">
+		Buddies
+	</div>
 </div>
 
-<div class="p-1 flex-grow rounded-b-md overflow-y-auto bg-gruvdbg0">
+<div
+	class="p-1 flex-grow rounded-b-md overflow-y-auto bg-gruvlbg0 dark:bg-gruvdbg0"
+>
 	<div class="rounded-b-md text-xs">
 		<ul class="flex flex-col">
 			{#each sortedUsers as [id, user] (id)}
@@ -28,7 +34,9 @@
 						class="shrink-0 w-3.5 h-3.5 rounded-full border border-gruvlfg3"
 					></div>
 
-					<div class="overflow-hidden max-w-24 text-gruvdfg">
+					<div
+						class="overflow-hidden max-w-24 dark:text-gruvdfg text-gruvlfg"
+					>
 						{user.name}
 					</div>
 					<div class="shrink-0 w-3.5">

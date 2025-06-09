@@ -319,7 +319,7 @@
 								size="icon"
 								class="px-1 mx-2"
 							>
-								<Logout />
+								<LogOut />
 							</Button>
 						</form>
 					{:else}

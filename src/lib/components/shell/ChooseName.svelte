@@ -4,7 +4,8 @@
 	import OverlayDialog from "./OverlayDialog.svelte";
 	import { settings, updateSettings } from "$lib/components/shell/settings";
 
-	let value = "";
+	let { user } = $props();
+	let value = $state(user?.name);
 
 	function handleSubmit() {
 		updateSettings({ name: value });
@@ -13,14 +14,14 @@
 
 <OverlayDialog
 	title="Welcome!"
-	description="Before you join — what should we call you?"
+	description="Before you join — what is your nickname?"
 	isopen={browser && !$settings.name}
 >
 	<form class="flex gap-2" onsubmit={handleSubmit}>
 		<div class="flex-grow"></div>
 		<input
 			class="px-3 py-2 rounded-md outline-none text-gruvdfg4 bg-gruvdbg0 hover:bg-white/5 border border-zinc-700 focus:ring-2 focus:ring-ring"
-			placeholder="Your name"
+			placeholder={user?.name}
 			required
 			minlength="2"
 			maxlength="50"
