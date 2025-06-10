@@ -16,6 +16,12 @@
 					Next-Big-Thing(tm) and want to show off, you could share
 					your shell with me.
 				</p>
+				<img
+					class="m-3 w-full flex-none bg-contain bg-no-repeat bg-center text-center overflow-hidden"
+					title="Image of a browser with two terminal windows"
+					alt=""
+					src="/ngstatic/sshx.jpeg"
+				/>
 				<p>
 					A small binary connects your computer to the backend running
 					here and a link will be printed to your terminal, that we
@@ -32,7 +38,7 @@
 				</p>
 				<p>
 					This is a fork of the "sshx.io" application, modified to
-					connect your shell to a backend running here.
+					connect your shell to my backend.
 				</p>
 				<h2>How to use it?</h2>
 				<p>You can download the small app using this command line:</p>
@@ -45,6 +51,11 @@
 					This downloads the binary to a temporary folder and executes
 					it. Without the '-s run', the binary is just downloaded to
 					your current directory and you can execute it yourself.
+				</p>
+				<p>
+					There are binaries for Linux and macOS for ARM and x86_64
+					architectures. Please note, that you have to login to this
+					site, in order to use that functionality.
 				</p>
 			</main>
 		</article>

@@ -10,6 +10,7 @@
 		ArrowUp,
 		User,
 		LogOut,
+		SquareTerminal,
 	} from "@lucide/svelte";
 	import Journal from "virtual:icons/bi/journal-bookmark-fill";
 
@@ -159,6 +160,17 @@
 							</a>
 						</div>
 					{/each}
+					<div class="ml-1 md:p-1 md:pl-4 lg:pl-4 navigation">
+						<a
+							href="/shell"
+							class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-sm"
+						>
+							<SquareTerminal
+								class="inline mb-0.5 size-8"
+								strokeWidth="1.5"
+							/>
+						</a>
+					</div>
 					{#if data?.user?.id}
 						<div class="ml-1 md:p-1 md:pl-4 lg:pl-4 navigation">
 							<a

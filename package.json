@@ -12,6 +12,7 @@
 	},
 	"devDependencies": {
 		"@iconify-json/bi": "^1.2.2",
+		"@iconify-json/cib": "^1.2.2",
 		"@lucide/svelte": "^0.513.0",
 		"@poppanator/sveltekit-svg": "5.0.1",
 		"@shikijs/rehype": "^3.5.0",
@@ -40,7 +41,6 @@
 	"dependencies": {
 		"@auth/sveltekit": "^1.9.1",
 		"@eslint/js": "^9.27.0",
-		"@iconify-json/cib": "^1.2.2",
 		"@jsdevtools/rehype-toc": "^3.0.2",
 		"@kurkle/color": "^0.4.0",
 		"@oslojs/encoding": "^1.1.0",
