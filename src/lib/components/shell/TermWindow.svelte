@@ -194,10 +194,10 @@
 		function setFocused(hasFocusAttr) {
 			if (hasFocusAttr && !isFocused) {
 				isFocused = hasFocusAttr;
-				onFocus(terminalWindow.id);
+				onFocus(terminalWindow?.id);
 			} else if (!hasFocusAttr && isFocused) {
 				isFocused = hasFocusAttr;
-				onBlur(terminalWindow.id);
+				onBlur(terminalWindow?.id);
 			}
 		}
 

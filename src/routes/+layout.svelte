@@ -2,7 +2,7 @@
 	import "../app.css";
 
 	import { onMount, setContext } from "svelte";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 
 	import { debounce } from "$lib/utils.js";
 
@@ -43,20 +43,26 @@
 		rsObserver.observe(navigationElement);
 	});
 
+	// define the page title as a context, so that we can
+	// update it later in a child
+	let pagetitle = $state({ title: page.data.title });
+	setContext("title", pagetitle);
+
 	// console.log(`in layout.svelte data is: ${JSON.stringify(data, null, 4)}`);
+	// console.log(`in layout.svelte page is: ${JSON.stringify(page, null, 4)}`);
 </script>
 
 <SeoMarkup
-	url={$page.url}
+	url={page.url}
 	data={{
-		title: $page.data.title,
-		description: $page.data.description,
-		structuredData: $page.data.structuredData,
+		title: pagetitle.title,
+		description: page.data.description,
+		structuredData: page.data.structuredData,
 	}}
 />
 
 <ModeWatcher />
-<!-- richColors -->
+
 <Toaster
 	position="bottom-right"
 	visibleToasts={5}

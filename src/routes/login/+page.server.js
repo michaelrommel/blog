@@ -11,13 +11,17 @@ export async function load(event) {
 	// and let it redirect there
 	if (event.locals.session !== null && event.locals.user !== null) {
 		return {
-			user: event.locals.user
+			user: event.locals.user,
+			title: 'Login',
+			description: 'Login to the site to gain access to certain features'
 		};
 	} else {
 		// we are not authenticated yet, store the referring url
 		const referrer = event.url.searchParams.get('referrer');
 		return {
-			referrer
+			referrer,
+			title: 'Login',
+			description: 'Login to the site to gain access to certain features'
 		};
 	}
 }

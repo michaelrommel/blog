@@ -1,10 +1,11 @@
 <script>
+	import { getContext } from "svelte";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/state";
 
 	import ShellSession from "$lib/components/ShellSession.svelte";
 
-	let title = $state("Remote Terminal");
+	let titlectx = getContext("title");
 
 	let { data } = $props();
 	let hash = $state(null);
@@ -21,7 +22,9 @@
 			const pair = {};
 			pair[sessionId] = hash;
 			localStorage.setItem("hash", JSON.stringify(pair));
-			goto(`/login?referrer=/shell/session/${sessionId}`);
+			setTimeout(() => {
+				goto(`/login?referrer=/shell/session/${sessionId}`);
+			}, 2000);
 		} else {
 			if (url?.hash) {
 				//console.log("Hash was ok");
@@ -39,22 +42,22 @@
 	checkAuth();
 </script>
 
-<svelte:head>
-	<title>{title}</title>
-	<!-- <style> -->
-	<!-- 	body { -->
-	<!-- 		overscroll-behavior: none; -->
-	<!-- 	} -->
-	<!-- </style> -->
-</svelte:head>
-
-<ShellSession
-	id={page.params.id}
-	receiveName={(sessionName) => {
-		if (sessionName) {
-			title = `${sessionName}`;
-		}
-	}}
-	{hash}
-	{user}
-/>
+{#if !user?.id}
+	<div class="mt-20 w-full flex justify-center">
+		<div class="p-8 text-lg rounded-2xl dark:bg-gruvdbg1 text-center">
+			<p>In order to use a shell session, you need to be logged in.</p>
+			<p>Redirecting you to the login page...</p>
+		</div>
+	</div>
+{:else}
+	<ShellSession
+		id={page.params.id}
+		receiveName={(sessionName) => {
+			if (sessionName) {
+				titlectx.title = `${sessionName}`;
+			}
+		}}
+		{hash}
+		{user}
+	/>
+{/if}

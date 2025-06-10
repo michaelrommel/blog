@@ -1,10 +1,14 @@
 import { encode, decode } from 'cbor-x';
 
-/** How long to wait between reconnections (in milliseconds). */
-const RECONNECT_DELAY = 500;
-
 /** Number of messages to queue while disconnected. */
 const BUFFER_SIZE = 64;
+
+/** How long to wait between reconnections (in milliseconds). */
+const INITIAL_RECONNECT_DELAY = 500;
+const MAX_RECONNECT_DELAY = 16000;
+const reconnectDelay = (delay) => {
+	return Math.min(delay + 500, MAX_RECONNECT_DELAY);
+};
 
 /** A reconnecting WebSocket client for real-time communication. */
 export class ReconWS {
@@ -31,6 +35,8 @@ export class ReconWS {
 		this._connected = false;
 		this._buffer = [];
 		this._disposed = false;
+		this._delay = INITIAL_RECONNECT_DELAY;
+		this._lastopen = null;
 		this._reconnect();
 	}
 
@@ -67,12 +73,18 @@ export class ReconWS {
 		this._ws.binaryType = 'arraybuffer';
 		this._ws.onopen = () => {
 			this._stateChange(true);
+			this._lastOpen = Date.now();
 		};
 		this._ws.onclose = (event) => {
 			this._options.onClose?.(event);
 			this._ws = null;
 			this._stateChange(false);
-			setTimeout(() => this._reconnect(), RECONNECT_DELAY);
+			// if the connection lasted longer than 30s reset timer
+			if (this._lastopen && Date.now() - this._lastopen > 30000) {
+				this._delay = INITIAL_RECONNECT_DELAY;
+			}
+			this._delay = reconnectDelay(this._delay);
+			setTimeout(() => this._reconnect(), this._delay);
 		};
 		this._ws.onmessage = (event) => {
 			if (event.data instanceof ArrayBuffer) {
@@ -88,11 +100,10 @@ export class ReconWS {
 		if (!this._disposed && connected !== this._connected) {
 			this._connected = connected;
 			if (connected) {
-				this._options.onConnect?.();
-
 				if (!this._ws) {
 					throw new Error('invariant violation: connected but ws is null');
 				}
+				this._options.onConnect?.();
 				// Send any queued messages.
 				for (const message of this._buffer) {
 					this._ws.send(message);

@@ -134,7 +134,8 @@
 	let counter = 0n;
 
 	let connected = $state(false);
-	let exitReason = $state(null);
+	let connectionStatus = $state("Disconnected");
+	let connectionError = $state(null);
 
 	let subscriptions = new Set();
 
@@ -172,14 +173,16 @@
 				if (message.hello) {
 					userId = message.hello[0];
 					receiveName(message.hello[1]);
-					toast.success("Connected to the server", {
-						duration: 5000,
+					connectionStatus = "Established";
+					connectionError = "";
+					toast.success("Connection established", {
+						duration: 1000,
 					});
-					exitReason = null;
 				} else if (message.invalidAuth) {
-					exitReason =
-						"The URL is not correct, invalid end-to-end encryption key.";
-					toast.error(exitReason, {
+					connectionStatus = "Failed";
+					connectionError =
+						"Connection failed, invalid encryption key.";
+					toast.error(connectionError, {
 						duration: 30000,
 					});
 					ws?.dispose();
@@ -286,7 +289,11 @@
 						-10,
 					);
 				} else if (message.error) {
-					console.warn("Server error: " + message.error);
+					const messageError = `Server error: ${message.error}`;
+					console.warn(messageError);
+					toast.error(messageError, {
+						duration: 30000,
+					});
 				}
 			},
 
@@ -298,10 +305,14 @@
 					ws?.send({ setName: $settings.name });
 				}
 				connected = true;
+				connectionStatus = "Connecting...";
+				connectionError = "";
+				console.log(connectionStatus);
 			},
 
 			onDisconnect() {
 				connected = false;
+				connectionStatus = "Disconnected";
 				subscriptions.clear();
 				users = [];
 				serverLatencies = [];
@@ -309,11 +320,20 @@
 			},
 
 			onClose(event) {
+				let message;
 				if (event.code === 4404) {
-					exitReason = "Failed to connect: " + event.reason;
+					// could not find the requested session
+					message = `close: (${!event.wasClean ? "↯" : ""}${event.code}) ${event.reason}`;
 				} else if (event.code === 4500) {
-					exitReason = "Internal server error: " + event.reason;
+					message = `close: (${!event.wasClean ? "↯" : ""}${event.code}) ${event.reason}`;
+				} else if (event.code === 1006) {
+					// 1006 unclean when server was unavailable during connect attempt
+					message = `close: (${!event.wasClean ? "↯" : ""}${event.code}) the server could not be connected`;
+				} else {
+					// 1005 when server cleanly closed connection
+					message = `close: (${!event.wasClean ? "↯" : ""}${event.code}) ${event.reason}`;
 				}
+				console.warn(message);
 			},
 		});
 	});
@@ -529,6 +549,7 @@
 	};
 
 	const onBlur = (id) => {
+		if (!id) return;
 		focused = focused.filter((i) => i !== id);
 	};
 
@@ -557,7 +578,6 @@
 	style:height="600px"
 >
 	<Toolbar
-		{connected}
 		{hasWriteAccess}
 		{newMessages}
 		createTerminal={handleCreate}
@@ -571,7 +591,9 @@
 		}}
 		serverLatency={integerMedian(serverLatencies)}
 		shellLatency={integerMedian(shellLatencies)}
-		status={connected ? "connected" : exitReason ? "no shell" : "no server"}
+		{connected}
+		{connectionStatus}
+		{connectionError}
 	/>
 
 	<div class="relative h-full flex-grow overflow-hidden">
