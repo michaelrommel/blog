@@ -10,8 +10,8 @@
 		ArrowUp,
 		User,
 		LogOut,
-		SquareTerminal,
 	} from "@lucide/svelte";
+	import Terminal from "virtual:icons/bi/terminal";
 	import Journal from "virtual:icons/bi/journal-bookmark-fill";
 
 	import { toggleMode } from "mode-watcher";
@@ -165,10 +165,7 @@
 							href="/shell"
 							class="hover:text-gruvblue dark:hover:text-gruvblue p-1 ring-offset-gruvlbg/90 dark:ring-offset-gruvdbg/90 focus-visible:ring-ring transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none rounded-sm"
 						>
-							<SquareTerminal
-								class="inline mb-0.5 size-8"
-								strokeWidth="1.5"
-							/>
+							<Terminal class="inline mb-1" />
 						</a>
 					</div>
 					{#if data?.user?.id}

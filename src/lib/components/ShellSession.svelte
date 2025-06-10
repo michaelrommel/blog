@@ -681,11 +681,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- 		focus={() => { -->
-<!-- 			if (!hasWriteAccess) return; -->
-<!-- 			focused = [...focused, id]; -->
-<!-- 		}} -->
-<!-- 		blur={() => { -->
-<!-- 			focused = focused.filter((i) => i !== id); -->
-<!-- 		}} -->
