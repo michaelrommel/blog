@@ -14,9 +14,6 @@ importers:
       '@eslint/js':
         specifier: ^9.27.0
         version: 9.28.0
-      '@iconify-json/cib':
-        specifier: ^1.2.2
-        version: 1.2.2
       '@jsdevtools/rehype-toc':
         specifier: ^3.0.2
         version: 3.0.2
@@ -171,6 +168,9 @@ importers:
       '@iconify-json/bi':
         specifier: ^1.2.2
         version: 1.2.4
+      '@iconify-json/cib':
+        specifier: ^1.2.2
+        version: 1.2.2
       '@lucide/svelte':
         specifier: ^0.513.0
         version: 0.513.0(svelte@5.33.17)

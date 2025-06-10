@@ -21,6 +21,11 @@
 		get: () => margins,
 	});
 
+	let overrideTitle = $state(null);
+	setContext("overrideTitle", (newTitle) => {
+		overrideTitle = newTitle;
+	});
+
 	let navigationElement = null;
 	let footerElement = null;
 
@@ -43,11 +48,6 @@
 		rsObserver.observe(navigationElement);
 	});
 
-	// define the page title as a context, so that we can
-	// update it later in a child
-	let pagetitle = $state({ title: page.data.title });
-	setContext("title", pagetitle);
-
 	// console.log(`in layout.svelte data is: ${JSON.stringify(data, null, 4)}`);
 	// console.log(`in layout.svelte page is: ${JSON.stringify(page, null, 4)}`);
 </script>
@@ -55,7 +55,7 @@
 <SeoMarkup
 	url={page.url}
 	data={{
-		title: pagetitle.title,
+		title: overrideTitle ?? page.data.title,
 		description: page.data.description,
 		structuredData: page.data.structuredData,
 	}}

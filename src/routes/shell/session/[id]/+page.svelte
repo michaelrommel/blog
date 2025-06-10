@@ -1,11 +1,21 @@
 <script>
-	import { getContext } from "svelte";
 	import { goto } from "$app/navigation";
+	import { beforeNavigate } from "$app/navigation";
+	import { getContext } from "svelte";
 	import { page } from "$app/state";
 
 	import ShellSession from "$lib/components/ShellSession.svelte";
 
-	let titlectx = getContext("title");
+	// get the function to set an override title for the page
+	// from the context. this can then be used by the ShellSession
+	// component to reflect the shell session in the browser's
+	// tab title. before we navigate away from the page, we need
+	// to delete the override title again to let the normal page.data
+	// take over
+	let overrideTitle = getContext("overrideTitle");
+	beforeNavigate(() => {
+		overrideTitle(null);
+	});
 
 	let { data } = $props();
 	let hash = $state(null);
@@ -54,7 +64,7 @@
 		id={page.params.id}
 		receiveName={(sessionName) => {
 			if (sessionName) {
-				titlectx.title = `${sessionName}`;
+				overrideTitle(sessionName);
 			}
 		}}
 		{hash}
