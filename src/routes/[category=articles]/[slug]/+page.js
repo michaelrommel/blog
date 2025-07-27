@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { PUBLIC_ORIGIN } from '$env/static/public';
 
 export async function load({ params, fetch }) {
 	let articles = null;
@@ -43,7 +44,9 @@ export async function load({ params, fetch }) {
 			case 'api': {
 				const url = match.groups.dataurl.replaceAll('"', '');
 				// console.log(`api: ${url}`);
-				chartData = await fetch(`/api${url}`).then((res) => res.json());
+				chartData = await fetch(`${PUBLIC_ORIGIN}/api${url}`).then((res) =>
+					res.json()
+				);
 				if (!chartData) {
 					error(404, {
 						message: 'Data could not be retrieved'
@@ -62,9 +65,10 @@ export async function load({ params, fetch }) {
 			case 'url': {
 				const url = match.groups.dataurl.replaceAll('"', '');
 				// console.log(`url: ${url}`);
-				const dataset = await fetch(`/articles/assets/${url}`).then((res) =>
-					res.json()
-				);
+				const dataset = await fetch(
+					`${PUBLIC_ORIGIN}/articles/assets/${url}`
+				).then((res) => res.json());
+				console.log(dataset);
 				if (!dataset) {
 					error(404, {
 						message: 'Data could not be retrieved'

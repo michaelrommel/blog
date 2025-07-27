@@ -5,6 +5,7 @@ import {
 } from '$lib/server/session';
 
 export const handle = async ({ event, resolve }) => {
+	// console.log(event);
 	const token = event.cookies.get('session') ?? null;
 	if (token === null) {
 		event.locals.session = null;
