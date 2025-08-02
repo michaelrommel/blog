@@ -6,6 +6,7 @@ import {
 
 export const handle = async ({ event, resolve }) => {
 	// console.log(event);
+	// console.log(event.getClientAddress());
 	const token = event.cookies.get('session') ?? null;
 	if (token === null) {
 		event.locals.session = null;
