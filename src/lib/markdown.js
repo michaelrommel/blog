@@ -272,6 +272,7 @@ async function preprocess(article) {
 		// // 	tagNames: [...defaultSchema.tagNames, 'sveltecomponent']
 		// // })
 		// // .use(rehypeWrapMain)
+		.use(rehypeMathjax)
 		.use(rehypeShikiFromHighlighter, highlighter, {
 			themes: {
 				dark: gruvboxTheme,
@@ -295,7 +296,6 @@ async function preprocess(article) {
 			fallbackLanguage: 'text',
 			transformers: [transformerNotationDiff(), transformerNotationHighlight()]
 		})
-		.use(rehypeMathjax)
 		.use(rehypeToc, {
 			headings: ['h2'],
 			position: 'beforeend',
