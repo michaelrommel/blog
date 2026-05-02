@@ -31,6 +31,7 @@
 						<a
 							class="bg-gruvlbg1 dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
 							href="/login/github"
+							rel="external"
 							alt="Login with Github"
 						>
 							<span class="grow px-3 align-middle">
@@ -45,6 +46,7 @@
 						<a
 							class="bg-gruvlbg1 dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
 							href="/login/google"
+							rel="external"
 							alt="Login with Google"
 						>
 							<span class="grow px-3 align-middle">
@@ -59,6 +61,7 @@
 						<a
 							class="bg-gruvlbg1 dark:bg-gruvdbg2 m-1 p-2 rounded-lg no-underline flex flex-row"
 							href="/login/spotify"
+							rel="external"
 							alt="Login with Spotify"
 						>
 							<span class="grow px-3 align-middle">

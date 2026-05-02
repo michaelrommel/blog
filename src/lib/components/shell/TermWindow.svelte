@@ -61,6 +61,7 @@
 	import themes from "./themes";
 	import { settings } from "$lib/components/shell/settings";
 	import Avatars from "./Avatars.svelte";
+	import { UnicodeGraphemesAddon } from "@xterm/addon-unicode-graphemes";
 
 	let {
 		center,
@@ -156,6 +157,7 @@
 			import("miro-xterm"),
 			//import("sshx-xterm"),
 			import("@xterm/addon-webgl"),
+			import("@xterm/addon-unicode-graphemes"),
 		]);
 
 		await waitForFonts();
@@ -171,7 +173,10 @@
 			lineHeight: 1.0,
 			scrollback: $settings.scrollback,
 			theme,
+			allowProposedApi: true,
 		});
+		const unicodeGraphemesAddon = new UnicodeGraphemesAddon();
+		term.loadAddon(unicodeGraphemesAddon);
 		term.loadAddon(new WebglAddon());
 		term.open(terminalElement);
 		term.resize(terminalWindow.cols, terminalWindow.rows);

@@ -45,8 +45,8 @@
 		"@pilcrowjs/object-parser": "^0.0.4",
 		"@tailwindcss/vite": "^4.2.4",
 		"@use-gesture/vanilla": "10.3.1",
-		"@xterm/addon-webgl": "^0.18.0",
-		"@xterm/xterm": "^5.5.0",
+		"@xterm/addon-unicode-graphemes": "^0.4.0",
+		"@xterm/addon-webgl": "^0.19.0",
 		"arctic": "^3.6.0",
 		"argon2-browser": "^1.18.0",
 		"cbor-x": "^1.6.4",
@@ -57,7 +57,7 @@
 		"fontfaceobserver": "^2.3.0",
 		"hastscript": "^9.0.1",
 		"ioredis": "^5.10.1",
-		"miro-xterm": "https://github.com/michaelrommel/miro-xterm#sshx",
+		"miro-xterm": "github:michaelrommel/miro-xterm#sshx",
 		"nanoid": "^5.1.11",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-mathjax": "^7.1.0",
@@ -89,5 +89,10 @@
 		"unist-util-visit": "^5.1.0",
 		"unplugin-icons": "^23.0.1",
 		"vfile-matter": "^5.0.1"
+	},
+	"pnpm": {
+		"overrides": {
+			"miro-xterm": "https://github.com/michaelrommel/miro-xterm#sshx"
+		}
 	}
 }
