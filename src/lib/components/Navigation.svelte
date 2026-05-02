@@ -22,6 +22,7 @@
 	import * as Avatar from "$lib/components/ui/avatar";
 
 	import { onMount } from "svelte";
+	import { page } from "$app/state";
 	import { goto } from "$app/navigation";
 	import { enhance } from "$app/forms";
 
@@ -43,7 +44,8 @@
 
 	async function gotoLogin() {
 		popoverOpen = false;
-		goto("/login");
+		const currentPath = page.url.pathname;
+		goto(`/login?referrer=${encodeURIComponent(currentPath)}`);
 	}
 
 	function closePopupAndSubmit() {

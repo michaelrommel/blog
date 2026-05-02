@@ -19,7 +19,7 @@ export async function load(event) {
 		// we are not authenticated yet, store the referring url
 		const referrer = event.url.searchParams.get('referrer');
 		return {
-			referrer,
+			referrer: referrer ? referrer : '/',
 			title: 'Login',
 			description: 'Login to the site to gain access to certain features'
 		};

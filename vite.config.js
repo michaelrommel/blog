@@ -3,7 +3,6 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
 import svg from '@poppanator/sveltekit-svg';
-import devtoolsJson from 'vite-plugin-devtools-json';
 
 import { execSync } from 'node:child_process';
 
@@ -22,7 +21,6 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		tailwindcss(),
-		devtoolsJson(),
 		Icons({
 			compiler: 'svelte'
 		}),
@@ -31,12 +29,7 @@ export default defineConfig({
 				plugins: [
 					'removeDimensions',
 					{
-						name: 'preset-default',
-						params: {
-							overrides: {
-								removeViewBox: false
-							}
-						}
+						name: 'preset-default'
 					},
 					{
 						name: 'removeAttributesBySelector',
@@ -53,7 +46,8 @@ export default defineConfig({
 		allowedHosts: ['.michaelrommel.com'],
 		fs: {
 			allow: ['../articles/', 'resources/']
-		}
+		},
+		forwardConsole: true
 	},
 	define: {
 		__COMMIT__: JSON.stringify(commit),
