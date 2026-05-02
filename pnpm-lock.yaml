@@ -72,8 +72,8 @@ importers:
         specifier: ^5.10.1
         version: 5.10.1
       miro-xterm:
-        specifier: https://github.com/michaelrommel/miro-xterm#sshx
-        version: '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d351ddeaf8917711c6abf1d3d7fcfeec1368f04'
+        specifier: github:michaelrommel/miro-xterm#sshx
+        version: '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/ad9f2647f3e1902a6e8c0a0dab79823d8a579095'
       nanoid:
         specifier: ^5.1.11
         version: 5.1.11
@@ -1040,8 +1040,8 @@ packages:
   '@xterm/addon-webgl@0.19.0':
     resolution: {integrity: sha512-b3fMOsyLVuCeNJWxolACEUED0vm7qC0cy4wRvf3oURSzDTYVQiGPhTnhWZwIHdvC48Y+oLhvYXnY4XDXPoJo6A==}
 
-  '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d351ddeaf8917711c6abf1d3d7fcfeec1368f04':
-    resolution: {tarball: https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d351ddeaf8917711c6abf1d3d7fcfeec1368f04}
+  '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/ad9f2647f3e1902a6e8c0a0dab79823d8a579095':
+    resolution: {tarball: https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/ad9f2647f3e1902a6e8c0a0dab79823d8a579095}
     version: 6.0.0
 
   acorn-jsx@5.3.2:
@@ -3301,7 +3301,7 @@ snapshots:
 
   '@xterm/addon-webgl@0.19.0': {}
 
-  '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/4d351ddeaf8917711c6abf1d3d7fcfeec1368f04': {}
+  '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/ad9f2647f3e1902a6e8c0a0dab79823d8a579095': {}
 
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
