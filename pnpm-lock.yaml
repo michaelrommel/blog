@@ -72,7 +72,7 @@ importers:
         specifier: ^5.10.1
         version: 5.10.1
       miro-xterm:
-        specifier: github:michaelrommel/miro-xterm#sshx
+        specifier: https://github.com/michaelrommel/miro-xterm#sshx
         version: '@xterm/xterm@https://codeload.github.com/michaelrommel/miro-xterm/tar.gz/ad9f2647f3e1902a6e8c0a0dab79823d8a579095'
       nanoid:
         specifier: ^5.1.11
