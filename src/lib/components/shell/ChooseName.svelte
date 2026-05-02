@@ -5,6 +5,7 @@
 	import { settings, updateSettings } from "$lib/components/shell/settings";
 
 	let { user } = $props();
+	// svelte-ignore state_referenced_locally
 	let value = $state(user?.name);
 
 	function handleSubmit() {
@@ -18,7 +19,7 @@
 	isopen={browser && !$settings.name}
 >
 	<form class="flex gap-2" onsubmit={handleSubmit}>
-		<div class="flex-grow"></div>
+		<div class="grow"></div>
 		<input
 			class="px-3 py-2 rounded-md outline-none text-gruvdfg4 bg-gruvdbg0 hover:bg-white/5 border border-zinc-700 focus:ring-2 focus:ring-ring"
 			placeholder={user?.name}
@@ -28,9 +29,9 @@
 			bind:value
 		/>
 		<button
-			class="flex-shrink-0 px-3 py-2 bg-gruvlemphblue hover:bg-gruvblue active:ring-4 active:ring-ring rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring ring-offset-background font-medium"
+			class="shrink-0 px-3 py-2 bg-gruvlemphblue hover:bg-gruvblue active:ring-4 active:ring-ring rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring ring-offset-background font-medium"
 			>Join</button
 		>
-		<div class="flex-grow"></div>
+		<div class="grow"></div>
 	</form>
 </OverlayDialog>

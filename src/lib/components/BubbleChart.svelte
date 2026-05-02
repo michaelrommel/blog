@@ -14,6 +14,7 @@
 		return colorLib(value).alpha(alpha).rgbString();
 	}
 
+	// svelte-ignore state_referenced_locally
 	const allseries = [
 		...new Set(
 			data.flatMap((c) =>
@@ -134,6 +135,6 @@
 	});
 </script>
 
-<div class="h-[500px]">
+<div class="h-125">
 	<canvas bind:this={chartCanvas}></canvas>
 </div>

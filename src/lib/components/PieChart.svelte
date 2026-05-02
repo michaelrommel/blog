@@ -7,6 +7,7 @@
 
 	let { data } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const sortedData = data.sort((a, b) => {
 		if (a.hackers < b.hackers) {
 			return 1;
@@ -91,6 +92,6 @@
 	});
 </script>
 
-<div class="h-[500px]">
+<div class="h-125">
 	<canvas bind:this={chartCanvas}></canvas>
 </div>

@@ -8,6 +8,7 @@
 
 	let { data, xSelector } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const allseries = [
 		...new Set(
 			data.flatMap((c) =>
@@ -16,6 +17,7 @@
 		),
 	];
 
+	// svelte-ignore state_referenced_locally
 	const chartData = {
 		labels: data.map((slice) =>
 			format(new Date(slice[xSelector]), "yyyy-MM"),
@@ -36,6 +38,7 @@
 		chartData.datasets.push(dataset);
 	});
 
+	// svelte-ignore state_referenced_locally
 	const totals = data.map((slice) => {
 		let subtotal = Object.keys(slice).reduce((acc, cur) => {
 			return acc + (cur !== xSelector ? slice[cur] : 0);
@@ -88,6 +91,6 @@
 	});
 </script>
 
-<div class="h-[500px]">
+<div class="h-125">
 	<canvas bind:this={chartCanvas}></canvas>
 </div>

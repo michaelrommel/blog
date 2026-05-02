@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from "svelte";
+	import { SvelteMap } from "svelte/reactivity";
 
 	import { Info } from "@lucide/svelte";
 
@@ -16,11 +17,13 @@
 	// StlViewer component from a page that embeds it.
 	let { file, dpr, inertia } = $props();
 
+	// svelte-ignore state_referenced_locally
 	if (typeof inertia == "string") {
 		inertia = Number(inertia);
 	}
 	let lightIntensityFactor = $state([10]);
 	let fps = $state();
+	// svelte-ignore state_referenced_locally
 	let inertiaOverride = $state([inertia]);
 
 	// hardcode path to the cad models directory
@@ -52,7 +55,7 @@
 	// let cameraHelper = null;
 
 	// the map stores for each canvas the sizes they should be displayed in pixels
-	const canvasToDisplaySizeMap = new Map();
+	const canvasToDisplaySizeMap = new SvelteMap();
 
 	function initScene() {
 		// initialize the scene to which all elements are added
@@ -619,7 +622,7 @@
 				<Popover.Trigger>
 					<Button
 						variant="ghost"
-						class="relative mr-1 rounded-full p-0 h-[30px] w-[30px]"
+						class="relative mr-1 rounded-full p-0 h-7.5 w-7.5"
 					>
 						<Info class="absolute top-1/2 -translate-y-1/2" />
 					</Button>
