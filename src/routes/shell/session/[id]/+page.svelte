@@ -1,5 +1,6 @@
 <script>
 	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
 	import { beforeNavigate } from "$app/navigation";
 	import { getContext } from "svelte";
 	import { page } from "$app/state";
@@ -20,8 +21,9 @@
 	let { data } = $props();
 	let hash = $state(null);
 
-	const url = page.url;
+	// svelte-ignore state_referenced_locally
 	const user = data.user;
+	const url = page.url;
 
 	const sessionId = page.params.id;
 
@@ -33,7 +35,7 @@
 			pair[sessionId] = hash;
 			localStorage.setItem("hash", JSON.stringify(pair));
 			setTimeout(() => {
-				goto(`/login?referrer=/shell/session/${sessionId}`);
+				goto(resolve(`/login?referrer=/shell/session/${sessionId}`));
 			}, 2000);
 		} else {
 			if (url?.hash) {
@@ -43,7 +45,7 @@
 				//console.log("no hash in url string, get from store");
 				const pair = JSON.parse(localStorage.getItem("hash"));
 				hash = pair?.[sessionId];
-				goto(`/shell/session/${sessionId}#${hash}`);
+				goto(resolve(`/shell/session/${sessionId}#${hash}`));
 				// localStorage.removeItem("hash");
 			}
 		}

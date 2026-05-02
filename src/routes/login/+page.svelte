@@ -5,15 +5,17 @@
 	import Spotify from "virtual:icons/cib/spotify";
 
 	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
 
 	let { data } = $props();
 
+	// svelte-ignore state_referenced_locally
 	if (data.user) {
 		// we have an authenticated user now, see, if we stored a
 		// referring url in localstorage
 		const referrer = localStorage.getItem("referrer");
 		localStorage.removeItem("referrer");
-		goto(referrer ? referrer : "/");
+		goto(resolve(referrer ? referrer : "/"));
 	} else {
 		localStorage.setItem("referrer", data?.referrer);
 	}
