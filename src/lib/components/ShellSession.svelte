@@ -2,6 +2,7 @@
 	import { onDestroy, onMount, tick } from "svelte";
 	import { fade } from "svelte/transition";
 	import { on } from "svelte/events";
+	import { SvelteSet } from "svelte/reactivity";
 
 	import { debounce, throttle, integerMedian } from "$lib/utils.js";
 	import { toast } from "svelte-sonner";
@@ -11,6 +12,8 @@
 	import { ReconWS } from "./shell/reconws.js";
 	import { Encrypt } from "./shell/encrypt.js";
 	import { createLock } from "./shell/lock.js";
+	import { filterQuerySequences } from "./shell/filter.js";
+	import { hexLog } from "./shell/hexdump.js";
 
 	import { settings } from "./shell/settings.js";
 
@@ -137,9 +140,11 @@
 	let connectionStatus = $state("Disconnected");
 	let connectionError = $state(null);
 
-	let subscriptions = new Set();
+	let subscriptions = new SvelteSet();
 
 	let userId = $state(0);
+	// Track the first connected user as "primary" - they receive unfiltered data
+	let primaryUserId = $state(0);
 	let users = $state([]);
 
 	// May be undefined before `users` is first populated.
@@ -188,6 +193,13 @@
 					ws?.dispose();
 				} else if (message.chunks) {
 					let [id, seqnum, chunks] = message.chunks;
+					const isPrimary = userId === primaryUserId;
+					// Debug: log first chunk only to avoid spam
+					if (chunknums[id] === 0) {
+						console.log(
+							`[ShellSession] userId=${userId}, primaryUserId=${primaryUserId}, isPrimary=${isPrimary}, terminalId=${id}`,
+						);
+					}
 					locks[id](async () => {
 						await tick();
 						chunknums[id] += chunks.length;
@@ -198,12 +210,47 @@
 								data,
 							);
 							seqnum += data.length;
-							writers[id](new TextDecoder().decode(buf));
+							let decoded = new TextDecoder().decode(buf);
+							// Filter query escape sequences for non-primary clients
+							// to prevent feedback loops when multiple users are present
+							if (!isPrimary) {
+								const before = decoded;
+								// console.log(
+								// 	hexLog(
+								// 		`[ShellSession] raw chunk (len=${decoded.length}) isPrimary=${isPrimary}:\n`,
+								// 		new TextEncoder().encode(decoded),
+								// 	),
+								// );
+								decoded =
+									filterQuerySequences(decoded) ?? decoded;
+								// console.log(
+								// 	hexLog(
+								// 		`[ShellSession] filtered chunk (len=${decoded.length}):\n`,
+								// 		new TextEncoder().encode(decoded),
+								// 	),
+								// );
+								if (decoded !== before) {
+									console.log(
+										`[ShellSession] isPrimary=${isPrimary} FILTERED! removed ${before.length - decoded.length} bytes`,
+									);
+								}
+							}
+							writers[id](decoded);
 						}
 					});
 				} else if (message.users) {
 					// complete update on the user list
 					users = message.users;
+					// Track the first connected user (lowest userId) as "primary"
+					// - they receive unfiltered terminal data
+					const firstUser = users.sort((a, b) => a[0] - b[0])[0];
+					if (firstUser) {
+						const oldPrimary = primaryUserId;
+						primaryUserId = firstUser[0];
+						console.log(
+							`[ShellSession] primary user changed: ${oldPrimary} -> ${primaryUserId} (users: ${users.map((u) => u[0]).join(",")})`,
+						);
+					}
 				} else if (message.userDiff) {
 					// differential update of single users, used a lot for updating
 					// user cursor positions
@@ -418,7 +465,12 @@
 	}
 
 	async function onData(id, data) {
-		// console.log(data);
+		console.log(
+			hexLog(
+				`[ShellSession] outgoing chunk (len=${data.length}):\n`,
+				data,
+			),
+		);
 		if (counter === 0n) {
 			// On the first call, initialize the counter to a random 64-bit integer.
 			const array = new Uint8Array(8);

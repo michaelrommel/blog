@@ -154,7 +154,7 @@
 
 	onMount(async () => {
 		const [{ Terminal }, { WebglAddon }] = await Promise.all([
-			import("miro-xterm"),
+			import("@xterm/xterm"),
 			//import("sshx-xterm"),
 			import("@xterm/addon-webgl"),
 			import("@xterm/addon-unicode-graphemes"),
