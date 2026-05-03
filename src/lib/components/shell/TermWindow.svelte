@@ -69,7 +69,12 @@
 		hasWriteAccess,
 		focusUsers,
 		terminalWindow = $bindable(),
+		// actually the variable is used and assigned later
+		// making the writer available to ShellSession
+		// eslint-disable-next-line no-useless-assignment
 		write = $bindable(),
+		// actually the variable is used in the code below
+		// eslint-disable-next-line no-useless-assignment
 		movingId = $bindable(), // the id of the moving window, to report back
 		bringWindowToFront,
 		onData,
@@ -143,6 +148,9 @@
 	};
 
 	const preloadBuffer = [];
+	// actually the assignment trickles back to the embedding component
+	// making the writer available to ShellSession
+	// eslint-disable-next-line no-useless-assignment
 	write = (data) => {
 		if (!term) {
 			// Before the terminal is loaded, push data into a buffer.
@@ -153,10 +161,17 @@
 	};
 
 	onMount(async () => {
-		const [{ Terminal }, { WebglAddon }] = await Promise.all([
+		const [
+			{ Terminal },
+			{ WebglAddon },
+			{ ImageAddon },
+			{ Unicode11Addon },
+			{ UnicodeGraphemesAddon },
+		] = await Promise.all([
 			import("@xterm/xterm"),
-			//import("sshx-xterm"),
 			import("@xterm/addon-webgl"),
+			import("@xterm/addon-image"),
+			import("@xterm/addon-unicode11"),
 			import("@xterm/addon-unicode-graphemes"),
 		]);
 
@@ -175,9 +190,10 @@
 			theme,
 			allowProposedApi: true,
 		});
-		const unicodeGraphemesAddon = new UnicodeGraphemesAddon();
-		term.loadAddon(unicodeGraphemesAddon);
 		term.loadAddon(new WebglAddon());
+		term.loadAddon(new ImageAddon());
+		term.loadAddon(new Unicode11Addon());
+		term.loadAddon(new UnicodeGraphemesAddon());
 		term.open(terminalElement);
 		term.resize(terminalWindow.cols, terminalWindow.rows);
 		term.onTitleChange((title) => {
