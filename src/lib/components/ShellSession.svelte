@@ -214,7 +214,7 @@
 							// Filter query escape sequences for non-primary clients
 							// to prevent feedback loops when multiple users are present
 							if (!isPrimary) {
-								const before = decoded;
+								// const before = decoded;
 								// console.log(
 								// 	hexLog(
 								// 		`[ShellSession] raw chunk (len=${decoded.length}) isPrimary=${isPrimary}:\n`,
@@ -229,11 +229,11 @@
 								// 		new TextEncoder().encode(decoded),
 								// 	),
 								// );
-								if (decoded !== before) {
-									console.log(
-										`[ShellSession] isPrimary=${isPrimary} FILTERED! removed ${before.length - decoded.length} bytes`,
-									);
-								}
+								// if (decoded !== before) {
+								// 	console.log(
+								// 		`[ShellSession] isPrimary=${isPrimary} FILTERED! removed ${before.length - decoded.length} bytes`,
+								// 	);
+								// }
 							}
 							writers[id](decoded);
 						}
@@ -245,11 +245,11 @@
 					// - they receive unfiltered terminal data
 					const firstUser = users.sort((a, b) => a[0] - b[0])[0];
 					if (firstUser) {
-						const oldPrimary = primaryUserId;
+						// const oldPrimary = primaryUserId;
 						primaryUserId = firstUser[0];
-						console.log(
-							`[ShellSession] primary user changed: ${oldPrimary} -> ${primaryUserId} (users: ${users.map((u) => u[0]).join(",")})`,
-						);
+						// console.log(
+						// 	`[users] primary user changed: ${oldPrimary} -> ${primaryUserId} (users: ${users.map((u) => u[0]).join(",")})`,
+						// );
 					}
 				} else if (message.userDiff) {
 					// differential update of single users, used a lot for updating
@@ -261,6 +261,20 @@
 					// object provided, otherwise the user stays removed
 					if (update !== null) {
 						users = [...users, [id, update]];
+					} else {
+						// only do this if really a user has dropped off
+						// Recalculate primary user: lowest userId among remaining users.
+						// This handles the case where the primary user disconnects
+						// (userDiff with update=null), promoting the next user.
+						const sorted = [...users].sort((a, b) => a[0] - b[0]);
+						const firstUser = sorted[0];
+						if (firstUser) {
+							// const oldPrimary = primaryUserId;
+							primaryUserId = firstUser[0];
+							// console.log(
+							// 	`[userDiff] primary user changed: ${oldPrimary} -> ${primaryUserId} (users: ${sorted.map((u) => u[0]).join(",")})`,
+							// );
+						}
 					}
 				} else if (message.shells) {
 					// console.log(message.shells);
