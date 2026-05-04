@@ -61,7 +61,6 @@
 	import themes from "./themes";
 	import { settings } from "$lib/components/shell/settings";
 	import Avatars from "./Avatars.svelte";
-	import { UnicodeGraphemesAddon } from "@xterm/addon-unicode-graphemes";
 
 	let {
 		center,

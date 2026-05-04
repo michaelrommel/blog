@@ -589,6 +589,7 @@
 	const collectWindows = () => {
 		fabric.center = [gridSpacing, gridSpacing];
 		center = fabric.center;
+		zoom = 1.0;
 		if (!hasWriteAccess) return;
 		let offset = 1;
 		const stackMap = terminalWindows
